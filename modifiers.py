@@ -19,9 +19,9 @@ class Buff:
 
     def buff(self, player):
         """Abstract method to be implemented on a per buff basis to determine the stat change."""
-        raise NotImplementedError
+        pass
 
-    def end_turn(self):
+    def end_turn(self, player):
         """Method called at the end of the turn for each buff to show time passed and left until the buff expires."""
         if self.duration > 0:
             self.duration -= 1
@@ -67,3 +67,48 @@ class FireDebuff(Buff):
     def buff(self, target):
         """The burns leaves a scar, reducing the target's maximum health."""
         return -5
+
+class Effect:
+    """Parent class for all the effects, effect are different to buffs since they cause a permanent change at the end
+    of the turn, such as a poison damage or regenerating health. These are essentially the same as buffs in how they function."""
+    def __init__(self, **kwargs):
+        self.duration = kwargs.get("duration")
+
+        self.name = self.__doc__
+        self.description = self.effect.__doc__
+
+    def effect(self, player):
+        """Abstract method to be implemented on the buff to determine an action that takes place only once a turn
+        at the end of the turn such as poison."""
+        pass
+
+    def end_turn(self, player):
+        """Method called at the end of the turn for each buff to show time passed and left until the buff expires."""
+        if self.duration > 0:
+            self.duration -= 1
+
+        if self.duration == 0:
+            return True
+        else:
+            self.effect(player)
+
+        return False
+
+class PoisonEffect(Effect):
+    """Poison"""
+    def __init__(self):
+        super().__init__(duration=5)
+
+    def effect(self, player):
+        """Lose 3 health every turn."""
+        self.player.health -= 3
+
+class BurntEffect(Effect):
+    """Burnt"""
+
+    def __init__(self):
+        super().__init__(duration=5)
+
+    def effect(self, player):
+        """Lose 2 health every turn"""
+        self.player.health -= 2

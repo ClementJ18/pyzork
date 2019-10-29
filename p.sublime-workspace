@@ -1,0 +1,1041 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Limb",
+				"LimbTypes"
+			],
+			[
+				"lim",
+				"limb_types"
+			],
+			[
+				"buff",
+				"buff_type"
+			],
+			[
+				"eq",
+				"current_equipment"
+			],
+			[
+				"base",
+				"base_max_energy"
+			],
+			[
+				"for",
+				"formatted"
+			],
+			[
+				"End",
+				"EndgameReason"
+			],
+			[
+				"battle",
+				"battle_logic"
+			],
+			[
+				"stat",
+				"stats"
+			],
+			[
+				"ene",
+				"enemy"
+			],
+			[
+				"att",
+				"attack"
+			],
+			[
+				"nu",
+				"number2"
+			],
+			[
+				"numb",
+				"numbers"
+			],
+			[
+				"num",
+				"number2"
+			],
+			[
+				"enti",
+				"Entity"
+			],
+			[
+				"get",
+				"get_user_input"
+			],
+			[
+				"__",
+				"__init__"
+			],
+			[
+				"pa",
+				"player"
+			],
+			[
+				"tie",
+				"timeout"
+			],
+			[
+				"enu",
+				"enum"
+			],
+			[
+				"enum",
+				"Enum"
+			],
+			[
+				"bae",
+				"base_max_health"
+			],
+			[
+				"Nt",
+				"NotImplementedError"
+			],
+			[
+				"vers",
+				"version_online"
+			],
+			[
+				"folde",
+				"folder_id"
+			],
+			[
+				"except",
+				"Exception"
+			],
+			[
+				"if",
+				"ifmain\tif __name__ == '__main__'"
+			],
+			[
+				"HOOK_b",
+				"HOOK_BE"
+			],
+			[
+				"feed",
+				"feed_db"
+			],
+			[
+				"numbr",
+				"number_colors"
+			],
+			[
+				"pick",
+				"pick_tree_btn"
+			],
+			[
+				"upda",
+				"updated"
+			],
+			[
+				"to",
+				"to_download"
+			],
+			[
+				"web",
+				"webContentLink"
+			],
+			[
+				"Acti",
+				"activity_service"
+			],
+			[
+				"acti",
+				"activity_service"
+			],
+			[
+				"modfi",
+				"modifiedTime"
+			],
+			[
+				"tree",
+				"tree_values"
+			],
+			[
+				"modi",
+				"modified_by"
+			],
+			[
+				"exe",
+				"execute"
+			],
+			[
+				"sub",
+				"subdir_path"
+			],
+			[
+				"old",
+				"old_tree"
+			],
+			[
+				"path",
+				"path_aotr"
+			],
+			[
+				"set",
+				"setEnabled"
+			],
+			[
+				"fla",
+				"flatten_btn"
+			],
+			[
+				"flat",
+				"flatten_btn"
+			],
+			[
+				"flatt",
+				"flatten"
+			],
+			[
+				"new",
+				"new_path"
+			],
+			[
+				"flatten_",
+				"flatten_handler"
+			],
+			[
+				"f",
+				"flatten"
+			],
+			[
+				"QM",
+				"QMessageBox"
+			],
+			[
+				"size",
+				"sizeHint"
+			],
+			[
+				"instl",
+				"installation"
+			],
+			[
+				"requ",
+				"request"
+			],
+			[
+				"Progr",
+				"ProgressBar"
+			],
+			[
+				"files",
+				"files_service"
+			],
+			[
+				"file",
+				"files_service"
+			],
+			[
+				"short",
+				"shortcut"
+			],
+			[
+				"add",
+				"add_field"
+			],
+			[
+				"file_",
+				"file_path"
+			],
+			[
+				"un",
+				"uninstaller"
+			],
+			[
+				"pai",
+				"painter"
+			],
+			[
+				"paint",
+				"paintEvent"
+			],
+			[
+				"QP",
+				"QPixmap"
+			],
+			[
+				"help",
+				"help_text_full"
+			],
+			[
+				"launch",
+				"launch_btn"
+			],
+			[
+				"Qfont",
+				"QFontDatabase"
+			],
+			[
+				"disc",
+				"discord_btn"
+			],
+			[
+				"setSet",
+				"setStyleSheet"
+			],
+			[
+				"laun",
+				"launch_btn"
+			],
+			[
+				"_gene",
+				"_generate_glow"
+			],
+			[
+				"suo",
+				"support_btn"
+			],
+			[
+				"ge",
+				"_generate_shadow"
+			],
+			[
+				"laucnh",
+				"launch_btn"
+			],
+			[
+				"setSty",
+				"setStyleSheet"
+			],
+			[
+				"repa",
+				"repair_btn"
+			],
+			[
+				"update",
+				"update_btn"
+			],
+			[
+				"about",
+				"about_text_full"
+			],
+			[
+				"style",
+				"setStyleSheet"
+			],
+			[
+				"repai",
+				"repair_act"
+			],
+			[
+				"uni",
+				"uninstall_act"
+			],
+			[
+				"abou",
+				"about"
+			],
+			[
+				"pt",
+				"path_rotwk"
+			],
+			[
+				"lau",
+				"launch_btn"
+			],
+			[
+				"downl",
+				"downloadUrl"
+			],
+			[
+				"user",
+				"user_installation"
+			],
+			[
+				"fiel",
+				"file"
+			],
+			[
+				"has",
+				"hash_file"
+			],
+			[
+				"QS",
+				"QSize"
+			],
+			[
+				"QI",
+				"QImage"
+			],
+			[
+				"launc",
+				"launcherBG"
+			],
+			[
+				"itm",
+				"items"
+			],
+			[
+				"aotr",
+				"path_aotr"
+			],
+			[
+				"sef",
+				"self"
+			],
+			[
+				"ro",
+				"rotwk_file_name"
+			],
+			[
+				"install",
+				"installer"
+			],
+			[
+				"rot",
+				"path_rotwk"
+			],
+			[
+				"dire",
+				"directory"
+			],
+			[
+				"insta",
+				"install"
+			],
+			[
+				"inst",
+				"installation"
+			],
+			[
+				"pat",
+				"path_rotwk"
+			],
+			[
+				"sett",
+				"settings"
+			],
+			[
+				"di",
+				"directory_input"
+			],
+			[
+				"abot",
+				"about_text_full"
+			],
+			[
+				"About",
+				"about_text"
+			],
+			[
+				"Abo",
+				"AboutWindow"
+			],
+			[
+				"url",
+				"url_support"
+			],
+			[
+				"laucn",
+				"launch_btn"
+			],
+			[
+				"lua",
+				"launch_btn"
+			],
+			[
+				"Laucnh",
+				"Launcher"
+			],
+			[
+				"comp",
+				"company_id"
+			],
+			[
+				"rotwk",
+				"rotwk_path"
+			],
+			[
+				"zip",
+				"zip_ref"
+			],
+			[
+				"ins",
+				"installation_path"
+			],
+			[
+				"sess",
+				"session"
+			],
+			[
+				"def",
+				"defaultdict"
+			],
+			[
+				"info",
+				"information"
+			],
+			[
+				"gdpr",
+				"gdpr_e"
+			],
+			[
+				"query",
+				"query_executer"
+			],
+			[
+				"invi",
+				"invites"
+			],
+			[
+				"quey",
+				"query"
+			],
+			[
+				"em",
+				"embed"
+			],
+			[
+				"api",
+				"url_api"
+			],
+			[
+				"check",
+				"white_check_mark"
+			],
+			[
+				"youtu",
+				"youtuber_id"
+			],
+			[
+				"app",
+				"application"
+			],
+			[
+				"tens",
+				"tensorflow_query"
+			],
+			[
+				"request",
+				"requests"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"satis",
+				"Package Control: Satisfy Dependencies"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"lit",
+				"Package Control: List Packages"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 192.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Admin/Desktop/text_adventure"
+	],
+	"file_history":
+	[
+		"/C/Users/Admin/Desktop/text_adventure/errors.py",
+		"/C/Users/Admin/Desktop/text_adventure/entities.py",
+		"/C/Users/Admin/Desktop/text_adventure/spells.py",
+		"/C/Users/Admin/Desktop/text_adventure/main.py",
+		"/C/Users/Admin/Desktop/text_adventure/equipments.py",
+		"/C/Users/Admin/Desktop/text_adventure/enums.py",
+		"/C/Users/Admin/Desktop/text_adventure/body.py",
+		"/C/Users/Admin/Desktop/text_adventure/utils.py",
+		"/C/Users/Admin/Desktop/text_adventure/modifiers.py",
+		"/C/Users/Admin/Desktop/text_adventure/equipment.py",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/State.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random1.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/Node.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/Astar.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/AstarNode.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/Car.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/Action.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/RushHour.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/Position.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/GameState.java",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random12.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random13.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random4.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random5.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random7.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random8.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random9.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random2.txt",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/CW3112-2019.pdf",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/evilfaction/units/angmar/angmarzaphragor.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/specialpower.inc",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/_gamedata.inc",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/evilfaction/structures/isengard/isengardfurnace.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/commandset.inc",
+		"/C/Users/Admin/Desktop/the-void/edain_searcher_scrapper/scraper.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/words.py",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/Projectile.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/evilfaction/evilfactionsubobjects.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/evilfaction/units/angmar/angmarranger.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/weapon.inc",
+		"/C/Users/Admin/Documents/edain_launcher.py",
+		"/C/Users/Admin/Desktop/text_adventure/buffs.py",
+		"/C/Users/Admin/Desktop/aotr_launcher/launcher.py",
+		"/C/Users/Admin/Desktop/text_adventure/spell.py",
+		"/C/Users/Admin/Documents/test.py",
+		"/C/Users/Admin/Documents/examply.py",
+		"/C/Users/Admin/Documents/mod/Features.txt",
+		"/C/Users/Admin/Desktop/zork/dungeon.py",
+		"/C/Users/Admin/Documents/SlipstreamModManager_1.9.1-Win/readme_modders.txt",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/site-packages/discord/guild.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/site-packages/discord/role.py",
+		"/C/Users/Admin/Desktop/text_adventure/error.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/signal.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/tasks.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/site-packages/discord/client.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/selector_events.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/sslproto.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/streams.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/subprocess.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/test_utils.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/queues.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/transports.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/unix_events.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/windows_events.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/base_futures.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/windows_utils.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/base_subprocess.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/compat.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/base_tasks.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/constants.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/events.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/coroutines.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/locks.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/futures.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/log.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/protocols.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/proactor_events.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/__init__.py",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/base_events.py",
+		"/C/Einstellungen.ini",
+		"/C/Users/Admin/Desktop/text_adventure/gui.py",
+		"/C/Users/Admin/Desktop/aoe/README.md",
+		"/C/Users/Admin/Desktop/aoe/test.py",
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/Edain.cs",
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/MainWindow.cs",
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/My/Resources/Resources.cs",
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/My/MySettings.cs",
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/Application.cs",
+		"/C/Users/Admin/Desktop/the-void/feeds/wattpad.py",
+		"/C/Users/Admin/Documents/-mod vs folder.txt",
+		"/C/Users/Admin/Documents/launcher.py",
+		"/C/Users/Admin/Documents/ideas.txt",
+		"/C/Users/Admin/Documents/etest.py",
+		"/C/Users/Admin/Documents/elite and heroics.txt",
+		"/C/Users/Admin/Documents/e.txt",
+		"/C/Users/Admin/Documents/dlcs.txt",
+		"/C/Users/Admin/Documents/campaign_remastered_2.txt",
+		"/C/Users/Admin/Documents/about.txt",
+		"/C/Users/Admin/Desktop/necrobot/rings/utils/config.py",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Lab 1/puzzle.py",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Lab 1/df.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/admin.py",
+		"/C/Users/Admin/Desktop/necrobot/bot.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/moderation.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/server.py",
+		"/C/Users/Admin/AppData/Local/Temp/scp23801/home/pi/necrobot/rings/server.py",
+		"/C/Users/Admin/Desktop/the-void/feeds/discord_hooks.py",
+		"/C/Users/Admin/Desktop/the-void/feeds/rss.py",
+		"/C/Users/Admin/AppData/Local/Temp/scp34526/home/pi/feeds/rss_db.json",
+		"/C/Users/Admin/Desktop/moddb/moddb/utils.py",
+		"/C/Users/Admin/Desktop/moddb/moddb/client.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/events.py",
+		"/C/Users/Admin/Desktop/necrobot/rings/utilities.py",
+		"/C/Users/Admin/Desktop/desktop.ini",
+		"/C/Users/Admin/Desktop/socket/server.py",
+		"/C/Users/Admin/Desktop/socket/client.py",
+		"/C/Users/Public/Desktop/desktop.ini",
+		"/C/Users/Admin/Desktop/necrobot/rings/meta.py",
+		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/solver.py",
+		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/stuff.txt",
+		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/config.ini",
+		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/run.py",
+		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/sweeper.py",
+		"/C/Users/Admin/Desktop/aotr_launcher/patch_maker.py",
+		"/C/Users/Admin/Desktop/aotr_launcher/test.py",
+		"/C/Users/Admin/Desktop/cred.json",
+		"/C/Users/Admin/Desktop/aotr_launcher/launcher_files/credentials.json",
+		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/site-packages/googleapiclient/discovery.py"
+	],
+	"find":
+	{
+		"height": 44.5714285714
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"getCost",
+			"getLegalActions",
+			"getState",
+			"getlegal",
+			"spellbook",
+			"Upgrade_EdainEconomyProduktionserhöhung",
+			"Cheater",
+			"AngmarArcherBowIceWarhead_Edain",
+			"EvilFactionIceArrow",
+			"WeaponSet",
+			"Upgrade_AngmarIceArrows",
+			"Upgrade",
+			"_remove_role",
+			"self._listeners",
+			"def wait_for",
+			"wait_for",
+			"'C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python36\\\\lib\\\\signal.py'",
+			"wait_for",
+			"AdresseServer",
+			"AktuellerServer",
+			"Starte_Downloads",
+			"perms",
+			"promote",
+			"be",
+			"self.json",
+			"cover",
+			"embed",
+			"load_cache",
+			"self.number_colors",
+			"Dimensions",
+			"self.mode",
+			"Gamemodes",
+			"tree",
+			"'C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python36\\\\lib\\\\site-packages\\\\googleapiclient\\\\__init__.py'",
+			"def get",
+			"'C:\\\\Users\\\\Admin\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python36\\\\lib\\\\site-packages\\\\googleapiclient\\\\__init__.py'",
+			"def get",
+			"get(",
+			"tree",
+			"files_service",
+			"Update",
+			"update",
+			"self.flatten",
+			"b.insertPlainText",
+			"process",
+			"flattenlog",
+			"setwindowicon",
+			"redirectStream",
+			"desktop.ini",
+			"print",
+			"OnRohanEowynStealthed",
+			"launcher_assets",
+			"Disguise",
+			"Invisi",
+			"subpro",
+			"open",
+			"os",
+			"QProgressBar",
+			"subproce",
+			"star_mes",
+			"starbo",
+			"CrushRevenge",
+			"GondorFighterCrushRevenge",
+			"CrushRevenge",
+			"crushrevenge",
+			"uninstall",
+			"ico",
+			"Button",
+			"QPushButton",
+			";}\"\"\")",
+			"AOTR",
+			"aotr",
+			"md5",
+			"self.path_aotr",
+			"\\\\aotr",
+			"self.path_aotr",
+			"shield",
+			"install",
+			"key",
+			"self.director",
+			"())\n",
+			"self.box",
+			".box",
+			"self.box",
+			"jsonify",
+			"is None",
+			"dispatch",
+			"get_channel",
+			"dispatc",
+			"query_executer",
+			"necrobot.Invites",
+			"load_cache",
+			"necrobot.Invites",
+			"default_stats",
+			"defaultdict",
+			"default_stats",
+			"Unwiki",
+			"shuffle",
+			"gdpr_e",
+			"Pippin",
+			"[[Pippi",
+			"[[Pippin",
+			"[[Faramir",
+			"[[Boromir",
+			"[[Aragorn",
+			"Aragorn",
+			"guild_checker",
+			"load_cac",
+			"query_exec",
+			"Object ",
+			"TheDroppedRing",
+			"query_executer",
+			"class MEd",
+			"media",
+			"Media:",
+			"Media(",
+			"on_error",
+			"get_mines",
+			"get_mine",
+			"query",
+			":check",
+			"check",
+			"],",
+			"Categories.",
+			"],",
+			"Command_ConstructRohanRadagast",
+			"Upgrade_ThorinOrkrist",
+			"DolAmroth"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"write",
+			"launcher_files",
+			"Button",
+			"flatten",
+			"],\n",
+			"",
+			"],\n",
+			" ",
+			"\\\\\\\\",
+			"\\\\",
+			"],\n",
+			"]\n",
+			"]\\n",
+			"logging.debug",
+			"# print",
+			"self.grid_top_left",
+			"threshold",
+			"Categories",
+			"self",
+			"self.states",
+			"self.coords",
+			"self.game",
+			"game",
+			"2",
+			"0",
+			"1",
+			"ArnorBasic",
+			"ArnorForge",
+			"self",
+			"self.",
+			"400",
+			"",
+			"drill",
+			"",
+			"houses.",
+			"TABLE houses.",
+			"INTO houses.",
+			"FROM houses.",
+			"UPDATE houses.",
+			"FROM houses.",
+			"From houses.",
+			"INTO houses.",
+			"UPDATE houses.",
+			"FROM houses.",
+			"REFERENCES house.",
+			"TABLE houses.",
+			"self.bot.query",
+			"Members ",
+			"'",
+			"self.bot.query",
+			"self.bot.fields",
+			"self.bot.names",
+			"UPDATE",
+			"noble=",
+			"UPDATE",
+			"",
+			".",
+			"",
+			"'",
+			"self",
+			"    "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 44.5714285714
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 136.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "p.sublime-project",
+	"replace":
+	{
+		"height": 60.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

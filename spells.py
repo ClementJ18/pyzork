@@ -5,6 +5,7 @@ class Spell:
     def __init__(self):
         self.name = self.__doc__
         self.description = self.effect.__doc__
+        self.cost = self.costing.__doc__
 
     def cast(self, user, target = None):
         """Method that verifies if all conditions have been met."""
@@ -16,7 +17,7 @@ class Spell:
 
         return self.effect(target)
 
-    def cost(self, player, target):
+    def costing(self, player, target):
         """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your cost system to work
         wether it rage or mana or whatever other custom cost system you may create your class with. This method must return true if
         the user has enough resource and false if it doesn't."""
@@ -34,11 +35,13 @@ class WarRoarSpell(Spell):
         target.buffs.append(WarRoarBuff())
         return True
 
-    def cost(self, player, target):
+    def costing(self, player, target):
         """2 Mana"""
-        try:
-            
+        if player.can_cast(2):
+            self.energy -= 2
+            return True
 
+        return False
 
 class InsultSpell(Spell):
     """Insult"""
@@ -49,6 +52,14 @@ class InsultSpell(Spell):
         target.buffs.append(InsultBuff())
         return True
 
+    def costing(self, player, target):
+        """2 Mana"""
+        if player.can_cast(2):
+            self.energy -= 2
+            return True
+
+        return False
+
 class HealSpell(Spell):
     """Gay Touch"""
 
@@ -57,6 +68,14 @@ class HealSpell(Spell):
         target.health += 5
         return True
 
+    def costing(self, player, target):
+        """2 Mana"""
+        if player.can_cast(2):
+            self.energy -= 2
+            return True
+
+        return False
+
 class FireballSpell(Spell):
     """Fireball"""
 
@@ -64,4 +83,13 @@ class FireballSpell(Spell):
         """A small fireball emerges from your hands and burns the enmy. Dealing damage and reducing their max health"""
         target.health -= 5
         target.buffs.append(FireDebuff())
+        target.effects.append(BurntEffect())
         return True
+
+    def costing(self, player, target):
+        """2 Mana"""
+        if player.can_cast(2):
+            self.energy -= 2
+            return True
+
+        return False
