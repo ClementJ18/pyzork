@@ -2,4 +2,4 @@
 
 Little pet project idea, simple concept: a library that takes care of the heavy lifting part of text adventures and lets you design away the fun bits.
 
-Kinda likea game engine if you think about it.
+Kinda like a game engine if you think about it.
