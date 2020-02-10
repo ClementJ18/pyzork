@@ -4,6 +4,106 @@
 		"selected_items":
 		[
 			[
+				"loca",
+				"location"
+			],
+			[
+				"travel",
+				"travel_parser"
+			],
+			[
+				"Mark",
+				"MarketPlace"
+			],
+			[
+				"print",
+				"print_exits"
+			],
+			[
+				"Ei",
+				"exits"
+			],
+			[
+				"max",
+				"max_health"
+			],
+			[
+				"ene",
+				"enemy_index"
+			],
+			[
+				"eney",
+				"enemy_index"
+			],
+			[
+				"key",
+				"keywords"
+			],
+			[
+				"batt",
+				"battle_parser"
+			],
+			[
+				"stat",
+				"StatEnum"
+			],
+			[
+				"modi",
+				"modifiers"
+			],
+			[
+				"call",
+				"callable_cost"
+			],
+			[
+				"Null",
+				"NullArmor"
+			],
+			[
+				"class",
+				"classmethod"
+			],
+			[
+				"rea",
+				"reward"
+			],
+			[
+				"requi",
+				"requirement"
+			],
+			[
+				"exp",
+				"experience_levels"
+			],
+			[
+				"base",
+				"base_max_energy"
+			],
+			[
+				"dire",
+				"directional_move"
+			],
+			[
+				"exi",
+				"exits"
+			],
+			[
+				"Exi",
+				"exits"
+			],
+			[
+				"con",
+				"conected_location"
+			],
+			[
+				"conn",
+				"connected_location"
+			],
+			[
+				"battl",
+				"battle"
+			],
+			[
 				"Limb",
 				"LimbTypes"
 			],
@@ -20,10 +120,6 @@
 				"current_equipment"
 			],
 			[
-				"base",
-				"base_max_energy"
-			],
-			[
 				"for",
 				"formatted"
 			],
@@ -34,14 +130,6 @@
 			[
 				"battle",
 				"battle_logic"
-			],
-			[
-				"stat",
-				"stats"
-			],
-			[
-				"ene",
-				"enemy"
 			],
 			[
 				"att",
@@ -154,10 +242,6 @@
 			[
 				"tree",
 				"tree_values"
-			],
-			[
-				"modi",
-				"modified_by"
 			],
 			[
 				"exe",
@@ -392,10 +476,6 @@
 				"path_rotwk"
 			],
 			[
-				"dire",
-				"directory"
-			],
-			[
 				"insta",
 				"install"
 			],
@@ -434,86 +514,6 @@
 			[
 				"laucn",
 				"launch_btn"
-			],
-			[
-				"lua",
-				"launch_btn"
-			],
-			[
-				"Laucnh",
-				"Launcher"
-			],
-			[
-				"comp",
-				"company_id"
-			],
-			[
-				"rotwk",
-				"rotwk_path"
-			],
-			[
-				"zip",
-				"zip_ref"
-			],
-			[
-				"ins",
-				"installation_path"
-			],
-			[
-				"sess",
-				"session"
-			],
-			[
-				"def",
-				"defaultdict"
-			],
-			[
-				"info",
-				"information"
-			],
-			[
-				"gdpr",
-				"gdpr_e"
-			],
-			[
-				"query",
-				"query_executer"
-			],
-			[
-				"invi",
-				"invites"
-			],
-			[
-				"quey",
-				"query"
-			],
-			[
-				"em",
-				"embed"
-			],
-			[
-				"api",
-				"url_api"
-			],
-			[
-				"check",
-				"white_check_mark"
-			],
-			[
-				"youtu",
-				"youtuber_id"
-			],
-			[
-				"app",
-				"application"
-			],
-			[
-				"tens",
-				"tensorflow_query"
-			],
-			[
-				"request",
-				"requests"
 			]
 		]
 	},
@@ -592,19 +592,55 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Admin/Desktop/text_adventure"
+		"/C/Users/Admin/Desktop/text_adventure",
+		"/C/Users/Admin/Desktop/text_adventure/examples",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork"
 	],
 	"file_history":
 	[
-		"/C/Users/Admin/Desktop/text_adventure/errors.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/world.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_world.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/fake.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/enums.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/modifiers.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/complex_fake.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/utils.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/levels.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/errors.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/equipments.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/entities.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/battle.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/actions.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/abilities.py",
+		"/C/Users/Admin/Desktop/text_adventure/test.py",
+		"/C/Users/Admin/Desktop/text_adventure/modifiers.py",
+		"/C/Users/Admin/Desktop/text_adventure/battle.py",
 		"/C/Users/Admin/Desktop/text_adventure/entities.py",
+		"/C/Users/Admin/Desktop/text_adventure/equipments.py",
+		"/C/Users/Admin/Desktop/text_adventure/errors.py",
+		"/C/Users/Admin/Desktop/text_adventure/abilities.py",
+		"/C/Users/Admin/Desktop/text_adventure/enums.py",
+		"/C/Users/Admin/Desktop/text_adventure/world.py",
+		"/C/Users/Admin/Desktop/text_adventure/actions.py",
+		"/C/Users/Admin/Desktop/text_adventure/utils.py",
 		"/C/Users/Admin/Desktop/text_adventure/spells.py",
 		"/C/Users/Admin/Desktop/text_adventure/main.py",
-		"/C/Users/Admin/Desktop/text_adventure/equipments.py",
-		"/C/Users/Admin/Desktop/text_adventure/enums.py",
+		"/C/Users/Admin/Desktop/text_adventure/experience.py",
+		"/C/Users/Admin/Documents/Beta/data/ini/includes/weapon.inc",
+		"/C/Users/Admin/Documents/Beta/data/ini/includes/armor.inc",
+		"/C/Users/Admin/Documents/Beta/data/ini/includes/attributemodifier.inc",
+		"/C/Users/Admin/Documents/Beta/data/ini/object/evilfaction/units/angmar/angmarrhudaurspearman.ini",
+		"/C/Users/Admin/Desktop/text_adventure/experience",
+		"/C/Users/Admin/Desktop/text_adventure/gui.py",
 		"/C/Users/Admin/Desktop/text_adventure/body.py",
-		"/C/Users/Admin/Desktop/text_adventure/utils.py",
-		"/C/Users/Admin/Desktop/text_adventure/modifiers.py",
+		"/C/Users/Admin/Desktop/Mini-Libs/custom_shortcuts/main.py",
+		"/C/Users/Admin/Desktop/Mini-Libs/custom_shortcuts/lotr.str",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/object/evilfaction/units/mordor/mordorsauron.ini",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/attributemodifier.inc",
+		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/upgrade.inc",
+		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/GameState.java",
+		"/C/Users/Admin/Desktop/text_adventure/scrapbook.txt",
+		"/C/Users/Admin/Desktop/the-void/edain_searcher_scrapper/armorset.txt",
 		"/C/Users/Admin/Desktop/text_adventure/equipment.py",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/State.java",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random1.txt",
@@ -615,7 +651,6 @@
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/Action.java",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/RushHour.java",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/Position.java",
-		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/GameState.java",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random12.txt",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random13.txt",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/random4.txt",
@@ -676,7 +711,6 @@
 		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/__init__.py",
 		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/asyncio/base_events.py",
 		"/C/Einstellungen.ini",
-		"/C/Users/Admin/Desktop/text_adventure/gui.py",
 		"/C/Users/Admin/Desktop/aoe/README.md",
 		"/C/Users/Admin/Desktop/aoe/test.py",
 		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/Edain.cs",
@@ -691,43 +725,11 @@
 		"/C/Users/Admin/Documents/etest.py",
 		"/C/Users/Admin/Documents/elite and heroics.txt",
 		"/C/Users/Admin/Documents/e.txt",
-		"/C/Users/Admin/Documents/dlcs.txt",
-		"/C/Users/Admin/Documents/campaign_remastered_2.txt",
-		"/C/Users/Admin/Documents/about.txt",
-		"/C/Users/Admin/Desktop/necrobot/rings/utils/config.py",
-		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Lab 1/puzzle.py",
-		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Lab 1/df.py",
-		"/C/Users/Admin/Desktop/necrobot/rings/admin.py",
-		"/C/Users/Admin/Desktop/necrobot/bot.py",
-		"/C/Users/Admin/Desktop/necrobot/rings/moderation.py",
-		"/C/Users/Admin/Desktop/necrobot/rings/server.py",
-		"/C/Users/Admin/AppData/Local/Temp/scp23801/home/pi/necrobot/rings/server.py",
-		"/C/Users/Admin/Desktop/the-void/feeds/discord_hooks.py",
-		"/C/Users/Admin/Desktop/the-void/feeds/rss.py",
-		"/C/Users/Admin/AppData/Local/Temp/scp34526/home/pi/feeds/rss_db.json",
-		"/C/Users/Admin/Desktop/moddb/moddb/utils.py",
-		"/C/Users/Admin/Desktop/moddb/moddb/client.py",
-		"/C/Users/Admin/Desktop/necrobot/rings/events.py",
-		"/C/Users/Admin/Desktop/necrobot/rings/utilities.py",
-		"/C/Users/Admin/Desktop/desktop.ini",
-		"/C/Users/Admin/Desktop/socket/server.py",
-		"/C/Users/Admin/Desktop/socket/client.py",
-		"/C/Users/Public/Desktop/desktop.ini",
-		"/C/Users/Admin/Desktop/necrobot/rings/meta.py",
-		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/solver.py",
-		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/stuff.txt",
-		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/config.ini",
-		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/run.py",
-		"/C/Users/Admin/Desktop/Mini-Libs/minesweeper/sweeper.py",
-		"/C/Users/Admin/Desktop/aotr_launcher/patch_maker.py",
-		"/C/Users/Admin/Desktop/aotr_launcher/test.py",
-		"/C/Users/Admin/Desktop/cred.json",
-		"/C/Users/Admin/Desktop/aotr_launcher/launcher_files/credentials.json",
-		"/C/Users/Admin/AppData/Local/Programs/Python/Python36/Lib/site-packages/googleapiclient/discovery.py"
+		"/C/Users/Admin/Documents/dlcs.txt"
 	],
 	"find":
 	{
-		"height": 44.5714285714
+		"height": 46.8571428571
 	},
 	"find_in_files":
 	{
@@ -738,9 +740,26 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"Location",
+			"conect",
+			"self.enemies",
+			"end_turn",
+			"self.area",
+			"basic",
+			"Endgame",
+			".buffs",
+			"horde",
+			"RhudaurDeathModifier",
+			"self.buffs",
+			"Bagend",
+			"bagend",
+			"Bagend",
+			"enum.",
+			"MordorSauron_mod",
+			"MountedTemplate",
 			"getCost",
 			"getLegalActions",
 			"getState",
@@ -851,24 +870,7 @@
 			"load_cac",
 			"query_exec",
 			"Object ",
-			"TheDroppedRing",
-			"query_executer",
-			"class MEd",
-			"media",
-			"Media:",
-			"Media(",
-			"on_error",
-			"get_mines",
-			"get_mine",
-			"query",
-			":check",
-			"check",
-			"],",
-			"Categories.",
-			"],",
-			"Command_ConstructRohanRadagast",
-			"Upgrade_ThorinOrkrist",
-			"DolAmroth"
+			"TheDroppedRing"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -876,6 +878,11 @@
 		"regex": false,
 		"replace_history":
 		[
+			"connect",
+			"self.alive",
+			".modifiers",
+			"self.modifiers",
+			"",
 			"write",
 			"launcher_files",
 			"Button",
@@ -954,11 +961,11 @@
 	],
 	"incremental_find":
 	{
-		"height": 32.0
+		"height": 34.0
 	},
 	"input":
 	{
-		"height": 44.5714285714
+		"height": 46.8571428571
 	},
 	"layout":
 	{
@@ -985,7 +992,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 136.0
+		"height": 503.0
 	},
 	"output.find_results":
 	{
@@ -995,7 +1002,7 @@
 	"project": "p.sublime-project",
 	"replace":
 	{
-		"height": 60.0
+		"height": 84.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1009,12 +1016,16 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"",
+				"C:\\Users\\Admin\\Desktop\\aotr_launcher\\launcher.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{
@@ -1033,7 +1044,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 244.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
