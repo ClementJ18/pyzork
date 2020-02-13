@@ -1,8 +1,9 @@
 from .enums import StatEnum, EndgameReason
 from .errors import EndGame
-from .equipments import NullWeapon, NullArmor, Sword
+from .equipments import NullWeapon, NullArmor, Inventory
 from .levels import ExperienceLevels
 from .utils import post_output
+from .base import qm
 
 
 class Entity:
@@ -19,6 +20,7 @@ class Entity:
 
         self.weapon =  stats.get("weapon", NullWeapon())
         self.armor = stats.get("armor", NullArmor())
+        self.inventory = stats.get("inventory", Inventory())
 
         self.name = self.__doc__
         self.description = self.__init__.__doc__
@@ -64,6 +66,7 @@ class Entity:
         current = self._health
         if value <= 0:
             self._health = 0
+            qm.progress_quests("on_death", self)
         elif value > self.max_health:
             self._health = self.max_health
         else:
@@ -93,7 +96,6 @@ class Entity:
         else:
             post_output(f"{self.name} loses {current - value} energy")
 
-
     def is_alive(self):
         return self.health > 0
 
@@ -116,10 +118,16 @@ class Entity:
     def end_turn(self):
         for modifier in self.modifiers:
             modifier.end_turn(self)
+            
+    def add_to_inventory(self, item):
+        self.inventory.add_item(item)
+        
+    def remove_from_inventory(self):
+        self.inventory.remove_item(item)
         
     @property
     def string(self):
-        return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"
+        return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"        
 
 class Player(Entity):
     """You"""
@@ -144,6 +152,7 @@ class Player(Entity):
         current = self._health
         if value <= 0:
             self._health = 0
+            qm.progress_quests("on_death", self)
             raise EndGame("Look like you've died, better luck next time.", victory=False, reason=EndgameReason.zero_health)
         elif value > self.max_health:
             self._health = self.max_health
@@ -168,13 +177,3 @@ class Enemy(Entity):
         This method takes the entire battle instance as the argument and therefore has full unrestricted access to the entire context
         of the battle, make full use of that."""
         self.do_attack(battle.player)
-        
-class Goblin(Enemy):
-    """Golbin"""
-    def __init__(self):
-        super().__init__(
-            base_max_health=15,
-            base_damage=2,
-            base_defense=0,
-            weapon=Sword()
-        )

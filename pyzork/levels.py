@@ -62,9 +62,5 @@ class ExperienceLevels:
         
     def __add__(self, value):
         self.experience += value
-        return self
-        
-    
-basic = ExperienceLevels(requirement=100, modifier=1.2, max_level=10)
-            
+        return self            
     

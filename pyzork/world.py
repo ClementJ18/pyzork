@@ -1,5 +1,6 @@
 from .enums import Direction
 from .utils import get_user_input, post_output
+from .base import qm
 
 from typing import Union
 
@@ -10,6 +11,7 @@ class Location:
 
         self.name = self.__doc__
         self.exits = self._generate_exits()
+        self.discovered = False
         
     def __str__(self):
         return f"<{self.name}>"
@@ -23,17 +25,28 @@ class Location:
 
     def one_way_connect(self, direction : Direction, connected_location : "Location" = None):
         self.exits[direction] = connected_location
+        
+    def _enter(self, from_location):
+        if not self.discovered:
+            qm.progress_quests("on_discover", self)
+            self.enter(from_location)
+            self.discovered = True
+        else:
+            self.enter(from_location)
 
-    def enter(self):
+    def enter(self, from_location):
         pass
+        
+    def _exit(self, to_location):
+        self.exit(to_location)
 
-    def exit(self):
+    def exit(self, to_location):
         pass
         
     def print_exits(self):
         for key, value in self.exits.items():
             if value is not None:
-                print(f"Go {key.name} to {value.name}")
+                print(f"- Go {key.name} to {value.name}")
         
     def can_move_to(self, location : Union[Direction, "Location"]):
         if isinstance(location, Direction):
@@ -51,22 +64,14 @@ class Shop(Location):
     pass
 
 class World:
-    def __init__(self, locations):
-        self._current_location = locations[0]
+    def __init__(self, locations, player):
+        self.current_location = locations[0]
         self.locations = locations
-        
-    @property
-    def current_location(self):
-        return self._current_location
-    
-    @current_location.setter
-    def current_location(self, value):
-        # self._current_location.exit()
-        self._current_location = value
-        # value.enter()
-        # value.print_exits()
+        self.player = player
         
     def game_loop(self):
+        self.current_location._enter(Location())
+        self.current_location.print_exits()
         while True:
             self.travel_parser()
         
@@ -74,10 +79,10 @@ class World:
         if isinstance(location, Direction):
             location = self.directional_move(location)
             
-        self.current_location.exit()
-        self.current_location = location
-        location.enter()
+        self.current_location._exit(location)
+        location._enter(self.current_location)
         location.print_exits()
+        self.current_location = location
         
     def can_move(self, location : Union[Direction, Location]):
         if isinstance(location, Direction):
