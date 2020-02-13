@@ -1,6 +1,7 @@
 from .enums import Direction
 from .utils import get_user_input, post_output
 from .base import qm
+from .battle import Battle
 
 from typing import Union
 
@@ -46,7 +47,11 @@ class Location:
     def print_exits(self):
         for key, value in self.exits.items():
             if value is not None:
-                print(f"- Go {key.name} to {value.name}")
+                post_output(f"- Go {key.name} to {value.name}")
+                
+    def print_interactions(self, world):
+        for npc in self.npcs:
+            npc.print_interaction(world)
         
     def can_move_to(self, location : Union[Direction, "Location"]):
         if isinstance(location, Direction):
@@ -69,10 +74,11 @@ class World:
         self.locations = locations
         self.player = player
         
-    def game_loop(self):
+    def world_loop(self):
         self.current_location._enter(Location())
         self.current_location.print_exits()
         while True:
+            qm.proccess_rewards(player, self)
             self.travel_parser()
         
     def travel(self, location : Union[Direction, Location]):
@@ -81,8 +87,15 @@ class World:
             
         self.current_location._exit(location)
         location._enter(self.current_location)
+        
+        if location.enemies:
+            battle = Battle(player, location.enemies, location)
+            battle.battle_loop()
+            
         location.print_exits()
+        location.print_interactions()
         self.current_location = location
+            
         
     def can_move(self, location : Union[Direction, Location]):
         if isinstance(location, Direction):

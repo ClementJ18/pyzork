@@ -1,7 +1,12 @@
-from pyzork.base import RepeatableQuest, qm
-from .example_entities import Goblin
-from .example_equipement import Sword
+from pyzork.base import Quest, qm
+from pyzork.enums import Direction
+from pyzork.utils import post_output
 
+from .example_entities import Goblin, OldMan
+from .example_equipment import Sword
+from .example_world import temple, hidden
+
+@qm.add(repeatable=5)
 class Kill10Goblin(Quest):
     def setup(self):
         self.kills = 0
@@ -15,6 +20,18 @@ class Kill10Goblin(Quest):
     def reward(self, player, world):
         sword = Sword()
         player.add_to_inventory(sword)
-        player.inventory.equip(player, sword)
         
-qm.add_quest("Kill10Goblin", Kill10Goblin)
+        #it is usually not recommended to force the player to equip a
+        #certain item but this is just an example
+        player.inventory.equip(player, sword)
+
+@qm.add(name="FindTheOldMan")    
+class TerribleQuestName(Quest):
+    def on_interact(self, entity):
+        if isinstance(entity, OldMan):
+            return True
+            
+    def reward(self, player, world):
+        post_output("You have discovered a secret entrance to the temple")
+        temple.one_way_connect(Direction.west, hidden)
+    

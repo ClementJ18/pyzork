@@ -1,6 +1,6 @@
 from .enums import StatEnum, EndgameReason
 from .errors import EndGame
-from .equipments import NullWeapon, NullArmor, Inventory
+from .equipment import NullWeapon, NullArmor, Inventory
 from .levels import ExperienceLevels
 from .utils import post_output
 from .base import qm
@@ -27,10 +27,19 @@ class Entity:
 
         self.modifiers = []
         self.abilities = []
+        self.interacted = False
 
     def interact(self):
         """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
-        raise NotImplementedError
+        pass
+        
+    def print_interaction(self, world):
+        """Abstract method to be implemented, notifies the player that they can interact with this
+        NPC, returns a string or None"""
+        pass
+        
+    def _interact(self):
+        pass
 
     def _big_calc(self, stat):
         """Calculate all the modifiers for a stat"""
@@ -169,6 +178,9 @@ class Player(Entity):
         
     def gain_experience(self, value):
         self.experience += value
+        
+class NPC(Entity):
+    pass
 
 class Enemy(Entity):
     def battle_logic(self, battle):

@@ -9,7 +9,7 @@ class Battle:
         self.turn = 0
         self.dead = []
 
-    def battle(self):
+    def battle_loop(self):
         while self.player.is_alive() and self.alive:
             self.player_turn()
             for enemy in self.alive:

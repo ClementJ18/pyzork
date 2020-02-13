@@ -1,5 +1,6 @@
 from .enums import *
 from .base import qm
+from .utils import post_output
 
 class Inventory:
     def __init__(self, **kwargs):
@@ -10,21 +11,25 @@ class Inventory:
     def add_item(self, item):
         if isinstance(Equipment, item):
             self.equipment.append(item)
+            post_output(f"Equipment {item.name} added")
         
         if isinstance(Consumable, item):
             if type(item) in self.consumables:
                 self.consumables[type(item)] += 1
             else:
                 self.consumables[type(item)] = 1
+            post_output(f"Consumable {item.name} added")    
                 
         if isinstance(QuestItem, item):
             qm.progress_quests("on_pickup", item)
             self.quest.append(item)
+            post_output(f"Quest item {item.name} added")
     
     def use_item(self, item):
         try:
             if self.consumables[type(item)] > 0:
                 self.consumables[type(item)] -= 1
+                post_output(f"Consumable {item.name} used")
                 return True
             else:
                 raise KeyError("You don't have this item")
@@ -39,17 +44,22 @@ class Inventory:
             self.equipment.append(player.weapon)
             player.weapon = item
             self.equipment.remove(player.weapon)
+            post_output(f"Weapon {item.name} equipped")
         else:
             self.equipment.append(player.armor)
             player.armor = item
             self.equipment.remove(player.armor)
+            post_output(f"Armor {item.name} equipped")
             
     def remove_item(self, item):
         if isinstance(item, Equipment):
             self.equipment.remove(item)
+            post_output(f"Equipment {item.name} removed")
         elif isinstance(item, Consumable):
             del self.consumables[type(item)]
+            post_output(f"Consumable {item.name} removed")
         elif isinstance(item, QuestItem):
+            post_output(f"Quest Item {item.name} removed")
             self.quest.remove(item)
             
     def print_consumables(self):
@@ -79,14 +89,10 @@ class Equipment:
         self.name = self.__doc__
         self.description = self.calc.__doc__
 
-    def equip(self, player):
-        """Abstract method that must be implemented by every piece of equipment, this is the method when equipping
-        a piece of equipment to add the required buffs."""
+    def calc(self, player):
+        """Abstract method that must be implemented by every piece of equipment, this is the method used when
+        calculating damage that dictates the various modifiers and buffs gotten"""
         raise NotImplementedError
-        
-    @property
-    def string(self):
-        return self.name
         
 Armor = Equipment
 Weapon = Equipment

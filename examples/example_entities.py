@@ -1,5 +1,6 @@
-from pyzork.entities import Enemy
-from example_equipment import Sword
+from pyzork.entities import Enemy, NPC
+
+from .example_equipment import Sword
 
 class Goblin(Enemy):
     """Golbin"""
@@ -10,3 +11,6 @@ class Goblin(Enemy):
             base_defense=0,
             weapon=Sword()
         )
+        
+class OldMan(NPC):
+    pass

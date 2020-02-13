@@ -3,19 +3,35 @@ from .errors import QuestStarted, QuestNonRepeatable
 
 class QuestManager:
     def __init__(self, **kwargs):
-        self._quests = kwargs.get("quests", {})
+        self.quests = kwargs.get("quests", {})
         self.active_quests = {}
-        self.finished_quests = {x : 0 for x in self._quests}
+        self.finished_quests = {x : 0 for x in self.quests}
+        self.pending_rewards = []
+        
+    def add(self, **kwargs):
+        def wrapper(quest):
+            name = kwargs.get("name", quest.get_name())
+            repeat_int = kwargs.get("repeatable", 1)
+            
+            def repeatable(self):
+                return repeat_int
+                
+            quest.repeatable = repeatable
+            qm.add_quest(name, quest)
+            
+            return quest 
+                   
+        return wrapper
         
     def add_quest(self, name, quest):
-        if name in self._quests:
+        if name in self.quests:
             raise KeyError("Duplicate quest name")
             
-        self._quests[name] = quest
+        self.quests[name] = quest
         self.finished_quests[name] = 0
         
     def remove_quest(self, name):
-        del self._quests[name]
+        del self.quests[name]
         del self.finished_quests[name]
         
     def print_quests(self):
@@ -26,7 +42,7 @@ class QuestManager:
         if name in self.active_quests:
             raise QuestStarted("This quest has already started")
             
-        quest = self.finished_quests[name]()
+        quest = self.quests[name]()
         total = quest.repeatable()
         if self.finished_quests[name] >= total:
             raise QuestNonRepeatable(f"This quest cannot be done more than {total} time(s)") 
@@ -45,8 +61,17 @@ class QuestManager:
             if done:
                 del self.active_quests[name]
                 self.finished_quests[name] += 1
-                # rewards.append(quest.reward)
+                self.pending_rewards.append(quest)
                 print(f"finished {name}")
+                
+    def get_finished(self, name):
+        return self.finished_quests[name] 
+        
+    def process_rewards(self, player, world):
+        while self.pending_rewards:
+            quest = self.pending_rewards.pop(0)
+            quest.reward(player, world)
+           
                         
 qm = QuestManager()
         
@@ -57,7 +82,7 @@ class Quest:
     def setup(self):
         pass
         
-    def on_die(self, entity):
+    def on_kill(self, entity):
         pass
         
     def on_pickup(self, item):
@@ -66,12 +91,18 @@ class Quest:
     def on_discover(self, location):
         pass
         
+    def on_interact(self, entity):
+        pass
+        
     def reward(self, player):
         pass
         
-    @classmethod
-    def repeatable(cls):
+    def repeatable(self):
         return 1
+        
+    @classmethod
+    def get_name(cls):
+        return cls.__name__
 
 class QuestObject:
     pass
