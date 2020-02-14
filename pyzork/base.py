@@ -1,5 +1,5 @@
 from .utils import post_output
-from .errors import QuestStarted, QuestNonRepeatable
+from .errors import *
 
 class QuestManager:
     def __init__(self, **kwargs):
@@ -67,7 +67,7 @@ class QuestManager:
     def get_finished(self, name):
         return self.finished_quests[name] 
         
-    def process_rewards(self, player, world):
+    def proccess_rewards(self, player, world):
         while self.pending_rewards:
             quest = self.pending_rewards.pop(0)
             quest.reward(player, world)
@@ -106,3 +106,12 @@ class Quest:
 
 class QuestObject:
     pass
+    
+def game_loop(world):
+    try:
+        world.world_loop()
+    except EndGame as e:
+        world.end_game(e)
+    except Exception as e:
+        world.error_handler(e)
+    

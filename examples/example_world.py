@@ -3,6 +3,9 @@ from pyzork.utils import post_output
 from pyzork.enums import Direction
 from pyzork.base import qm
 
+from .example_entities import OldMan
+
+
 #run in main directory with python -m examples.example_world
 
 class MarketPlace(Location):
@@ -12,6 +15,11 @@ class MarketPlace(Location):
         
 class Tavern(Location):
     """The Tavern"""
+    def __init__(self):
+        super().__init__(
+            npcs=[OldMan()]    
+        )
+    
     def enter(self, from_location):
         post_output("Reeks of drunkards")
         
@@ -59,13 +67,3 @@ island = Island()
 temple = HiddenTemple()
 docks = Docks()
 hidden = HiddenTempleInside()
-
-if __name__ == '__main__':
-    tavern.two_way_connect(Direction.south, market)
-    market.two_way_connect(Direction.south, docks)
-    docks.two_way_connect(Direction.east, island)
-    island.two_way_connect(Direction.north, temple)
-    hidden.one_way_connect(Direction.west, temple)
-
-    world = World([tavern, market, island, temple, docks, hidden])
-    world.world_loop()

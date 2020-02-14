@@ -22,21 +22,24 @@ class Entity:
         self.armor = stats.get("armor", NullArmor())
         self.inventory = stats.get("inventory", Inventory())
 
-        self.name = self.__doc__
+        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         self.description = self.__init__.__doc__
 
         self.modifiers = []
         self.abilities = []
         self.interacted = False
 
-    def interact(self):
+    def interact(self, world):
         """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
         pass
+        
+    def __str__(self):
+        return f'<{self.name}>'
         
     def print_interaction(self, world):
         """Abstract method to be implemented, notifies the player that they can interact with this
         NPC, returns a string or None"""
-        pass
+        raise NotImplementedError
         
     def _interact(self):
         pass
@@ -174,7 +177,7 @@ class Player(Entity):
             post_output(f"{self.name} loses {current - value} health")
             
     def print_actions(self, context):
-        pass
+        post_output("- Attack with 'attack [enemy]'")
         
     def gain_experience(self, value):
         self.experience += value

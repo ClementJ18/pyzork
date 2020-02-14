@@ -11,6 +11,7 @@ class Battle:
 
     def battle_loop(self):
         while self.player.is_alive() and self.alive:
+            post_output(f"You are attacked by {self.alive}")
             self.player_turn()
             for enemy in self.alive:
                 self.enemy_turn(enemy)
