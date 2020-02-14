@@ -14,6 +14,15 @@ class Goblin(Enemy):
             weapon=Sword()
         )
         
+class BigGoblin(Enemy):
+    def __init__(self):
+        super().__init__(
+            base_max_health=30,
+            base_damage=4,
+            base_defense=5,
+            weapon=Sword()    
+        )        
+        
 class OldMan(Enemy):
     """OldMan"""
     def __init__(self):

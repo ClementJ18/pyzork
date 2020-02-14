@@ -5,11 +5,20 @@ class Modifier:
         self.type = kwargs.get("type", StatEnum.null)
         self.duration = kwargs.get("duration")
 
-        self.name = self.__doc__
+        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         self.description = self.buff.__doc__
         
     def is_expired(self):
         return duration == 0
+        
+    def __hash__(self):
+        return hash(self.name)
+        
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): 
+            return NotImplemented
+            
+        return self.name == other.name
 
     def calc(self, player):
         """This is normally the method that would have to be implemented by the user but because buffs are timed we use this 

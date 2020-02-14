@@ -25,8 +25,8 @@ class Entity:
         self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         self.description = self.__init__.__doc__
 
-        self.modifiers = []
-        self.abilities = []
+        self.modifiers = set()
+        self.abilities = set()
         self.interacted = False
 
     def interact(self, world):

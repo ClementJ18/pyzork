@@ -92,7 +92,11 @@ class Equipment:
     def calc(self, player):
         """Abstract method that must be implemented by every piece of equipment, this is the method used when
         calculating damage that dictates the various modifiers and buffs gotten"""
-        raise NotImplementedError
+        pass
+        
+    def effect(self, target):
+        """Abstract class that applies an effect when attacking"""
+        pass
         
 Armor = Equipment
 Weapon = Equipment

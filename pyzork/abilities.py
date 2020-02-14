@@ -7,6 +7,15 @@ class Ability:
         self.name = self.__doc__
         self.description = self.effect.__doc__
         self.cost = self.costing.__doc__
+        
+    def __hash__(self):
+        return hash(self.name)
+        
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): 
+            return NotImplemented
+            
+        return self.name == other.name
 
     def cast(self, user, target = None):
         """Method that verifies if all conditions have been met."""

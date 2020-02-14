@@ -3,7 +3,7 @@ from pyzork.utils import post_output
 from pyzork.enums import Direction
 from pyzork.base import qm
 
-from .example_entities import OldMan
+from .example_entities import OldMan, Goblin
 
 
 #run in main directory with python -m examples.example_world
@@ -22,6 +22,11 @@ class Tavern(Location):
     
     def enter(self, from_location):
         post_output("Reeks of drunkards")
+        
+class BackAlley(Location):
+    """back alley"""
+    def enter(self, from_location):
+        self.enemies.append(Goblin())
         
 class Island(Location):
     """A Small Island"""
@@ -67,3 +72,4 @@ island = Island()
 temple = HiddenTemple()
 docks = Docks()
 hidden = HiddenTempleInside()
+alley = BackAlley()
