@@ -121,6 +121,18 @@ class Entity:
     def take_damage(self, value):
         self.health -= max(1, value - self.defense)
         
+    def take_pure_damage(self, value):
+        self.health -= value
+        
+    def restore_health(self, value):
+        self.health += value
+        
+    def use_energy(self, value):
+        self.energy -= value
+        
+    def gain_energy(self, value):
+        self.energy += value
+        
     def use_ability(self, ability, target=None):
         if target is None:
             target = self
@@ -128,14 +140,19 @@ class Entity:
         return ability.cast(self, target)
         
     def end_turn(self):
-        for modifier in self.modifiers:
+        for _, modifier in enumerate(self.modifiers):
             modifier.end_turn(self)
+            if modifier.is_expired():
+                self.modifiers.remove(modifier)
             
     def add_to_inventory(self, item):
         self.inventory.add_item(item)
         
-    def remove_from_inventory(self):
+    def remove_from_inventory(self, item):
         self.inventory.remove_item(item)
+        
+    def add_modifier(self, modifier):
+        self.modifiers.add(modifier)
         
     @property
     def string(self):

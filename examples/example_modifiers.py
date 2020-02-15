@@ -9,19 +9,15 @@ class WarRoarBuff(Modifier):
         """You are entranced by the roar and your attack is increased for a short time"""
         return 2
 
-class InsultDebuff(Modifier):
-    """Insult"""
-    def __init__(self):
-        super().__init__(type=StatEnum.defense, duration=3)
-
-    def buff(self, target):
-        """You feel insulted and as a result the target's defense is lowered."""
-        return -3
+@Modifier.add_buff(type=StatEnum.defense, duration=3)
+def InsultDebuff(self, target):
+    """You feel insulted and as a result the target's defense is lowered."""
+    return -3
 
 class InsultBuff(Modifier):
     """Insult"""
     def __init__(self):
-        super().__init__(type=StatEnum.attack, duration=3)
+        super().__init__(type=StatEnum.attack, duration=5)
 
     def buff(self, target):
         """You feel insulted and as a result the target's attack is increased."""
@@ -44,7 +40,7 @@ class PoisonEffect(Modifier):
 
     def effect(self, player):
         """Lose 3 health every turn."""
-        self.player.health -= 3
+        self.player.take_pure_damage(3)
 
 class BurntEffect(Modifier):
     """Burnt"""
@@ -58,4 +54,4 @@ class BurntEffect(Modifier):
 
     def effect(self, player):
         """Lose 2 health every turn"""
-        self.player.health -= 2
+        self.player.take_pure_damage(2)

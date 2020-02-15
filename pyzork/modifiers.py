@@ -8,9 +8,6 @@ class Modifier:
         self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         self.description = self.buff.__doc__
         
-    def is_expired(self):
-        return duration == 0
-        
     def __hash__(self):
         return hash(self.name)
         
@@ -19,6 +16,9 @@ class Modifier:
             return NotImplemented
             
         return self.name == other.name
+        
+    def is_expired(self):
+        return duration == 0
 
     def calc(self, player):
         """This is normally the method that would have to be implemented by the user but because buffs are timed we use this 
@@ -44,3 +44,31 @@ class Modifier:
             return
             
         self.effect(player)
+        
+    @classmethod
+    def add_effect(cls, duration):
+        def __init__(self, **kwargs):
+            super().__init__(duration=duration)
+        
+        def decorator(func):
+            new_class = cls
+            new_class.__init__ = __init__
+            new_class.effect = func
+            
+            return new_class
+            
+        return decorator
+        
+    @classmethod
+    def add_buff(cls, duration, type):
+        def __init__(self, **kwargs):
+            super().__init__(duration=duration, type=type)
+        
+        def decorator(func):
+            new_class = cls
+            new_class.__init__ = __init__
+            new_class.buff = func
+            
+            return new_class
+            
+        return decorator
