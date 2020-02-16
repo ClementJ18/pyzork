@@ -17,7 +17,7 @@ class KillGoblin(Quest):
         post_output("You have discovered a secret entrance to the temple")
         temple.two_way_connect(Direction.west, hidden)
         
-qm.add()
+@qm.add()
 class KillBigGoblin(Quest):
     def on_death(self, entity):
         if isinstance(entity, BigGoblin):

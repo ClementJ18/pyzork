@@ -1,6 +1,6 @@
 from pyzork.entities import Player
 from pyzork.world import World
-from pyzork.base import game_loop
+from pyzork.base import game_loop, qm
 
 from .example_world import *
 from .example_quest import *
@@ -14,8 +14,8 @@ if __name__ == '__main__':
     market.two_way_connect(Direction.west, alley)
     
     player = Player()
-
     world = World([tavern, market, island, temple, docks, hidden], player)
+    qm.start("KillBigGoblin")
     
     game_loop(world)
     
