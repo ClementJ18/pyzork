@@ -4,7 +4,7 @@ from .utils import post_output
 class Ability:
     """Parent class for all abilities."""
     def __init__(self):
-        self.name = self.__doc__
+        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         self.description = self.effect.__doc__
         self.cost = self.costing.__doc__
         
@@ -55,11 +55,17 @@ class Ability:
         return func
             
     @classmethod
-    def add(cls, cost=0):
+    def add(cls, cost=0, **kwargs):
         def decorator(func):
-            new_class = cls
-            new_class.costing = cls.base_costing(cost)
-            new_class.effect = func
+            new_class = type(func.__name__, (cls,), {
+                "costing": cls.base_costing(cost), 
+                "effect": func,
+                "name": kwargs.get("name", func.__name__),
+                "description": kwargs.get("description", func.__doc__)
+            })
+            # new_class.__name__ = func.__name__
+            # new_class.costing = cls.base_costing(cost)
+            # new_class.effect = func
             
             return new_class
             

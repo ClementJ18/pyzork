@@ -46,28 +46,36 @@ class Modifier:
         self.effect(player)
         
     @classmethod
-    def add_effect(cls, duration):
-        def __init__(self, **kwargs):
-            super().__init__(duration=duration)
-        
+    def add_effect(cls, duration, **kwargs):        
         def decorator(func):
-            new_class = cls
-            new_class.__init__ = __init__
-            new_class.effect = func
+            new_class = type(func.__name__, (cls,), {
+                "duration": duration, 
+                "effect": func, 
+                "name": kwargs.get("name", func.__name__),
+                "description": kwargs.get("description", func.__doc__)
+            })
+            # new_class.__init__ = __init__
+            # new_class.effect = func
             
             return new_class
             
         return decorator
         
     @classmethod
-    def add_buff(cls, duration, type):
+    def add_buff(cls, duration, stat_type, **kwargs):
         def __init__(self, **kwargs):
-            super().__init__(duration=duration, type=type)
+            super().__init__(duration=duration, type=stat_type)
         
         def decorator(func):
-            new_class = cls
-            new_class.__init__ = __init__
-            new_class.buff = func
+            new_class = type(func.__name__, (cls,), {
+                "duration": duration, 
+                "type": stat_type, 
+                "buff": func,
+                "name": kwargs.get("name", func.__name__),
+                "description": kwargs.get("description", func.__doc__)
+            })
+            # new_class.__init__ = __init__
+            # new_class.buff = func
             
             return new_class
             

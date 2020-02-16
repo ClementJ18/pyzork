@@ -1,6 +1,8 @@
-from pyzork.entities import Enemy, NPC
+from pyzork.entities import Enemy
 from pyzork.utils import yes_or_no, post_output
 from pyzork.base import qm
+from pyzork.errors import EndGame
+from pyzork.enums import EndgameReason
 
 from .example_equipment import Sword
 
@@ -36,11 +38,12 @@ class OldMan(Enemy):
         post_output("- Talk to the old man in the corner")
         
     def interact(self, world):
-        post_output("Hello there traveler, I have a quest, you wanna kill 10 golbins?")
+        post_output("Hello there traveler, I have a quest, you wanna kill the goblin in the back alley?")
         answer = yes_or_no()
         if answer:
             post_output("Nice")
-            qm.start_quest("Kill10Goblin")
+            qm.start_quest("KillGoblin")
         else:
             post_output("No? Then die!")
             world.initiate_battle([self])
+            raise EndGame("You win!", victory=True, reason=EndgameReason.victory)

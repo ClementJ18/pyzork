@@ -3,7 +3,7 @@ from pyzork.utils import post_output
 from pyzork.enums import Direction
 from pyzork.base import qm
 
-from .example_entities import OldMan, Goblin
+from .example_entities import OldMan, Goblin, BigGoblin
 
 
 #run in main directory with python -m examples.example_world
@@ -48,15 +48,18 @@ class HiddenTemple(Location):
         post_output("You enter the jungle and find a temple")
         
 class HiddenTempleInside(Location):
-    """You are now inside the hidden temple"""
+    """Hidden Temple (Inside)"""
+    def __init__(self):
+        super().__init__(enemies=[BigGoblin()])
+        
     def enter(self, from_location):
         post_output("It's really dusty in here")
         
 class Docks(Location):
     """The Docks"""
     def enter(self, from_location):
-        if not self.discovered:
-            qm.start_quest("Kill10Goblin")
+        # if not self.discovered:
+        #     qm.start_quest("KillGoblin")
         
         if not isinstance(from_location, Island):
             post_output("some ugly docks")

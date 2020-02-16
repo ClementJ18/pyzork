@@ -1,4 +1,5 @@
 from pyzork.equipment import Weapon, Armor
+from pyzork.enums import StatEnum
 
 class Sword(Weapon):
     """A Simple Sword"""

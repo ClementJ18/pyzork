@@ -12,6 +12,7 @@ class StatEnum(IntEnum):
 class EndgameReason(IntEnum):
     zero_health      = auto()
     failed_objecive  = auto()
+    victory          = auto()
 
 class Direction(IntEnum):
     north  = auto()

@@ -12,7 +12,7 @@ class Location:
         self.exits = self._generate_exits()
         self.discovered = False
         self.npcs = kwargs.get("npcs", [])
-        self.enemies = kwargs.get("enemies")
+        self.enemies = kwargs.get("enemies", [])
         
     def __str__(self):
         return f"<{self.name}>"
@@ -80,10 +80,12 @@ class Shop(Location):
     pass
 
 class World:
-    def __init__(self, locations, player):
+    def __init__(self, locations, player, **kwargs):
         self.current_location = locations[0]
         self.locations = locations
         self.player = player
+        self.end_game = kwargs.get("end_game", self.end_game)
+        self.error_handler = kwargs.get("error_handler", self.error_handler)
         
     def world_loop(self):
         self.current_location._enter(Location())
@@ -153,4 +155,10 @@ class World:
         if len(self.current_location.exits) == 1:
             exit = list(self.current_location.exits.values())[0]
             return self.travel(exit)
+            
+    def end_game(self, e):
+        post_output(e)
+        
+    def error_handler(self, e):
+        raise e
   

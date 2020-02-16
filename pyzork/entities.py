@@ -28,20 +28,21 @@ class Entity:
         self.modifiers = set()
         self.abilities = set()
         self.interacted = False
-
-    def interact(self, world):
-        """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
-        pass
         
     def __str__(self):
         return f'<{self.name}>'
+
+    def interact(self, world):
+        qm.progress_quests("on_interact", self)
+        self.interaction(world)
         
     def print_interaction(self, world):
         """Abstract method to be implemented, notifies the player that they can interact with this
         NPC, returns a string or None"""
         raise NotImplementedError
         
-    def _interact(self):
+    def interaction(self, world):
+        """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
         pass
 
     def _big_calc(self, stat):
@@ -198,9 +199,6 @@ class Player(Entity):
         
     def gain_experience(self, value):
         self.experience += value
-        
-class NPC(Entity):
-    pass
 
 class Enemy(Entity):
     def battle_logic(self, battle):

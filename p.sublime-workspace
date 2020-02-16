@@ -4,8 +4,84 @@
 		"selected_items":
 		[
 			[
+				"mod",
+				"modifier"
+			],
+			[
+				"modi",
+				"modifier"
+			],
+			[
+				"base",
+				"base_defense"
+			],
+			[
 				"loca",
 				"location"
+			],
+			[
+				"Hidd",
+				"HiddenTempleInside"
+			],
+			[
+				"repea",
+				"repeatable"
+			],
+			[
+				"is",
+				"isinstance"
+			],
+			[
+				"add",
+				"add_quest"
+			],
+			[
+				"item",
+				"item_name"
+			],
+			[
+				"equi",
+				"equipment"
+			],
+			[
+				"di",
+				"discovered"
+			],
+			[
+				"to",
+				"to_location"
+			],
+			[
+				"Quest",
+				"QuestNonRepeatable"
+			],
+			[
+				"Ques",
+				"QuestStarted"
+			],
+			[
+				"Ins",
+				"InsultBuff"
+			],
+			[
+				"Insu",
+				"InsultDebuff"
+			],
+			[
+				"WarRo",
+				"WarRoarBuff"
+			],
+			[
+				"fini",
+				"finished_quests"
+			],
+			[
+				"from",
+				"from_location"
+			],
+			[
+				"dire",
+				"direction"
 			],
 			[
 				"travel",
@@ -48,10 +124,6 @@
 				"StatEnum"
 			],
 			[
-				"modi",
-				"modifiers"
-			],
-			[
 				"call",
 				"callable_cost"
 			],
@@ -74,14 +146,6 @@
 			[
 				"exp",
 				"experience_levels"
-			],
-			[
-				"base",
-				"base_max_energy"
-			],
-			[
-				"dire",
-				"directional_move"
 			],
 			[
 				"exi",
@@ -220,10 +284,6 @@
 				"updated"
 			],
 			[
-				"to",
-				"to_download"
-			],
-			[
 				"web",
 				"webContentLink"
 			],
@@ -318,10 +378,6 @@
 			[
 				"short",
 				"shortcut"
-			],
-			[
-				"add",
-				"add_field"
 			],
 			[
 				"file_",
@@ -458,67 +514,46 @@
 			[
 				"aotr",
 				"path_aotr"
-			],
-			[
-				"sef",
-				"self"
-			],
-			[
-				"ro",
-				"rotwk_file_name"
-			],
-			[
-				"install",
-				"installer"
-			],
-			[
-				"rot",
-				"path_rotwk"
-			],
-			[
-				"insta",
-				"install"
-			],
-			[
-				"inst",
-				"installation"
-			],
-			[
-				"pat",
-				"path_rotwk"
-			],
-			[
-				"sett",
-				"settings"
-			],
-			[
-				"di",
-				"directory_input"
-			],
-			[
-				"abot",
-				"about_text_full"
-			],
-			[
-				"About",
-				"about_text"
-			],
-			[
-				"Abo",
-				"AboutWindow"
-			],
-			[
-				"url",
-				"url_support"
-			],
-			[
-				"laucn",
-				"launch_btn"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "pyzork/equipment.py",
+			"settings":
+			{
+				"buffer_size": 3595,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pyzork/battle.py",
+			"settings":
+			{
+				"buffer_size": 1693,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pyzork/entities.py",
+			"settings":
+			{
+				"buffer_size": 7354,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "examples/example_abilities.py",
+			"settings":
+			{
+				"buffer_size": 1785,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"build_system_choices":
@@ -598,21 +633,33 @@
 	],
 	"file_history":
 	[
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/world.py",
-		"/C/Users/Admin/Desktop/text_adventure/examples/example_world.py",
-		"/C/Users/Admin/Desktop/text_adventure/examples/fake.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/enums.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/modifiers.py",
-		"/C/Users/Admin/Desktop/text_adventure/examples/complex_fake.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/utils.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/levels.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/errors.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/equipments.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/entities.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/battle.py",
-		"/C/Users/Admin/Desktop/text_adventure/pyzork/actions.py",
 		"/C/Users/Admin/Desktop/text_adventure/pyzork/abilities.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/modifiers.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_modifiers.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_world.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_entities.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_abilities.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_game.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/enums.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/base.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/errors.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/battle.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/entities.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/world.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/utils.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_quest.py",
 		"/C/Users/Admin/Desktop/text_adventure/test.py",
+		"/C/Users/Admin/Desktop/text_adventure/scrapbook.txt",
+		"/C/Users/Admin/Desktop/text_adventure/examples/__init__.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/example_equipment.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/equipment.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/adventure.py",
+		"/C/Users/Admin/Desktop/text_adventure/examples/complex_fake.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/levels.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/actions.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/base",
+		"/C/Users/Admin/Desktop/text_adventure/examples/fake.py",
+		"/C/Users/Admin/Desktop/text_adventure/pyzork/equipments.py",
 		"/C/Users/Admin/Desktop/text_adventure/modifiers.py",
 		"/C/Users/Admin/Desktop/text_adventure/battle.py",
 		"/C/Users/Admin/Desktop/text_adventure/entities.py",
@@ -639,7 +686,6 @@
 		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/attributemodifier.inc",
 		"/C/Users/Admin/Documents/Game Files/Edain/data/ini/includes/upgrade.inc",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/rushhour/GameState.java",
-		"/C/Users/Admin/Desktop/text_adventure/scrapbook.txt",
 		"/C/Users/Admin/Desktop/the-void/edain_searcher_scrapper/armorset.txt",
 		"/C/Users/Admin/Desktop/text_adventure/equipment.py",
 		"/C/Users/Admin/Desktop/Uni/CM3112 - AI/Coursework/search/State.java",
@@ -714,18 +760,7 @@
 		"/C/Users/Admin/Desktop/aoe/README.md",
 		"/C/Users/Admin/Desktop/aoe/test.py",
 		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/Edain.cs",
-		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/MainWindow.cs",
-		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/My/Resources/Resources.cs",
-		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/My/MySettings.cs",
-		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/Application.cs",
-		"/C/Users/Admin/Desktop/the-void/feeds/wattpad.py",
-		"/C/Users/Admin/Documents/-mod vs folder.txt",
-		"/C/Users/Admin/Documents/launcher.py",
-		"/C/Users/Admin/Documents/ideas.txt",
-		"/C/Users/Admin/Documents/etest.py",
-		"/C/Users/Admin/Documents/elite and heroics.txt",
-		"/C/Users/Admin/Documents/e.txt",
-		"/C/Users/Admin/Documents/dlcs.txt"
+		"/C/Users/Admin/Documents/Reflector/Disassembler/Edain_Mod_Launcher/Edain_Mod_Launcher/MainWindow.cs"
 	],
 	"find":
 	{
@@ -743,6 +778,14 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"append",
+			"print_exit",
+			"world",
+			"print_exits",
+			"self._quests",
+			"_quests",
+			".enter(",
+			"self.enter",
 			"Location",
 			"conect",
 			"self.enemies",
@@ -862,15 +905,7 @@
 			"Pippin",
 			"[[Pippi",
 			"[[Pippin",
-			"[[Faramir",
-			"[[Boromir",
-			"[[Aragorn",
-			"Aragorn",
-			"guild_checker",
-			"load_cac",
-			"query_exec",
-			"Object ",
-			"TheDroppedRing"
+			"[[Faramir"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -878,6 +913,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"self.quests",
 			"connect",
 			"self.alive",
 			".modifiers",
@@ -954,14 +990,135 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "pyzork/equipment.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3595,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1764,
+								1770
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 666.285714286,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "pyzork/battle.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1693,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 549.142857143,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "pyzork/entities.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7354,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4471,
+								4471
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2834.28571429,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "examples/example_abilities.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1785,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1719,
+								1719
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1626.14285714,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 34.0
+		"height": 37.0
 	},
 	"input":
 	{
@@ -1002,7 +1159,7 @@
 	"project": "p.sublime-project",
 	"replace":
 	{
-		"height": 84.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":

@@ -1,16 +1,16 @@
 from pyzork.abilities import Ability
 
-from example_modifiers import WarRoarBuff, InsultDebuff, InsultBuff, FireDebuff, BurntEffect
+from .example_modifiers import WarRoarBuff, InsultDebuff, InsultBuff, FireDebuff, BurntEffect
 
-@Ability.add(cost=2)    
+@Ability.add(cost=2, name="War Roar")    
 def WarRoarSpell(self, target):
-    target.modifiers.append(WarRoarBuff())
-    
+    """A terrible war cry that envigorates you"""
+    target.add_modifier(WarRoarBuff())
     
 def callable_cost(player, target):
     return player.max_energy * 0.1
     
-@Ability.add(cost=callable_cost)    
+@Ability.add(cost=callable_cost, description="Very loud yelling")    
 def WarRoar2Spell(self, target):
     target.add_modifier(WarRoarBuff())
 

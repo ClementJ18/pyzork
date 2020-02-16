@@ -52,7 +52,7 @@ class QuestManager:
     def progress_quests(self, event, *args, **kwargs):
         rewards = []
                 
-        for name, quest in self.active_quests.items():
+        for name, quest in list(self.active_quests.items()):
             try:
                 done = getattr(quest, event)(*args, **kwargs)
             except AttributeError:
@@ -82,7 +82,7 @@ class Quest:
     def setup(self):
         pass
         
-    def on_kill(self, entity):
+    def on_death(self, entity):
         pass
         
     def on_pickup(self, item):

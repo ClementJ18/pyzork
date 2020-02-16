@@ -10,7 +10,7 @@ if __name__ == '__main__':
     market.two_way_connect(Direction.south, docks)
     docks.two_way_connect(Direction.east, island)
     island.two_way_connect(Direction.north, temple)
-    hidden.one_way_connect(Direction.west, temple)
+    # hidden.one_way_connect(Direction.west, temple)
     market.two_way_connect(Direction.west, alley)
     
     player = Player()
