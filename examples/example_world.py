@@ -50,7 +50,7 @@ class HiddenTemple(Location):
 class HiddenTempleInside(Location):
     """Hidden Temple (Inside)"""
     def __init__(self):
-        super().__init__(enemies=[BigGoblin()])
+        super().__init__(enemies=[BigGoblin])
         
     def enter(self, from_location):
         post_output("It's really dusty in here")

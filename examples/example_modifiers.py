@@ -14,6 +14,11 @@ class WarRoarBuff(Modifier):
 def InsultDebuff(self, target):
     """You feel insulted and as a result the target's defense is lowered."""
     return -3
+    
+@Modifier.add_effect(duration=5)
+def effect(self, target):
+    """Lose 3 health every turn."""
+    target.take_pure_damage(3)
 
 class InsultBuff(Modifier):
     """Insult"""
@@ -34,25 +39,16 @@ class FireDebuff(Modifier):
         """The burns leaves a scar, reducing the target's maximum health."""
         return -5
 
-class PoisonEffect(Modifier):
-    """Poison"""
-    def __init__(self):
-        super().__init__(duration=5)
-
-    def effect(self, player):
-        """Lose 3 health every turn."""
-        self.player.take_pure_damage(3)
-
 class BurntEffect(Modifier):
     """Burnt"""
 
     def __init__(self):
         super().__init__(duration=5, stat_type=StatEnum.attack)
         
-    def buff(self, player):
+    def buff(self, target):
         """The burn makes it hard to fight"""
         return -2
 
-    def effect(self, player):
+    def effect(self, target):
         """Lose 2 health every turn"""
-        self.player.take_pure_damage(2)
+        target.take_pure_damage(2)

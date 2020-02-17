@@ -201,6 +201,11 @@ class Player(Entity):
         self.experience += value
 
 class Enemy(Entity):
+    @classmethod
+    def from_dict(cls, **kwargs):
+        new_class = type(kwargs.get("name"), (cls,), kwargs)
+        return new_class
+    
     def battle_logic(self, battle):
         """This method implement the behavior of enemies during battle. A basic logic is aready implemented which just attacks the player. 
         For boss battles this method is overwritten to implement more complex logic.

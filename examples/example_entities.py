@@ -16,14 +16,14 @@ class Goblin(Enemy):
             weapon=Sword()
         )
         
-class BigGoblin(Enemy):
-    def __init__(self):
-        super().__init__(
-            base_max_health=30,
-            base_damage=4,
-            base_defense=5,
-            weapon=Sword()    
-        )        
+BigGoblin = Enemy.from_dict(
+    base_max_health=30,
+    base_damage=4,
+    base_defense=5,
+    weapon=Sword(),
+    name="Big Golbin",
+    description="The BBG"
+)        
         
 class OldMan(Enemy):
     """OldMan"""
@@ -38,7 +38,7 @@ class OldMan(Enemy):
         post_output("- Talk to the old man in the corner")
         
     def interact(self, world):
-        post_output("Hello there traveler, I have a quest, you wanna kill the goblin in the back alley?")
+        post_output("oi m8 shank that gobbo in the back and I'll give you a shag")
         answer = yes_or_no()
         if answer:
             post_output("Nice")
