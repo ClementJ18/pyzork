@@ -3,7 +3,7 @@ from pyzork.enums import Direction, EndgameReason
 from pyzork.utils import post_output
 from pyzork.errors import EndGame
 
-from .example_entities import Goblin, OldMan
+from .example_entities import Goblin, OldMan, BigGoblin
 from .example_equipment import Sword
 from .example_world import temple, hidden
 

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     
     player = Player()
     world = World([tavern, market, island, temple, docks, hidden], player)
-    qm.start("KillBigGoblin")
+    qm.start_quest("KillBigGoblin")
     
     game_loop(world)
     
