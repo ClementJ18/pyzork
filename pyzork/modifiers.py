@@ -7,7 +7,7 @@ class Modifier:
     stack as many different modifiers as you want on a single entity but you can never give an entity
     the same modifier twice. This is the default behavior for every entity but it can be overwritten.
     
-    Paramaters
+    Parameters
     -----------
     duration : int
         How many "turns" a buff lasts. A turn is all the players and enemies present in the battle
@@ -75,7 +75,7 @@ class Modifier:
         """
         pass
         
-    def effect(self, entity):
+    def effect(self, entity : Entity):
         """Method to implement to do a once per turn change to an entity. This method is called
         exactly once per turn (given the buff is not expired) during the end turn phase. This is where
         you can do stuff like restore or take away health from the entity or make other permanent changes
@@ -88,7 +88,7 @@ class Modifier:
         """
         pass
 
-    def end_turn(self, entity):
+    def end_turn(self, entity : Entity):
         """Method called at the end of the turn for each buff to show time passed and left until the buff expires. 
         Permanent buffs are set to -1"""
         if self.duration > 0:
@@ -100,7 +100,7 @@ class Modifier:
         self.effect(entity)
         
     @classmethod
-    def add_effect(cls, duration, **kwargs):
+    def add_effect(cls, duration : int, **kwargs):
         """Decorator function to allow the user to define an effect by decorating a function. Takes the
         same parameters as the class. """        
         def decorator(func):
@@ -116,7 +116,7 @@ class Modifier:
         return decorator
         
     @classmethod
-    def add_buff(cls, duration, stat_type, **kwargs):
+    def add_buff(cls, duration : int, stat_type : StatEnum, **kwargs):
         """Decorator function to allow the user to define a buff by decorating a function. Takes
         the same parameters as the class. Since this specifically adds a buff, the `stat_type` parameter
         is required"""
