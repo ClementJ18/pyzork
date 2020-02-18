@@ -16,12 +16,19 @@ class ExperienceLevels:
         self._experience = 0
         self.current_rewards = []
         self.player = None
-        self.rewards = [[] for x in range(self.max_level)]
+        
+        if "reward" in kwargs:
+            self.standard_reward = kwargs.get("reward")
+            
+        self.rewards = [self.standard_reward for x in range(self.max_level)]
         
         if "rewards" in kwargs:
             rewards = kwargs.get("rewards")
             for req, reward in rewards.items():
-                self.rewards[req-1].extend(reward)
+                self.rewards[req-1] = reward
+                
+    def __repr__(self):
+        return f"<ExperienceLevels exp={self.experience} req={self.requirement} level={self.level}>"
             
     def generate_levels(self, requirement, modifier):
         self.requirements = [requirement]
@@ -56,8 +63,10 @@ class ExperienceLevels:
         self._experience = value
         
     def level_up(self):
-        self.player.process_rewards(self.rewards[self.level])
         self.level += 1
+        self.rewards[self.level](self)
+        
+    def standard_reward(self, player):
         post_output(f"You leveled up! You are now level {self.level}")
         
     def __add__(self, value):

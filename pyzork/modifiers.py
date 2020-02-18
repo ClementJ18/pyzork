@@ -5,8 +5,12 @@ class Modifier:
         self.type = kwargs.get("type", StatEnum.null)
         self.duration = kwargs.get("duration")
 
-        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-        self.description = self.buff.__doc__
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+        else:
+            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        self.description = kwargs.get("description", self.__init__.__doc__)
         
     def __hash__(self):
         return hash(self.name)

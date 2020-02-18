@@ -16,7 +16,7 @@ def InsultDebuff(self, target):
     return -3
     
 @Modifier.add_effect(duration=5)
-def effect(self, target):
+def PoisonDamage(self, target):
     """Lose 3 health every turn."""
     target.take_pure_damage(3)
 

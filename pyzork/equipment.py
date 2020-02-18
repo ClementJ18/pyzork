@@ -6,21 +6,24 @@ class Inventory:
     def __init__(self, **kwargs):
         self.consumables = kwargs.get("consumables", {})
         self.quest = kwargs.get("quest", [])
-        self.equipment = kwargs.get("equipment", [])
+        self.equipment = kwargs.get("equipment", set())
+        
+    def __repr__(self):
+        return f"<Inventory consumables={len(self.consumables)} quest={len(self.quest)} equipment={len(self.equipment)}>"
         
     def add_item(self, item):
-        if isinstance(Equipment, item):
-            self.equipment.append(item)
+        if isinstance(item, Equipment):
+            self.equipment.add(item)
             post_output(f"Equipment {item.name} added")
         
-        if isinstance(Consumable, item):
+        if isinstance(item, Consumable):
             if type(item) in self.consumables:
                 self.consumables[type(item)] += 1
             else:
                 self.consumables[type(item)] = 1
             post_output(f"Consumable {item.name} added")    
                 
-        if isinstance(QuestItem, item):
+        if isinstance(item, QuestItem):
             qm.progress_quests("on_pickup", item)
             self.quest.append(item)
             post_output(f"Quest item {item.name} added")
@@ -41,12 +44,12 @@ class Inventory:
             raise TypeError("This type of item cannot be equipped")
             
         if isinstance(item, Weapon):
-            self.equipment.append(player.weapon)
+            self.equipment.add(player.weapon)
             player.weapon = item
             self.equipment.remove(player.weapon)
             post_output(f"Weapon {item.name} equipped")
         else:
-            self.equipment.append(player.armor)
+            self.equipment.add(player.armor)
             player.armor = item
             self.equipment.remove(player.armor)
             post_output(f"Armor {item.name} equipped")
@@ -78,16 +81,36 @@ class Inventory:
                 
         return None
         
+class Item:
+    def __init__(self, **kwargs):
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+        else:
+            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        self.description = kwargs.get("description", self.__init__.__doc__)
+        
+    def __repr__(self):
+        return f"<{self.name}>"
+        
+    def __hash__(self):
+        return hash(self.name)
+        
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): 
+            return NotImplemented
+            
+        return self.name == other.name
+        
 class Consumable:
     pass
     
 class QuestItem:
     pass
 
-class Equipment:
-    def __init__(self):
-        self.name = self.__doc__
-        self.description = self.calc.__doc__
+class Equipment(Item):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def calc(self, player):
         """Abstract method that must be implemented by every piece of equipment, this is the method used when

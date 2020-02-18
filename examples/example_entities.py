@@ -37,7 +37,7 @@ class OldMan(Enemy):
     def print_interaction(self, world):
         post_output("- Talk to the old man in the corner")
         
-    def interact(self, world):
+    def interaction(self, world):
         post_output("oi m8 shank that gobbo in the back and I'll give you a key")
         answer = yes_or_no()
         if answer:

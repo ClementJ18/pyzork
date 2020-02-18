@@ -10,14 +10,14 @@ class QuestManager:
         
     def add(self, **kwargs):
         def wrapper(quest):
-            name = kwargs.get("name", quest.get_name())
+            name = kwargs.get("name", quest.get_class_name())
             repeat_int = kwargs.get("repeatable", 1)
             
             def repeatable(self):
                 return repeat_int
                 
             quest.repeatable = repeatable
-            qm.add_quest(name, quest)
+            self.add_quest(name, quest)
             
             return quest 
                    
@@ -71,41 +71,53 @@ class QuestManager:
         while self.pending_rewards:
             quest = self.pending_rewards.pop(0)
             quest.reward(player, world)
-           
-                        
+                            
 qm = QuestManager()
         
 class Quest:
     def __init__(self):
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+        else:
+            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        self.description = kwargs.get("description", self.__init__.__doc__)
         self.setup()
         
+    def __repr__(self):
+        return f"<{self.name}>"
+        
     def setup(self):
+        """Function called when the quest is started"""
         pass
         
     def on_death(self, entity):
+        """Happens everytime an entity dies"""
         pass
         
     def on_pickup(self, item):
+        """Happens everytime an item is picked up"""
         pass
         
     def on_discover(self, location):
+        """Happens everytime a location is discovered for the first time"""
         pass
         
     def on_interact(self, entity):
+        """Happens everytime a npc is talked to"""
         pass
         
     def reward(self, player):
+        """Function that grants the player a certain reward"""
         pass
         
     def repeatable(self):
+        """Function that defines how many times you can do this quest, 1 by default. Must return an int"""
         return 1
         
     @classmethod
-    def get_name(cls):
+    def get_class_name(cls):
         return cls.__name__
-
-class QuestObject:
-    pass
     
 def game_loop(world):
     try:

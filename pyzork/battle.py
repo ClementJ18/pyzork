@@ -1,13 +1,19 @@
 from .utils import get_user_input, post_output
 
 class Battle:
-    def __init__(self, player, enemies, area):
+    def __init__(self, player, enemies, location):
         self.player = player
-        self.alive = enemies
-        self.area = area
+        self.alive = [x for x in enemies if x.is_alive()]
+        self.location = location
 
         self.turn = 0
         self.dead = []
+        
+    def remove_dead(self, enemy):
+        dead = self.alive.pop(enemy_index)
+        self.player.gain_experience(dead.experience(player))
+        self.dead.append()
+        
 
     def battle_loop(self):
         while self.player.is_alive() and self.alive:
@@ -17,7 +23,8 @@ class Battle:
                 self.enemy_turn(enemy)
 
             self.end_turn()
-            
+        
+        self.location.update_alive()
         post_output("You've killed all the enemies!")
 
     def end_turn(self):
@@ -41,14 +48,14 @@ class Battle:
             enemy_index = int(split[1])
             self.player.do_attack(self.alive[enemy_index])
             if not self.alive[enemy_index].is_alive():
-                self.dead.append(self.alive.pop(enemy_index))
+                self.remove_dead(enemy_index)
         
         if split[0] == "cast":
             if len(split) == 3:
                 enemy_index = int(split[2])
                 self.player.use_ability(self.player.abilities[int(split[1])], self.alive[enemy_index])
                 if not self.alive[enemy_index].is_alive():
-                    self.dead.append(self.alive.pop(enemy_index))
+                    self.remove_dead(enemy_index)
             else:
                 self.player.use_ability(self.player.abilities[int(split[1])])
     

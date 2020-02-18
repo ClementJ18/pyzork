@@ -8,7 +8,13 @@ from typing import Union
 
 class Location:
     def __init__(self, **kwargs):
-        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+        else:
+            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        self.description = kwargs.get("description", self.__init__.__doc__)
+        
         self.exits = self._generate_exits()
         self.discovered = False
         self.npcs = kwargs.get("npcs", [])
@@ -30,39 +36,37 @@ class Location:
     def _enter(self, from_location):
         if not self.discovered:
             qm.progress_quests("on_discover", self)
-            self.enter(from_location)
+            return self.enter(from_location)
             self.discovered = True
         else:
-            self.enter(from_location)
+            return self.enter(from_location)
 
     def enter(self, from_location):
         pass
         
     def _exit(self, to_location):
-        self.exit(to_location)
+        return self.exit(to_location)
 
     def exit(self, to_location):
         pass
         
-    def print_exit(self, world):
+    def print_interaction(self, world, direction):
         """Abstract method to give the user control over how the exit is actually printed if they wanna
         add some funky flair."""
-        raise NotImplementedError
+        post_output(f"- Go {direction.key} to {self.name}")
         
     def print_exits(self, world):
         for direction, location in self.exits.items():
             if location is not None:
-                try:
-                    location.print_exit(world)
-                except NotImplementedError:
-                    post_output(f"- Go {direction.name} to {location.name}")
-                
-    def print_interactions(self, world):
+                location.print_interaction(world, direction)
+
+    def print_npcs(self, world):
         for npc in self.npcs:
-            try:
-                npc.print_interaction(world)
-            except NotImplementedError:
-                post_output(f"- Interact with {npc.name}")
+            npc.print_interaction(world)
+                
+    def print_pickups(self, world):
+        for item in self.items:
+            item.print_interaction(world)
         
     def can_move_to(self, location : Union[Direction, "Location"]):
         if isinstance(location, Direction):
@@ -75,6 +79,15 @@ class Location:
         
     def directional_move(self, direction : Direction):
         return self.exits[direction]
+        
+    def update_alive(self):
+        self.npcs = [x for x in self.npcs if x.is_alive()]
+        self.enemies = [x for x in self.enemies if x.is_alive()]
+        
+    @classmethod
+    def from_dict(cls, **kwargs):
+        new_class = type(kwargs.get("name"), (cls,), kwargs)
+        return new_class
 
 class Shop(Location):
     pass
@@ -86,6 +99,8 @@ class World:
         self.player = player
         self.end_game = kwargs.get("end_game", self.end_game)
         self.error_handler = kwargs.get("error_handler", self.error_handler)
+        
+        self.player.set_world(self)
         
     def world_loop(self):
         self.current_location._enter(Location())
@@ -103,8 +118,11 @@ class World:
             new_location = self.directional_move(new_location)
         
         self.current_location = new_location
-        old_location._exit(new_location)
-        new_location._enter(old_location)
+        can_exit = old_location._exit(new_location)
+        can_enter = new_location._enter(old_location)
+        if can_exit is False or can_enter is False:
+            self.current_location = old_location
+            return
         
         if new_location.enemies:
             self.initiate_battle(new_location.enemies)

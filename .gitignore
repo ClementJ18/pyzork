@@ -113,3 +113,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 p.sublime-workspace
+to_do.txt

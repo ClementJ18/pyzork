@@ -8,29 +8,33 @@ from .base import qm
 
 class Entity:
     """Abstract class representing an entity, can be an NPC, a player or an enemy."""
-    def __init__(self, **stats):
-        self.base_max_health = stats.get("base_max_health", 0)
-        self._health = stats.get("base_health", self.base_max_health)
+    def __init__(self, **kwargs):
+        self.base_max_health = kwargs.get("base_max_health", 0)
+        self._health = kwargs.get("base_health", self.base_max_health)
 
-        self.base_damage = stats.get("base_damage", 0)
-        self.base_defense = stats.get("base_defense", 0)
+        self.base_damage = kwargs.get("base_damage", 0)
+        self.base_defense = kwargs.get("base_defense", 0)
 
-        self.base_max_energy = stats.get("base_max_energy", 0)
-        self._energy = stats.get("base_energy", self.base_max_energy)
+        self.base_max_energy = kwargs.get("base_max_energy", 0)
+        self._energy = kwargs.get("base_energy", self.base_max_energy)
 
-        self.weapon =  stats.get("weapon", NullWeapon())
-        self.armor = stats.get("armor", NullArmor())
-        self.inventory = stats.get("inventory", Inventory())
+        self.weapon =  kwargs.get("weapon", NullWeapon())
+        self.armor = kwargs.get("armor", NullArmor())
+        self.inventory = kwargs.get("inventory", Inventory())
 
-        self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-        self.description = self.__init__.__doc__
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+        else:
+            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        self.description = kwargs.get("description", self.__init__.__doc__)
 
         self.modifiers = set()
         self.abilities = set()
         self.interacted = False
         
-    def __str__(self):
-        return f'<{self.name}>'
+    def __repr__(self):
+        return f'<{self.name} health={self.health}/{self.max_health} energy={self.energy}/{self.max_energy}>'
 
     def interact(self, world):
         qm.progress_quests("on_interact", self)
@@ -39,7 +43,7 @@ class Entity:
     def print_interaction(self, world):
         """Abstract method to be implemented, notifies the player that they can interact with this
         NPC, returns a string or None"""
-        raise NotImplementedError
+        post_output(f"- Interact with {self.name}")
         
     def interaction(self, world):
         """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
@@ -72,6 +76,11 @@ class Entity:
 
     @property
     def health(self):
+        max_health = self.max_health
+        if self._health > max_health:
+            self._health = max_health
+            return self._health
+        
         return self._health
 
     @health.setter
@@ -92,6 +101,11 @@ class Entity:
 
     @property
     def energy(self):
+        max_energy = self.max_energy
+        if self._energy > max_energy:
+            self._energy = max_energy
+            return self._energy
+        
         return self._energy
 
     @energy.setter
@@ -100,7 +114,7 @@ class Entity:
         if value <= 0:
             self._energy = 0
         elif value > self.max_energy:
-            self._energy = self.max__energy
+            self._energy = self.max_energy
         else:
             self._energy = int(value)
             
@@ -170,6 +184,7 @@ class Player(Entity):
             base_max_energy=kwargs.get("base_max_energy", 25),
         )
         
+        self.world = None
         self.experience = kwargs.get("experience", ExperienceLevels(requirement=100, modifier=1.2, max_level=10))
         self.experience.set_player(self)
         
@@ -199,12 +214,23 @@ class Player(Entity):
         
     def gain_experience(self, value):
         self.experience += value
+        
+    def set_world(self, world):
+        self.world = world
 
 class Enemy(Entity):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        self.experience_points = kwargs.get("experience", 0)
+    
     @classmethod
     def from_dict(cls, **kwargs):
         new_class = type(kwargs.get("name"), (cls,), kwargs)
         return new_class
+        
+    def experience(self, player):
+        return self.experience_points
     
     def battle_logic(self, battle):
         """This method implement the behavior of enemies during battle. A basic logic is aready implemented which just attacks the player. 

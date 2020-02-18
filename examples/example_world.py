@@ -42,6 +42,8 @@ class Island(Location):
         else:
             post_output("You leave the beach")
             
+Beach = Location.from_dict(name="Beach", description="A sandy beach")
+            
 class HiddenTemple(Location):
     """A hidden temple"""
     def enter(self, from_location):
