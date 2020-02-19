@@ -51,7 +51,7 @@ class Entity:
 
     def _big_calc(self, stat):
         """Calculate all the modifiers for a stat"""
-        return (sum([x.calc(self) for x in self.modifiers if x.type == stat]) 
+        return (sum([x.calc(self) for x in self.modifiers if x.stat_type == stat]) 
             + sum([x[1] for x in [*self.weapon.calc(self), *self.armor.calc(self)] if x[0] == stat]))
 
     @property

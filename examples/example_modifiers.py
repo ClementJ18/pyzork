@@ -39,16 +39,12 @@ class FireDebuff(Modifier):
         """The burns leaves a scar, reducing the target's maximum health."""
         return -5
 
-class BurntEffect(Modifier):
-    """Burnt"""
 
-    def __init__(self):
-        super().__init__(duration=5, stat_type=StatEnum.attack)
-        
-    def buff(self, target):
-        """The burn makes it hard to fight"""
-        return -2
+@Modifier.add_effect(duration=5)
+def BurnEffect(self, target):
+    target.take_pure_damage(2)
 
-    def effect(self, target):
-        """Lose 2 health every turn"""
-        target.take_pure_damage(2)
+@BurnEffect.add_buff(stat_type=StatEnum.attack)
+def BurnDebuff(self, target):
+    """The burn makes it hard to fight"""
+    return -2

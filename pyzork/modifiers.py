@@ -24,18 +24,23 @@ class Modifier:
     description : Optional[str]
         An optional string to give a short (or long) description about the buff and its effects. If
         this is not provided the library will fall back to combining the docstring of the `buff`
-        and `effect` method    
+        and `effect` method.
+       
     """
     def __init__(self, **kwargs):
-        self.type = kwargs.get("stat_type", StatEnum.null)
-        self.duration = kwargs.get("duration")
+        if not getattr(self, "stat_type", False):
+            self.stat_type = kwargs.pop("stat_type", StatEnum.null)
+        
+        if not getattr(self, "duration", False):
+            self.duration = kwargs.pop("duration")
 
         if "name" in kwargs:
-            self.name = kwargs.get("name")
+            self.name = kwargs.pop("name")
         else:
             self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        self.description = kwargs.get("description", f"{self.buff.__doc__} {self.effect.__doc__}")
+        
+        if not getattr(self, "description", False):
+            self.description = kwargs.pop("description", f"{self.buff.__doc__} {self.effect.__doc__}")
         
     def __hash__(self):
         return hash(self.name)
@@ -45,6 +50,9 @@ class Modifier:
             return NotImplemented
             
         return self.name == other.name
+        
+    def __repr__(self):
+        return f"<{self.name} duration={self.duration} stat={self.stat_type.name}>"
     
     def is_expired(self):
         """Simple method to check if is a buff is expired.
@@ -100,35 +108,44 @@ class Modifier:
         self.effect(entity)
         
     @classmethod
-    def add_effect(cls, duration : int, **kwargs):
+    def add_effect(cls, **kwargs):
         """Decorator function to allow the user to define an effect by decorating a function. Takes the
         same parameters as the class. """        
         def decorator(func):
-            new_class = type(func.__name__, (cls,), {
-                "duration": duration, 
-                "effect": func, 
-                "name": kwargs.get("name", func.__name__),
-                "description": kwargs.get("description", func.__doc__)
-            })
-            
-            return new_class
+            if not cls is Modifier:
+                cls.effect = func
+                return func
+            else:
+                new_class = type(func.__name__, (cls,), {
+                    "duration": kwargs.pop("duration"), 
+                    "effect": func, 
+                    "name": kwargs.pop("name", func.__name__),
+                    "description": kwargs.pop("description", func.__doc__)
+                })
+                
+                return new_class
             
         return decorator
         
     @classmethod
-    def add_buff(cls, duration : int, stat_type : StatEnum, **kwargs):
+    def add_buff(cls, **kwargs):
         """Decorator function to allow the user to define a buff by decorating a function. Takes
         the same parameters as the class. Since this specifically adds a buff, the `stat_type` parameter
         is required"""
         def decorator(func):
-            new_class = type(func.__name__, (cls,), {
-                "duration": duration, 
-                "stat_type": stat_type, 
-                "buff": func,
-                "name": kwargs.get("name", func.__name__),
-                "description": kwargs.get("description", func.__doc__)
-            })
-            
-            return new_class
-            
+            if not cls is Modifier:
+                cls.buff = func
+                cls.stat_type = kwargs.pop("stat_type")
+                return func
+            else:
+                new_class = type(func.__name__, (cls,), {
+                    "duration": kwargs.pop("duration"), 
+                    "stat_type": kwargs.pop("stat_type"), 
+                    "buff": func,
+                    "name": kwargs.pop("name", func.__name__),
+                    "description": kwargs.pop("description", func.__doc__)
+                })
+                
+                return new_class
+        
         return decorator
