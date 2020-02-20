@@ -12,8 +12,8 @@ Examples
 ---------
 There are few different ways to create a modifier. The most common is to use the builtin class method `add_effect` or `add_buff`. This allows you to add either a buff or an effect, these can be chained to add both a buff and effect to the Modifier. Using the decorator will transform the function into a Modifier subclass.
 
-Basic Buff
-###########
+Decorator Buff
+###############
 This shows you how to create a basic debuff using the decorator that will reduce the entity's attack by 3 for 5 turns.::
 
     from pyzork import Modifier, StatEnum
@@ -33,8 +33,8 @@ Calling `Debuff` will now return an instance of the class Debuff which is a subl
 
 When using modifiers in such a manner remember you only have access to the base stats, if you try and modify the calculated stats you will create an endless loop which will crash your adventure when you reach the recursion limit.
 
-Basic Effect
-#############
+Decorator Effect
+##################
 This shows you how to create a basic effect using the decorator that will deal 2 damage per turn to the entity for 4 turns.::
 
     from pyzork import Modifier

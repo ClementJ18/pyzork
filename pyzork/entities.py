@@ -155,7 +155,7 @@ class Entity:
         return ability.cast(self, target)
         
     def end_turn(self):
-        for _, modifier in enumerate(self.modifiers):
+        for _, modifier in list(enumerate(self.modifiers)):
             modifier.end_turn(self)
             if modifier.is_expired():
                 self.modifiers.remove(modifier)

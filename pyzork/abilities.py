@@ -1,20 +1,41 @@
-from .modifiers import *
 from .utils import post_output
+from .entities import Entity
 
 class Ability:
-    """Parent class for all abilities."""
+    """Super class for all abilitis. Most abilities have two uses, they either have a direct effect or add
+    a Modifier to either an entity or the user of the ability. But really, you have full control over the effect
+    of the ability and you have access to the user casting and its target so go nuts.
+    
+    Parameters
+    -----------
+    name : Optional[str]
+        A name for the ability, if none is provided the library will fallback to the docstring of the class and
+        then to the name of the class itself.
+    description : Optional[str]
+        A description for the ability, if none is provided the library will fall back to the default of the docstring
+        of the effect function
+    cost : Optional[Union[Callable[[Entity, Entity], int], int]]
+        An optional cost for using the ability, this can be a function that returns and int or it can simply be an
+        int. By default, the ability will cost 0 energy.
+    
+    """
     def __init__(self, **kwargs):
-        if "name" in kwargs:
-            self.name = kwargs.get("name")
-        else:
-            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+        if not getattr(self, "name", False):
+            if "name" in kwargs:
+                self.name = kwargs.get("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
 
-        self.description = kwargs.get("description", self.__init__.__doc__)
+        if not getattr(self, "description", False):
+            self.description = kwargs.get("description", self.effect.__doc__)
+        
+        if "cost" in kwargs:
+            self.cost = kwargs.get("cost", 0)
         
     def __hash__(self):
         return hash(self.name)
         
-    def __eq__(self, other):
+    def __eq__(self, other : "Ability"):
         if not isinstance(other, type(self)): 
             return NotImplemented
             
@@ -23,18 +44,18 @@ class Ability:
     def __repr__(self):
         return f"<{self.__class__.__name__}>"
 
-    def cast(self, user, target = None):
+    def cast(self, user : Entity, target : Entity = None):
         """Method that verifies if all conditions have been met."""
         if target is None:
             target = user
 
         if not self.costing(user, target):
-            return False
+            return
         
         post_output(f"{user.name} casts {self.name} on {target.name}")
-        return self.effect(target)
+        self.effect(user, target)
 
-    def costing(self, player, target):
+    def costing(self, player : Entity, target : Entity) -> bool:
         """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your cost system to work
         wether it rage or mana or whatever other custom cost system you may create your class with. This method must return true if
         the user has enough resource and false if it doesn't."""
@@ -49,22 +70,52 @@ class Ability:
 
         return False
 
-    def effect(self, target):
-        """Method to be overwritten that handles the actuall effect of the spell."""
+    def effect(self, user : Entity, target : Entity):
+        """The method that defines what happens to the target when the ability is cast on it. This can range from
+        directly affecting things like health or energy but it can also do more complex things like add a modifier.
+        
+        Parameters
+        -----------
+        user : Entity
+            The Entity that used the ability. This is made available to allow you to make changes to the user in
+            the cases of a successful cast. For example if you want to restore health for damage dealt or 
+            restore energy of the ability successfully lands.
+        target : Entity
+            This is the Entity the ability is aimed at, if the ability is self-cast (user uses ability on
+            himself) then it will be the same entity as the `user`.
+        """
         raise NotImplementedError
+        
+    def cost(self, user : Entity, target : Entity) -> int:
+        """Method to implement if you want to give your ability a dynamic costing.
+        
+        Parameters
+        -----------
+        user : Entity
+            The Entity that used the ability. This is made available to allow you to create a dynamic cost
+            the is based on certain items or stats of the user.
+        target : Entity
+            This is the Entity the ability is aimed at, if the ability is self-cast (user uses ability on
+            himself) then it will be the same entity as the `user`.
+            
+        Returns
+        --------
+        int
+            The final, calculated cost of casting this ability
+        """
+        return 0
             
     @classmethod
-    def add(cls, cost=0, **kwargs):
+    def add(cls, **kwargs):
+        """Decorator function to allow you to decorate a function in order to transform it into an Ability
+        subclass. Takes the same arguments as the class itself."""
         def decorator(func):
             new_class = type(func.__name__, (cls,), {
-                "cost": cost, 
+                "cost": kwargs.get("cost", 0), 
                 "effect": func,
                 "name": kwargs.get("name", func.__name__),
                 "description": kwargs.get("description", func.__doc__)
             })
-            # new_class.__name__ = func.__name__
-            # new_class.costing = cls.base_costing(cost)
-            # new_class.effect = func
             
             return new_class
             

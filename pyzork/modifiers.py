@@ -34,10 +34,11 @@ class Modifier:
         if not getattr(self, "duration", False):
             self.duration = kwargs.pop("duration")
 
-        if "name" in kwargs:
-            self.name = kwargs.pop("name")
-        else:
-            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+        if not getattr(self, "name", False):
+            if "name" in kwargs:
+                self.name = kwargs.pop("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         
         if not getattr(self, "description", False):
             self.description = kwargs.pop("description", f"{self.buff.__doc__} {self.effect.__doc__}")

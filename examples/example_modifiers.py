@@ -41,10 +41,10 @@ class FireDebuff(Modifier):
 
 
 @Modifier.add_effect(duration=5)
-def BurnEffect(self, target):
+def BurntEffect(self, target):
     target.take_pure_damage(2)
 
-@BurnEffect.add_buff(stat_type=StatEnum.attack)
-def BurnDebuff(self, target):
+@BurntEffect.add_buff(stat_type=StatEnum.attack)
+def burn_debuff(self, target):
     """The burn makes it hard to fight"""
     return -2

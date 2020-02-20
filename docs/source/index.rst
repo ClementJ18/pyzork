@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
    
-.. currentmodule:: moddb
+.. currentmodule:: pyzork
 
 Welcome to pyzork's documentation!
 ==================================
@@ -23,16 +23,9 @@ Welcome to pyzork's documentation!
    :target: https://github.com/ClementJ18/pyzork/pulls
    :alt: Open PRs
 
-.. image:: https://img.shields.io/github/release/ClementJ18/pyzork.svg
-   :alt: Latest Release
-
 .. image:: https://img.shields.io/github/stars/ClementJ18/pyzork.svg?label=Stars&style=social 
    :target: https://github.com/ClementJ18/pyzork
    :alt: Stars
-
-.. image:: https://img.shields.io/github/commits-since/ClementJ18/pyzork/latest.svg
-    :target: https://github.com/ClementJ18/pyzork/releases/latest
-    :alt: Commits Since
 
 pyzork is a python library to make creating text adventures easier. 
 
@@ -41,4 +34,5 @@ pyzork is a python library to make creating text adventures easier.
    :caption: Contents:
    
    modifiers
+   abilities
 
