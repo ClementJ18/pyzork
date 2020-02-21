@@ -42,7 +42,7 @@ class Location:
             return self.enter(from_location)
 
     def enter(self, from_location):
-        pass
+        post_output(f"{self.name}\n\n{self.description}")
         
     def _exit(self, to_location):
         return self.exit(to_location)
@@ -104,8 +104,6 @@ class World:
         
     def world_loop(self):
         self.current_location._enter(Location())
-        # self.current_location.print_exits(self)
-        # self.current_location.print_interactions(self)
         while True:
             qm.proccess_rewards(self.player, self)
             self.current_location.print_exits(self)

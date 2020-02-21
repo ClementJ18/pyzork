@@ -5,6 +5,8 @@ from .levels import ExperienceLevels
 from .utils import post_output
 from .base import qm
 
+import math
+
 
 class Entity:
     """Abstract class representing an entity, can be an NPC, a player or an enemy."""
@@ -21,7 +23,10 @@ class Entity:
         self.weapon =  kwargs.get("weapon", NullWeapon())
         self.armor = kwargs.get("armor", NullArmor())
         self.inventory = kwargs.get("inventory", Inventory())
-
+        
+        self.experience = kwargs.get("experience", ExperienceLevels(requirements=[math.inf], max_level=1))
+        self.experience.set_entity(self)
+        
         if "name" in kwargs:
             self.name = kwargs.get("name")
         else:
@@ -169,6 +174,9 @@ class Entity:
     def add_modifier(self, modifier):
         self.modifiers.add(modifier)
         
+    def gain_experience(self, value):
+        self.experience += value
+        
     @property
     def string(self):
         return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"        
@@ -177,16 +185,9 @@ class Player(Entity):
     """You"""
     def __init__(self, **kwargs):
         """A normal person with an extrodinary destiny... probably."""
-        super().__init__(
-            base_max_health=kwargs.get("base_max_health", 100),
-            base_damage=kwargs.get("base_damage", 5),
-            base_defense=kwargs.get("base_defense", 0),
-            base_max_energy=kwargs.get("base_max_energy", 25),
-        )
+        super().__init__(**kwargs)
         
         self.world = None
-        self.experience = kwargs.get("experience", ExperienceLevels(requirement=100, modifier=1.2, max_level=10))
-        self.experience.set_player(self)
         
     @property
     def health(self):
@@ -211,9 +212,6 @@ class Player(Entity):
             
     def print_actions(self, context):
         post_output("- Attack with 'attack [enemy]'")
-        
-    def gain_experience(self, value):
-        self.experience += value
         
     def set_world(self, world):
         self.world = world

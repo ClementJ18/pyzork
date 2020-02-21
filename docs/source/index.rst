@@ -35,4 +35,5 @@ pyzork is a python library to make creating text adventures easier.
    
    modifiers
    abilities
+   levels
 

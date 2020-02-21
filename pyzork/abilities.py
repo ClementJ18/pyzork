@@ -4,7 +4,8 @@ from .entities import Entity
 class Ability:
     """Super class for all abilitis. Most abilities have two uses, they either have a direct effect or add
     a Modifier to either an entity or the user of the ability. But really, you have full control over the effect
-    of the ability and you have access to the user casting and its target so go nuts.
+    of the ability and you have access to the user casting and its target so go nuts. Similarly to modifiers, entities
+    can have an unlimited number of abilities but they can never have the same abiltiy twice.
     
     Parameters
     -----------

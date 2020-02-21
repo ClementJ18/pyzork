@@ -62,7 +62,7 @@ class QuestManager:
                 del self.active_quests[name]
                 self.finished_quests[name] += 1
                 self.pending_rewards.append(quest)
-                print(f"finished {name}")
+                post_output(f"finished {name}")
                 
     def get_finished(self, name):
         return self.finished_quests[name] 
@@ -105,6 +105,10 @@ class Quest:
         
     def on_interact(self, entity):
         """Happens everytime a npc is talked to"""
+        pass
+        
+    def on_level(self, levels):
+        """Happens everytime an entity levels up"""
         pass
         
     def reward(self, player):
