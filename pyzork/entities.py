@@ -3,7 +3,7 @@ from .errors import EndGame
 from .equipment import NullWeapon, NullArmor, Inventory
 from .levels import ExperienceLevels
 from .utils import post_output
-from .base import qm
+from .base import QM
 
 import math
 
@@ -42,8 +42,9 @@ class Entity:
         return f'<{self.name} health={self.health}/{self.max_health} energy={self.energy}/{self.max_energy}>'
 
     def interact(self, world):
-        qm.progress_quests("on_interact", self, world)
+        QM.progress_quests("on_interact", self, world)
         self.interaction(world)
+        self.interacted = True
         
     def print_interaction(self, world):
         """Abstract method to be implemented, notifies the player that they can interact with this
@@ -93,7 +94,7 @@ class Entity:
         current = self._health
         if value <= 0:
             self._health = 0
-            qm.progress_quests("on_death", self)
+            QM.progress_quests("on_death", self)
         elif value > self.max_health:
             self._health = self.max_health
         else:
@@ -177,6 +178,9 @@ class Entity:
     def gain_experience(self, value):
         self.experience += value
         
+    def use_item(self, item):
+        self.inventory.use_item(item, self)
+        
     @property
     def string(self):
         return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"        
@@ -198,7 +202,7 @@ class Player(Entity):
         current = self._health
         if value <= 0:
             self._health = 0
-            qm.progress_quests("on_death", self)
+            QM.progress_quests("on_death", self)
             raise EndGame("Look like you've died, better luck next time.", victory=False, reason=EndgameReason.zero_health)
         elif value > self.max_health:
             self._health = self.max_health

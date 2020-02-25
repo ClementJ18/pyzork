@@ -1,4 +1,4 @@
-from .base import qm
+from .base import QM
 from .errors import ZorkError
 
 

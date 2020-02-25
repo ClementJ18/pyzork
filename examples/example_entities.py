@@ -1,10 +1,10 @@
-from pyzork.entities import Enemy
+from pyzork.entities import Enemy, Entity
 from pyzork.utils import yes_or_no, post_output
-from pyzork.base import qm
+from pyzork.base import QM
 from pyzork.errors import EndGame
 from pyzork.enums import EndgameReason
 
-from .example_equipment import Sword
+from .example_equipment import Sword, Key
 
 class Goblin(Enemy):
     """Golbin"""
@@ -42,8 +42,19 @@ class OldMan(Enemy):
         answer = yes_or_no()
         if answer:
             post_output("Nice")
-            qm.start_quest("KillGoblin")
+            QM.start_quest("KillGoblin")
         else:
             post_output("No? Then die!")
             world.initiate_battle([self])
             raise EndGame("You win!", victory=True, reason=EndgameReason.victory)
+            
+class Table(Entity):
+    def print_interaction(self, world):
+        post_output("- Check the drawers of a weird looking table in the corner")
+        
+    def interaction(self, world):
+        if self.interacted:
+            post_output("There is nothing left")
+        else:
+            post_output("You find a key in the drawer.")
+            world.player.add_to_inventory(Key())

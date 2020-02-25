@@ -1,6 +1,6 @@
 from .enums import Direction
 from .utils import get_user_input, post_output
-from .base import qm
+from .base import QM
 from .battle import Battle
 
 from typing import Union
@@ -19,6 +19,7 @@ class Location:
         self.discovered = False
         self.npcs = kwargs.get("npcs", [])
         self.enemies = kwargs.get("enemies", [])
+        self.items = kwargs.get("items", [])
         
     def __str__(self):
         return f"<{self.name}>"
@@ -35,7 +36,7 @@ class Location:
         
     def _enter(self, from_location):
         if not self.discovered:
-            qm.progress_quests("on_discover", self)
+            QM.progress_quests("on_discover", self)
             return self.enter(from_location)
             self.discovered = True
         else:
@@ -53,7 +54,7 @@ class Location:
     def print_interaction(self, world, direction):
         """Abstract method to give the user control over how the exit is actually printed if they wanna
         add some funky flair."""
-        post_output(f"- Go {direction.key} to {self.name}")
+        post_output(f"- Go {direction.name} to {self.name}")
         
     def print_exits(self, world):
         for direction, location in self.exits.items():
@@ -105,9 +106,10 @@ class World:
     def world_loop(self):
         self.current_location._enter(Location())
         while True:
-            qm.proccess_rewards(self.player, self)
+            QM.proccess_rewards(self.player, self)
             self.current_location.print_exits(self)
-            self.current_location.print_interactions(self)
+            self.current_location.print_npcs(self)
+            self.current_location.print_pickups(self)
             self.travel_parser()
         
     def travel(self, new_location : Union[Direction, Location]):

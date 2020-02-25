@@ -1,6 +1,6 @@
 from pyzork.entities import Player
 from pyzork.world import World
-from pyzork.base import game_loop, qm
+from pyzork.base import game_loop, QM
 
 from .example_world import *
 from .example_quest import *
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     
     player = Player()
     world = World([tavern, market, island, temple, docks, hidden], player)
-    qm.start_quest("KillBigGoblin")
+    QM.start_quest("KillBigGoblin")
     
     game_loop(world)
     

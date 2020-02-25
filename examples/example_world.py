@@ -1,9 +1,9 @@
 from pyzork.world import World, Location
 from pyzork.utils import post_output
 from pyzork.enums import Direction
-from pyzork.base import qm
+from pyzork.base import QM
 
-from .example_entities import OldMan, Goblin, BigGoblin
+from .example_entities import OldMan, Goblin, BigGoblin, Table
 
 
 #run in main directory with python -m examples.example_world
@@ -17,7 +17,7 @@ class Tavern(Location):
     """The Tavern"""
     def __init__(self):
         super().__init__(
-            npcs=[OldMan()]    
+            npcs=[OldMan(), Table()]    
         )
     
     def enter(self, from_location):
@@ -61,7 +61,7 @@ class Docks(Location):
     """The Docks"""
     def enter(self, from_location):
         # if not self.discovered:
-        #     qm.start_quest("KillGoblin")
+        #     QM.start_quest("KillGoblin")
         
         if not isinstance(from_location, Island):
             post_output("some ugly docks")

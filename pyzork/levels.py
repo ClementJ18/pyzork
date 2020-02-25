@@ -1,5 +1,5 @@
 from .utils import post_output
-from .base import qm
+from .base import QM
 
 import math
 
@@ -119,7 +119,7 @@ class ExperienceLevels:
         while value >= self.requirement:
             value -= self.requirement
             self.level_up()
-            qm.progress_quests("on_level", self)
+            QM.progress_quests("on_level", self)
             
         self._experience = value
         

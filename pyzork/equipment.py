@@ -1,5 +1,5 @@
 from .enums import *
-from .base import qm
+from .base import QM
 from .utils import post_output
 
 class Inventory:
@@ -24,14 +24,15 @@ class Inventory:
             post_output(f"Consumable {item.name} added")    
                 
         if isinstance(item, QuestItem):
-            qm.progress_quests("on_pickup", item)
+            QM.progress_quests("on_pickup", item)
             self.quest.append(item)
             post_output(f"Quest item {item.name} added")
     
-    def use_item(self, item):
+    def use_item(self, item, player):
         try:
             if self.consumables[type(item)] > 0:
                 self.consumables[type(item)] -= 1
+                
                 post_output(f"Consumable {item.name} used")
                 return True
             else:
@@ -109,9 +110,6 @@ class QuestItem(Item):
     pass
 
 class Equipment(Item):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
     def calc(self, player):
         """Abstract method that must be implemented by every piece of equipment, this is the method used when
         calculating damage that dictates the various modifiers and buffs gotten"""

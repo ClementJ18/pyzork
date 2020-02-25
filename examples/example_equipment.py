@@ -1,4 +1,4 @@
-from pyzork.equipment import Weapon, Armor
+from pyzork.equipment import Weapon, Armor, QuestItem
 from pyzork.enums import StatEnum
 
 class Sword(Weapon):
@@ -23,3 +23,7 @@ class LeatherArmor(Armor):
         """This leather armor can block some blows"""
         
         return [(StatEnum.defense, 5)]
+        
+
+class Key(QuestItem):
+    pass

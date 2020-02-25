@@ -1,4 +1,4 @@
-from pyzork.base import Quest, qm
+from pyzork.base import Quest, QM
 from pyzork.enums import Direction, EndgameReason
 from pyzork.utils import post_output
 from pyzork.errors import EndGame
@@ -7,7 +7,7 @@ from .example_entities import Goblin, OldMan, BigGoblin
 from .example_equipment import Sword
 from .example_world import temple, hidden
 
-@qm.add()
+@QM.add(id="KillGoblin")
 class KillGoblin(Quest):
     def on_death(self, entity):
         if isinstance(entity, Goblin):
@@ -17,7 +17,7 @@ class KillGoblin(Quest):
         post_output("You have discovered a secret entrance to the temple")
         temple.two_way_connect(Direction.west, hidden)
         
-@qm.add()
+@QM.add(id="KillBigGoblin")
 class KillBigGoblin(Quest):
     def on_death(self, entity):
         if isinstance(entity, BigGoblin):
@@ -26,7 +26,7 @@ class KillBigGoblin(Quest):
     def reward(self, player, world):
         raise EndGame("You win!", victory=True, reason=EndgameReason.victory)
 
-@qm.add(name="FindTheOldMan")    
+@QM.add(id="FindTheOldMan", name="FindTheOldMan")    
 class TerribleQuestName(Quest):
     def on_interact(self, entity):
         if isinstance(entity, OldMan):

@@ -54,7 +54,7 @@ class QuestManager:
             quest.repeatable = repeatable
             quest.name = name
             quest.id = kwargs.pop("id")
-            quest.description = kwargs.pop("description", self.reward.__doc__)
+            quest.description = kwargs.pop("description", quest.reward.__doc__)
             self.add_quest(quest)
             
             return quest 
