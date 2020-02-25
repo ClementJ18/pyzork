@@ -42,7 +42,7 @@ class Entity:
         return f'<{self.name} health={self.health}/{self.max_health} energy={self.energy}/{self.max_energy}>'
 
     def interact(self, world):
-        qm.progress_quests("on_interact", self)
+        qm.progress_quests("on_interact", self, world)
         self.interaction(world)
         
     def print_interaction(self, world):

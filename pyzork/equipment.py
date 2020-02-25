@@ -102,10 +102,10 @@ class Item:
             
         return self.name == other.name
         
-class Consumable:
+class Consumable(Item):
     pass
     
-class QuestItem:
+class QuestItem(Item):
     pass
 
 class Equipment(Item):

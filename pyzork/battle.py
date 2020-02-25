@@ -14,7 +14,6 @@ class Battle:
         self.player.gain_experience(dead.experience(player))
         self.dead.append()
         
-
     def battle_loop(self):
         while self.player.is_alive() and self.alive:
             post_output(f"You are attacked by {self.alive}")

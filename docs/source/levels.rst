@@ -7,7 +7,7 @@ Levels are one of the few objects in pyzork that do not need to be subclassed or
 Whenever an entity defeats another entity (by default) they gain some amount of experience, when they reach a certain treshold they level up. When an entity levels up, the treshold is substracted from their total experience, their level increments by one and they gain a reward. In the case of this library a reward is attributed through a function being called. By default this function simply prints "You leveled up! You are now level [entity.level]" and does nothing else but it provides you access to the entity that leveled up, which means you can do anything to that entity. In addition, leveling up also sends out a `on_level` event to the Quest Manager
 
 .. autoclass:: pyzork.levels.ExperienceLevels
-    :members:
+
 
 Examples
 ---------
