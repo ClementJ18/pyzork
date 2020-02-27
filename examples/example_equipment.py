@@ -1,29 +1,34 @@
-from pyzork.equipment import Weapon, Armor, QuestItem
+from pyzork.equipment import Weapon, Armor, QuestItem, Consumable
 from pyzork.enums import StatEnum
 
-class Sword(Weapon):
-    """A Simple Sword"""
+from .example_modifiers import HealingOnguentModifier
 
-    def calc(self, player):
-        """This simple bronze sword gives you a small bonus to your attack"""
+@Weapon.add_buff()
+def Sword(self, player):
+    """This simple bronze sword gives you a small bonus to your attack"""
 
-        return [(StatEnum.attack, 5)]
+    return [(StatEnum.attack, 5)]
         
-class SwordAndShield(Weapon):
-    """A Sword and a shield"""
-    
-    def calc(self, player):
-        """This bronze sword also has a shield included for bonus defense"""
-        return [(StatEnum.attack, 5), (StatEnum.defense, 3)]
+@Weapon.add_buff()
+def SwordAndShield(self, player):
+    """This bronze sword also has a shield included for bonus defense"""
+    return [(StatEnum.attack, 5), (StatEnum.defense, 3)]
         
 class LeatherArmor(Armor):
     """simple leather armor"""
     
-    def calc(self, player):
+    def buff(self, player):
         """This leather armor can block some blows"""
         
         return [(StatEnum.defense, 5)]
         
-
 class Key(QuestItem):
     pass
+    
+@Consumable.add(amount=1)
+def HealthPotion(item, player):
+    player.restore_health(5)
+    
+@Consumable.add(amount=3)
+def HealingOnguent(item, player):
+    player.add_modifier(HealingOnguentModifier())

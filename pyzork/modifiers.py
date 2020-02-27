@@ -44,13 +44,13 @@ class Modifier:
             self.description = kwargs.pop("description", f"{self.buff.__doc__} {self.effect.__doc__}")
         
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.__class__.__name__)
         
     def __eq__(self, other):
         if not isinstance(other, type(self)): 
             return NotImplemented
             
-        return self.name == other.name
+        return self.__class__.__name__ == other.__class__.__name__
         
     def __repr__(self):
         return f"<{self.name} duration={self.duration} stat={self.stat_type.name}>"

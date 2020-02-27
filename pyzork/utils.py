@@ -47,3 +47,23 @@ def concat_docs(cls):
     cls.__doc__ = "\n".join(final)
 
     return cls
+    
+def find(predicate, seq):
+    for element in seq:
+        if predicate(element):
+            return element
+    return None
+    
+def get(iterable, **kwargs):
+    def predicate(elem):
+        for attr, val in kwargs.items():
+            nested = attr.split('__')
+            obj = elem
+            for attribute in nested:
+                obj = getattr(obj, attribute)
+
+            if obj != val:
+                return False
+        return True
+
+    return find(predicate, iterable)

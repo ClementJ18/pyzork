@@ -34,13 +34,13 @@ class Ability:
             self.cost = kwargs.get("cost", 0)
         
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.__class__.__name__)
         
     def __eq__(self, other : "Ability"):
         if not isinstance(other, type(self)): 
             return NotImplemented
             
-        return self.name == other.name
+        return self.__class__.__name__ == other.__class__.__name__
         
     def __repr__(self):
         return f"<{self.__class__.__name__}>"

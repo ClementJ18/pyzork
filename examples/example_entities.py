@@ -10,16 +10,16 @@ class Goblin(Enemy):
     """Golbin"""
     def __init__(self):
         super().__init__(
-            base_max_health=15,
-            base_damage=2,
-            base_defense=0,
+            max_health=15,
+            damage=2,
+            defense=0,
             weapon=Sword()
         )
         
 BigGoblin = Enemy.from_dict(
-    base_max_health=30,
-    base_damage=4,
-    base_defense=5,
+    max_health=30,
+    damage=4,
+    defense=5,
     weapon=Sword(),
     name="Big Golbin",
     description="The BBG"
@@ -29,9 +29,9 @@ class OldMan(Enemy):
     """OldMan"""
     def __init__(self):
         super().__init__(
-            base_max_health=5,
-            base_damage=4,
-            base_defense=3,    
+            max_health=5,
+            damage=4,
+            defense=3,    
         )
     
     def print_interaction(self, world):

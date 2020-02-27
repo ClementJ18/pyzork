@@ -48,3 +48,7 @@ def BurntEffect(self, target):
 def burn_debuff(self, target):
     """The burn makes it hard to fight"""
     return -2
+    
+Modifier.add_effect(duration=3)
+def HealingOnguentModifier(modifier, target):
+    target.restore_health(3)

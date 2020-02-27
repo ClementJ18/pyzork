@@ -19,7 +19,6 @@ class Location:
         self.discovered = False
         self.npcs = kwargs.get("npcs", [])
         self.enemies = kwargs.get("enemies", [])
-        self.items = kwargs.get("items", [])
         
     def __str__(self):
         return f"<{self.name}>"
@@ -34,21 +33,22 @@ class Location:
     def one_way_connect(self, direction : Direction, connected_location : "Location" = None):
         self.exits[direction] = connected_location
         
-    def _enter(self, from_location):
+    def _enter(self, player, from_location):
         if not self.discovered:
             QM.progress_quests("on_discover", self)
-            return self.enter(from_location)
+            can_enter = self.enter(player, from_location)
             self.discovered = True
+            return can_enter
         else:
-            return self.enter(from_location)
+            return self.enter(player, from_location)
 
-    def enter(self, from_location):
+    def enter(self, player, from_location):
         post_output(f"{self.name}\n\n{self.description}")
         
-    def _exit(self, to_location):
-        return self.exit(to_location)
+    def _exit(self, player, to_location):
+        return self.exit(player, to_location)
 
-    def exit(self, to_location):
+    def exit(self, player, to_location):
         pass
         
     def print_interaction(self, world, direction):
@@ -64,10 +64,6 @@ class Location:
     def print_npcs(self, world):
         for npc in self.npcs:
             npc.print_interaction(world)
-                
-    def print_pickups(self, world):
-        for item in self.items:
-            item.print_interaction(world)
         
     def can_move_to(self, location : Union[Direction, "Location"]):
         if isinstance(location, Direction):
@@ -91,7 +87,69 @@ class Location:
         return new_class
 
 class Shop(Location):
-    pass
+    def __init__(self, **kwargs):
+        if "items" in kwargs:
+            self.items = kwargs.get("items", [])
+        
+        if "resell" in kwargs:
+            self.resell = kwargs.get("resell", 1)
+            
+        if "name" in kwargs:
+            self.name = kwargs.get("name")
+            
+        if "description" in kwargs:
+            self.description = kwargs.get("description")
+            
+        super().__init__(**kwargs)
+        
+    def _enter(self, player, from_location):
+        if not self.discovered:
+            QM.progress_quests("on_discover", self)
+            self.enter(player, from_location)
+            self.discovered = True
+        else:
+            self.enter(player, from_location)
+            
+        self.shop_loop(player)
+        return False
+    
+    def print_interaction(self, world, direction):
+        post_output(f"- Go {direction.name} to shop")
+        
+    def print_items(self, player):
+        for item in self.items:
+            post_output(f"- {item.item.name}: {item.item.description}")
+        
+    def shop_parser(self, player):
+        choice = get_user_input().lower().split()
+        if choice[0] == "exit":
+            return False
+        elif choice[0] == "buy":
+            item = self.items[int(choice[1])]
+            item.buy(player)
+        elif choice[0] == "sell":
+            item = self.items[int(choice[1])]
+            item.sell(player, self.resell)
+        
+    def shop_loop(self, player):
+        while True:
+            self.print_items(player)
+            cont = self.shop_parser(player)
+            if cont is False:
+                return
+    
+    @classmethod
+    def from_dict(cls, **kwargs):
+        name = kwargs.get("name", "AShop")
+        new_class = type(name, (cls,), {
+                "name": name,
+                "description": kwargs.get("description"),
+                "resell": kwargs.get("resell", 1),
+                "items": kwargs.get("items", [])
+            })
+        
+        return new_class
+        
 
 class World:
     def __init__(self, locations, player, **kwargs):
@@ -104,13 +162,21 @@ class World:
         self.player.set_world(self)
         
     def world_loop(self):
-        self.current_location._enter(Location())
+        self.current_location._enter(self.player, Location())
         while True:
             QM.proccess_rewards(self.player, self)
             self.current_location.print_exits(self)
             self.current_location.print_npcs(self)
-            self.current_location.print_pickups(self)
+            self.print_menu()
             self.travel_parser()
+            self.end_turn()
+            
+    def print_menu(self):
+        post_output("- View inventory")
+        post_output("- View stats")
+            
+    def end_turn(self):
+        self.player.end_turn()
         
     def travel(self, new_location : Union[Direction, Location]):
         old_location = self.current_location
@@ -118,17 +184,14 @@ class World:
             new_location = self.directional_move(new_location)
         
         self.current_location = new_location
-        can_exit = old_location._exit(new_location)
-        can_enter = new_location._enter(old_location)
+        can_exit = old_location._exit(self.player, new_location)
+        can_enter = new_location._enter(self.player, old_location)
         if can_exit is False or can_enter is False:
             self.current_location = old_location
             return
         
         if new_location.enemies:
             self.initiate_battle(new_location.enemies)
-
-        # new_location.print_exits(self)
-        # new_location.print_interactions(self)
         
     def initiate_battle(self, enemies):
         battle = Battle(self.player, enemies, self.current_location)
@@ -157,6 +220,11 @@ class World:
         elif choice[0] == "interact":
             npc = self.current_location.npcs[int(choice[1])]
             npc.interact(self)
+        elif choice[0] == "view":
+            if choice[1] == "stats":
+                self.player.print_stats()
+            elif choice[1] == "inventory":
+                self.player.print_inventory()
         
     def better_travel_parser(self):
         keywords = ["go", "walk", "move", "run", "enter", "exit"]

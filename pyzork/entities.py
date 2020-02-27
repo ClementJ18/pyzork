@@ -11,14 +11,14 @@ import math
 class Entity:
     """Abstract class representing an entity, can be an NPC, a player or an enemy."""
     def __init__(self, **kwargs):
-        self.base_max_health = kwargs.get("base_max_health", 0)
-        self._health = kwargs.get("base_health", self.base_max_health)
+        self.base_max_health = kwargs.get("max_health", 0)
+        self._health = kwargs.get("health", self.base_max_health)
 
-        self.base_damage = kwargs.get("base_damage", 0)
-        self.base_defense = kwargs.get("base_defense", 0)
+        self.base_damage = kwargs.get("damage", 0)
+        self.base_defense = kwargs.get("defense", 0)
 
-        self.base_max_energy = kwargs.get("base_max_energy", 0)
-        self._energy = kwargs.get("base_energy", self.base_max_energy)
+        self.base_max_energy = kwargs.get("max_energy", 0)
+        self._energy = kwargs.get("energy", self.base_max_energy)
 
         self.weapon =  kwargs.get("weapon", NullWeapon())
         self.armor = kwargs.get("armor", NullArmor())
@@ -27,6 +27,8 @@ class Entity:
         self.experience = kwargs.get("experience", ExperienceLevels(requirements=[math.inf], max_level=1))
         self.experience.set_entity(self)
         
+        self.money = kwargs.get("money", 0)
+        
         if "name" in kwargs:
             self.name = kwargs.get("name")
         else:
@@ -34,8 +36,8 @@ class Entity:
 
         self.description = kwargs.get("description", self.__init__.__doc__)
 
-        self.modifiers = set()
-        self.abilities = set()
+        self.modifiers = {}
+        self.abilities = {}
         self.interacted = False
         
     def __repr__(self):
@@ -54,31 +56,53 @@ class Entity:
     def interaction(self, world):
         """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
         pass
+        
+    def print_inventory(self):
+        self.inventory.print()
+        
+    def print_stats(self):
+        post_output(f"{self.name}: LV {self.experience.level}")
+        post_output(f"Health: {self.health}/{self.max_health}")
+        post_output(f"Energy: {self.energy}/{self.max_energy}")
+        post_output(f"Attack/Defense: {self.attack}/{self.defense}")
+        post_output(f"Weapon/Armor: {self.weapon}/{self.armor}")
+        post_output(f"Money: {self.money}")
 
     def _big_calc(self, stat):
         """Calculate all the modifiers for a stat"""
-        return (sum([x.calc(self) for x in self.modifiers if x.stat_type == stat]) 
-            + sum([x[1] for x in [*self.weapon.calc(self), *self.armor.calc(self)] if x[0] == stat]))
+        total = 0
+        #modifiers
+        for modifier in self.modifiers:
+            if modifier.stat_type == stat:
+                total += modifier.calc(self)
+                
+        #weapons
+        for modifier in [*self.weapon.calc(self), *self.armor.calc(self)]:
+            if modifier[0] == stat:
+                total += modifier[1]
+        
+        #total
+        return total
 
     @property
     def attack(self):
         """This method compiles all the buffs, equipment, attributes to generate the attack stat of a unit."""
-        return self.base_damage + self._big_calc(StatEnum.attack)
+        return max(0, self.base_damage + self._big_calc(StatEnum.attack))
         
     @property
     def defense(self):
         """This method compiles all the buffs, equipment, attributes to generate the defense stat of a unit."""
-        return self.base_defense + self._big_calc(StatEnum.defense)
+        return max(0, self.base_defense + self._big_calc(StatEnum.defense))
 
     @property
     def max_health(self):
         """This method compiles all the buffs, equipment, attributes to generate the max health stat of a unit."""
-        return self.base_max_health + self._big_calc(StatEnum.max_health)
+        return max(0, self.base_max_health + self._big_calc(StatEnum.max_health))
 
     @property
     def max_energy(self):
         """This method compiles all the buffs, equipment, attributes to generate the max health stat of a unit."""
-        return self.base_max_energy + self._big_calc(StatEnum.max_energy)
+        return max(0, self.base_max_energy + self._big_calc(StatEnum.max_energy))
 
     @property
     def health(self):
@@ -161,10 +185,11 @@ class Entity:
         return ability.cast(self, target)
         
     def end_turn(self):
-        for _, modifier in list(enumerate(self.modifiers)):
+        for name in list(self.modifiers.keys()):
+            modifier = self.modifiers[name]
             modifier.end_turn(self)
             if modifier.is_expired():
-                self.modifiers.remove(modifier)
+                del self.modifiers[name]
             
     def add_to_inventory(self, item):
         self.inventory.add_item(item)
@@ -173,7 +198,13 @@ class Entity:
         self.inventory.remove_item(item)
         
     def add_modifier(self, modifier):
-        self.modifiers.add(modifier)
+        if hash(modifier) in self.modifier:
+            self.modifiers[hash(modifier)] = modifier if modifier.duration > self.modifiers[hash(modifier)] else self.modifiers[hash(modifier)]
+        else:
+            self.modifiers[hash(modifier)] = modifier
+    
+    def add_ability(self, ability):
+        self.abilities[hash(ability)] = ability
         
     def gain_experience(self, value):
         self.experience += value
@@ -181,9 +212,15 @@ class Entity:
     def use_item(self, item):
         self.inventory.use_item(item, self)
         
+    def remove_money(self, value):
+        self.money -= value
+        
+    def add_money(self, value):
+        self.money += money
+        
     @property
     def string(self):
-        return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"        
+        return f"{self.description} They are wearing {self.armor.string} and wield {self.weapon.string}"      
 
 class Player(Entity):
     """You"""
