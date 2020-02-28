@@ -2,25 +2,34 @@ from .enums import Direction
 from .utils import get_user_input, post_output
 from .base import QM
 from .battle import Battle
+from .actions import *
 
 from typing import Union
 
-
 class Location:
     def __init__(self, **kwargs):
-        if "name" in kwargs:
-            self.name = kwargs.get("name")
-        else:
-            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        self.description = kwargs.get("description", self.__init__.__doc__)
+        if not getattr(self, "name", False):
+            if "name" in kwargs:
+                self.name = kwargs.get("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+        
+        if "description" in kwargs:
+            self.description = kwargs.get("description", self.__init__.__doc__)
         
         self.exits = self._generate_exits()
         self.discovered = False
-        self.npcs = kwargs.get("npcs", [])
-        self.enemies = kwargs.get("enemies", [])
         
-    def __str__(self):
+        if not getattr(self, "npcs", False):
+            self.npcs = kwargs.pop("npcs", [])
+            
+        if not getattr(self, "enemies", False):
+            self.enemies = kwargs.get("enemies", [])
+            
+        self.npcs = [npc() for npc in self.npcs]
+        self.enemies = [enemy() for enemy in self.enemies]
+        
+    def __repr__(self):
         return f"<{self.name}>"
 
     def _generate_exits(self):
@@ -88,16 +97,16 @@ class Location:
 
 class Shop(Location):
     def __init__(self, **kwargs):
-        if "items" in kwargs:
+        if not getattr(self, "items", False):
             self.items = kwargs.get("items", [])
         
-        if "resell" in kwargs:
+        if not getattr(self, "resell", False):
             self.resell = kwargs.get("resell", 1)
             
-        if "name" in kwargs:
+        if not getattr(self, "name", False):
             self.name = kwargs.get("name")
             
-        if "description" in kwargs:
+        if not getattr(self, "description", False):
             self.description = kwargs.get("description")
             
         super().__init__(**kwargs)
@@ -149,7 +158,6 @@ class Shop(Location):
             })
         
         return new_class
-        
 
 class World:
     def __init__(self, locations, player, **kwargs):
@@ -168,7 +176,7 @@ class World:
             self.current_location.print_exits(self)
             self.current_location.print_npcs(self)
             self.print_menu()
-            self.travel_parser()
+            self.better_travel_parser()
             self.end_turn()
             
     def print_menu(self):
@@ -225,22 +233,25 @@ class World:
                 self.player.print_stats()
             elif choice[1] == "inventory":
                 self.player.print_inventory()
-        
+        elif choice[0] == "equip":
+            t = self.player.inventory.get_equipment(int(choice[1]))
+            self.player.inventory.equip_item(t)
+        elif choice[0] == "use":
+            t = self.player.inventory.get_consumable([int(choice[1])])
+            self.player.inventory.use_item(t)
+            
     def better_travel_parser(self):
-        keywords = ["go", "walk", "move", "run", "enter", "exit"]
-        possible_actions = [actions.SystemMove, actions.SystemItem, actions.SystemEquipment]
-        choice = get_user_input().lower()
-        
-        if not any(x in choice for x in self.keywords):
-            return
-            
-        #destination
-        for exit in self.current_location.exits:
-            pass
-            
-        if len(self.current_location.exits) == 1:
-            exit = list(self.current_location.exits.values())[0]
-            return self.travel(exit)
+        choice = clean(get_user_input().lower())
+        if direction := direction_parser(choice, self):
+            self.legal_travel(direction)
+        elif npc := interact_parser(choice, self.current_location):
+            npc.interact(self)
+        elif view := view_parser(choice, self.player):
+            gettattr(self.player, f"print_{view}")()
+        elif item := equip_item_parser(choice, self.player):
+            self.player.inventory.equip_item(item)
+        elif item := use_item_parser(choice, self.player):
+            self.player.inventory.use_item(item)
             
     def end_game(self, e):
         post_output(e)
