@@ -10,17 +10,19 @@ class Battle:
         self.turn = 0
         self.dead = []
         
-    def remove_dead(self, enemy):
+    def remove_dead(self, enemy_index):
         dead = self.alive.pop(enemy_index)
         self.player.gain_experience(dead.experience(player))
         self.dead.append()
         
+    def priorities(self):
+        return [self.player_turn, *[lambda: self.enemy_turn(enemy) for enemy in self.enemies]]
+        
     def battle_loop(self):
         while self.player.is_alive() and self.alive:
             post_output(f"You are attacked by {self.alive}")
-            self.player_turn()
-            for enemy in self.alive:
-                self.enemy_turn(enemy)
+            for turn in self.priorities():
+                turn()
 
             self.end_turn()
         
@@ -48,6 +50,6 @@ class Battle:
         elif reply := use_ability_parser(choice, self):
             self.player.use_ability(reply[1], reply[0])
         elif reply := use_item_parser(choice, self):
-            self.player.use_item(reply[1], reply[0])
+            self.player.use_item_on(reply[1], reply[0])
             
     
