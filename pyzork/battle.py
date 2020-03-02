@@ -1,4 +1,5 @@
 from .utils import get_user_input, post_output
+from .actions import *
 
 class Battle:
     def __init__(self, player, enemies, location):
@@ -42,19 +43,11 @@ class Battle:
         
     def battle_parser(self):
         choice = get_user_input().lower()
-        split = choice.split()
-        if split[0] == "attack":
-            enemy_index = int(split[1])
-            self.player.do_attack(self.alive[enemy_index])
-            if not self.alive[enemy_index].is_alive():
-                self.remove_dead(enemy_index)
-        
-        if split[0] == "cast":
-            if len(split) == 3:
-                enemy_index = int(split[2])
-                self.player.use_ability(self.player.abilities[int(split[1])], self.alive[enemy_index])
-                if not self.alive[enemy_index].is_alive():
-                    self.remove_dead(enemy_index)
-            else:
-                self.player.use_ability(self.player.abilities[int(split[1])])
+        if target := attack_parser(choice, self):
+            self.player.do_attack(target)
+        elif reply := use_ability_parser(choice, self):
+            self.player.use_ability(reply[1], reply[0])
+        elif reply := use_item_parser(choice, self):
+            self.player.use_item(reply[1], reply[0])
+            
     

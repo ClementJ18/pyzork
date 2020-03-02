@@ -16,6 +16,9 @@ class Item:
     def __repr__(self):
         return f"<{self.name}>"
         
+    def __str__(self):
+        return self.name
+        
     def __hash__(self):
         return hash(self.name)
         
@@ -32,16 +35,16 @@ class Consumable(Item):
             self.amount = kwargs.pop("amount")
         super().__init__(kwargs)
         
-    def use(self, player):
+    def use(self, target):
         if self.amount > 0:
             self.amount -= 1
-            self.effect(player)
+            self.effect(target)
             
             return True
         else:
             return False
             
-    def effect(self, player):
+    def effect(self, target):
         """"""
         pass
         
@@ -69,7 +72,7 @@ class Equipment(Item):
     def buff(self, player):
         """Abstract method that must be implemented by every piece of equipment, this is the method used when
         calculating damage that dictates the various modifiers and buffs gotten"""
-        pass
+        return []
         
     def effect(self, target):
         """Abstract class that applies an effect when attacking"""
@@ -152,6 +155,8 @@ class ShopItem:
         player.remove_money(self.price)
         player.add_to_inventory(self.item())
         
+        post_output(f"Bought {self.item.name} and payed {self.price}")
+        
     def sell(self, player, resell):
         to_remove = player.inventory.get_item(name=self.item.name)
         if to_remove is None:
@@ -161,11 +166,15 @@ class ShopItem:
             player.inventory.remove_item(to_remove)
             amount = to_remove.amount // self.item.amount
             self.amount += amount
-            player.add_money((self.price * resell) * amount)
+            money = (self.price * resell) * amount
+            player.add_money(money)
         else:
             player.inventory.remove_item(to_remove)
             self.amount += 1
-            player.add_money(self.price * resell)
+            money = self.price * resell
+            player.add_money(money)
+        
+        post_output(f"Sold {self.item.name} and gained {money}")
 
 class Inventory:
     def __init__(self, **kwargs):
@@ -199,8 +208,8 @@ class Inventory:
         
         QM.progress_quests("on_pickup", item)
     
-    def use_item(self, item : Consumable, player : "Player"):
-        used = item.use(player)
+    def use_item(self, item : Consumable, target):
+        used = item.use(target)
         if not used:
             post_output("You cannot use this item")
             

@@ -44,12 +44,12 @@ class Ability:
         
     def __repr__(self):
         return f"<{self.__class__.__name__}>"
+        
+    def __str__(self):
+        return self.name
 
-    def cast(self, user : Entity, target : Entity = None):
+    def cast(self, user : Entity, target : Entity):
         """Method that verifies if all conditions have been met."""
-        if target is None:
-            target = user
-
         if not self.costing(user, target):
             return
         

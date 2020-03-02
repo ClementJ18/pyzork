@@ -189,3 +189,4 @@ napoelon_google_doctstring = False
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+napoleon_custom_sections = ["Possible Improvements"]

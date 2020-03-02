@@ -54,6 +54,9 @@ class Modifier:
         
     def __repr__(self):
         return f"<{self.name} duration={self.duration} stat={self.stat_type.name}>"
+        
+    def __str__(self):
+        return self.name
     
     def is_expired(self):
         """Simple method to check if is a buff is expired.

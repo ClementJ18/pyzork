@@ -42,6 +42,9 @@ class Entity:
         
     def __repr__(self):
         return f'<{self.name} health={self.health}/{self.max_health} energy={self.energy}/{self.max_energy}>'
+        
+    def __str__(self):
+        return self.name
 
     def interact(self, world):
         QM.progress_quests("on_interact", self, world)
@@ -178,10 +181,7 @@ class Entity:
     def gain_energy(self, value):
         self.energy += value
         
-    def use_ability(self, ability, target=None):
-        if target is None:
-            target = self
-        
+    def use_ability(self, ability, target):
         return ability.cast(self, target)
         
     def end_turn(self):
@@ -209,8 +209,11 @@ class Entity:
     def gain_experience(self, value):
         self.experience += value
         
-    def use_item(self, item):
-        self.inventory.use_item(item, self)
+    def use_item_on_me(self, item):
+        self.use_item_on(item, self)
+        
+    def use_item_on(self, item, target):
+        self.inventory.use_item(item, target)
         
     def remove_money(self, value):
         self.money -= value
@@ -227,7 +230,6 @@ class Player(Entity):
     def __init__(self, **kwargs):
         """A normal person with an extrodinary destiny... probably."""
         super().__init__(**kwargs)
-        
         self.world = None
         
     @property

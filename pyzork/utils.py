@@ -1,3 +1,5 @@
+from .actions import yes_or_no_parser
+
 def get_user_input():
     return input(">>>>> ")
 
@@ -7,12 +9,13 @@ def post_output(string):
 def yes_or_no():
     while True:
         raw = get_user_input()
-        if "yes" in raw.lower():
+        reply = yes_or_no_parser(raw)
+        if reply is True:
             return True
         
-        if "no" in raw.lower():
+        if reply is False:
             return False
-        
+                    
         post_output("I didn't quite get that")
         
 def concat_docs(cls):

@@ -10,14 +10,14 @@ def Sword(self, player):
     return [(StatEnum.attack, 5)]
         
 @Weapon.add_buff()
-def SwordAndShield(self, player):
+def SwordAndShield(self, target):
     """This bronze sword also has a shield included for bonus defense"""
     return [(StatEnum.attack, 5), (StatEnum.defense, 3)]
         
 class LeatherArmor(Armor):
     """simple leather armor"""
     
-    def buff(self, player):
+    def buff(self, target):
         """This leather armor can block some blows"""
         
         return [(StatEnum.defense, 5)]
@@ -26,9 +26,9 @@ class Key(QuestItem):
     pass
     
 @Consumable.add(amount=1)
-def HealthPotion(item, player):
-    player.restore_health(5)
+def HealthPotion(item, target):
+    target.restore_health(5)
     
 @Consumable.add(amount=3)
-def HealingOnguent(item, player):
-    player.add_modifier(HealingOnguentModifier())
+def HealingOnguent(item, target):
+    target.add_modifier(HealingOnguentModifier())

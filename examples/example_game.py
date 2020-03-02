@@ -2,6 +2,7 @@ from pyzork.entities import Player
 from pyzork.world import World
 from pyzork.base import game_loop, QM
 from pyzork.levels import ExperienceLevels
+from pyzork.utils import post_output
 
 from .example_world import *
 from .example_quest import *
@@ -34,8 +35,13 @@ if __name__ == '__main__':
         ),
         money=100
     )
-    world = World([tavern, market, island, temple, docks, hidden, shop], player)
+    world = World([tavern, market, island, temple, docks, hidden, shop], player, start=market)
     QM.start_quest("KillBigGoblin")
     
+    post_output("="*15)
+    post_output("WELCOME TO TEMPLATE ZORK")
+    post_output("="*15)
+    post_output("The realm is in terrible danger. With entire kingdom on the border of chaos you, Generic Protagonist #12, must slay the Big Golbin in the temple, on the island south of the market.")
+    input("press enter to begin")
     game_loop(world)
     

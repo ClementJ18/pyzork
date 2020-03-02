@@ -30,7 +30,10 @@ class Location:
         self.enemies = [enemy() for enemy in self.enemies]
         
     def __repr__(self):
-        return f"<{self.name}>"
+        return f"<{self.name} npcs={len(self.npcs)} enemies={len(self.enemies)}>"
+        
+    def __str__(self):
+        return self.name
 
     def _generate_exits(self):
         return {key: None for key in Direction}
@@ -127,25 +130,22 @@ class Shop(Location):
         
     def print_items(self, player):
         for item in self.items:
-            post_output(f"- {item.item.name}: {item.item.description}")
-        
-    def shop_parser(self, player):
-        choice = get_user_input().lower().split()
-        if choice[0] == "exit":
-            return False
-        elif choice[0] == "buy":
-            item = self.items[int(choice[1])]
-            item.buy(player)
-        elif choice[0] == "sell":
-            item = self.items[int(choice[1])]
-            item.sell(player, self.resell)
+            post_output(f"- {item.item.name}: {item.price} coins - {item.item.description}")
         
     def shop_loop(self, player):
         while True:
             self.print_items(player)
-            cont = self.shop_parser(player)
-            if cont is False:
-                return
+            choice = get_user_input()
+            intent, item = shop_parser(choice, self)
+            if intent == "exit":
+                return False
+            
+            if intent == "buy":
+                item = self.items[int(choice[1])]
+                item.buy(player)
+            elif intent == "sell":
+                item = self.items[int(choice[1])]
+                item.sell(player, self.resell)
     
     @classmethod
     def from_dict(cls, **kwargs):
@@ -161,7 +161,7 @@ class Shop(Location):
 
 class World:
     def __init__(self, locations, player, **kwargs):
-        self.current_location = locations[0]
+        self.current_location = kwargs.get("start", locations[0])
         self.locations = locations
         self.player = player
         self.end_game = kwargs.get("end_game", self.end_game)
@@ -242,12 +242,12 @@ class World:
             
     def better_travel_parser(self):
         choice = clean(get_user_input().lower())
-        if direction := direction_parser(choice, self):
+        if direction := direction_parser(choice, self.current_location):
             self.legal_travel(direction)
         elif npc := interact_parser(choice, self.current_location):
             npc.interact(self)
         elif view := view_parser(choice, self.player):
-            gettattr(self.player, f"print_{view}")()
+            getattr(self.player, f"print_{view}")()
         elif item := equip_item_parser(choice, self.player):
             self.player.inventory.equip_item(item)
         elif item := use_item_parser(choice, self.player):
