@@ -129,6 +129,7 @@ class Shop(Location):
         post_output(f"- Go {direction.name} to shop")
         
     def print_items(self, player):
+        post_output(f"You have {player.money}")
         for item in self.items:
             post_output(f"- {item.item.name}: {item.price} coins - {item.item.description}")
         
@@ -176,7 +177,7 @@ class World:
             self.current_location.print_exits(self)
             self.current_location.print_npcs(self)
             self.print_menu()
-            self.better_travel_parser()
+            self.travel_parser()
             self.end_turn()
             
     def print_menu(self):
@@ -219,28 +220,8 @@ class World:
         
     def directional_move(self, direction : Direction):
         return self.current_location.directional_move(direction)
-        
-    def travel_parser(self):
-        choice = get_user_input().lower().split()
-        if choice[0] == "go":
-            direction = Direction[choice[1]]
-            self.legal_travel(direction)
-        elif choice[0] == "interact":
-            npc = self.current_location.npcs[int(choice[1])]
-            npc.interact(self)
-        elif choice[0] == "view":
-            if choice[1] == "stats":
-                self.player.print_stats()
-            elif choice[1] == "inventory":
-                self.player.print_inventory()
-        elif choice[0] == "equip":
-            t = self.player.inventory.get_equipment(int(choice[1]))
-            self.player.inventory.equip_item(t)
-        elif choice[0] == "use":
-            t = self.player.inventory.get_consumable([int(choice[1])])
-            self.player.inventory.use_item(t)
             
-    def better_travel_parser(self):
+    def travel_parser(self):
         choice = clean(get_user_input().lower())
         if direction := direction_parser(choice, self.current_location):
             self.legal_travel(direction)

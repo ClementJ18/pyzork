@@ -37,7 +37,10 @@ class Battle:
             enemy.end_turn()
 
     def player_turn(self):
-        self.player.print_actions(self)
+        post_output(f"- Attack an enemy with your {self.weapon}")
+        post_output("- Cast an ability")
+        post_output("- View your stats")
+        post_output("- View your inventory")
         self.battle_parser()
 
     def enemy_turn(self, enemy):
@@ -51,5 +54,7 @@ class Battle:
             self.player.use_ability(reply[1], reply[0])
         elif reply := use_item_parser(choice, self):
             self.player.use_item_on(reply[1], reply[0])
+        elif reply := view_parser(choice, self.player):
+            getattr(self.player, f"print_{view}")()
             
     

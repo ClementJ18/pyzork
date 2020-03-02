@@ -7,7 +7,6 @@ from .base import QM
 
 import math
 
-
 class Entity:
     """Abstract class representing an entity, can be an NPC, a player or an enemy."""
     def __init__(self, **kwargs):
@@ -60,8 +59,12 @@ class Entity:
         """Abstract method for interacting with this entity, give a quest, open a shop or fight."""
         pass
         
+    def print_abilities(self):
+        post_output(self.abilities)
+        
     def print_inventory(self):
         self.inventory.print()
+        self.print_abilities()
         
     def print_stats(self):
         post_output(f"{self.name}: LV {self.experience.level}")
@@ -70,6 +73,7 @@ class Entity:
         post_output(f"Attack/Defense: {self.attack}/{self.defense}")
         post_output(f"Weapon/Armor: {self.weapon}/{self.armor}")
         post_output(f"Money: {self.money}")
+        post_output(f"Modifiers: {self.modifiers}")
 
     def _big_calc(self, stat):
         """Calculate all the modifiers for a stat"""
@@ -251,10 +255,7 @@ class Player(Entity):
         if current < value:
             post_output(f"{self.name} gains {value - current} health")
         else:
-            post_output(f"{self.name} loses {current - value} health")
-            
-    def print_actions(self, context):
-        post_output("- Attack with 'attack [enemy]'")
+            post_output(f"{self.name} loses {current - value} health")        
         
     def set_world(self, world):
         self.world = world
