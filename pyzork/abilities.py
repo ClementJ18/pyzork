@@ -18,16 +18,22 @@ class Ability:
     cost : Optional[Union[Callable[[Entity, Entity], int], int]]
         An optional cost for using the ability, this can be a function that returns and int or it can simply be an
         int. By default, the ability will cost 0 energy.
-    
+        
+    Attributes
+    -----------
+    name : str
+        Name of the ability
+    description : Optional[str]
+        Optional description of the ability    
     """
     def __init__(self, **kwargs):
-        if not getattr(self, "name", False):
+        if not hasattr(self, "name"):
             if "name" in kwargs:
                 self.name = kwargs.get("name")
             else:
                 self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
 
-        if not getattr(self, "description", False):
+        if not hasattr(self, "description"):
             self.description = kwargs.get("description", self.effect.__doc__)
         
         if "cost" in kwargs:

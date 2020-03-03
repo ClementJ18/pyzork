@@ -4,13 +4,13 @@ from .utils import post_output, get
 
 class Item:
     def __init__(self, **kwargs):
-        if not getattr(self, "name", False):
+        if not hasattr(self, "name"):
             if "name" in kwargs:
                 self.name = kwargs.get("name")
             else:
                 self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
 
-        if not getattr(self, "description", False):
+        if not hasattr(self, "description"):
             self.description = kwargs.get("description", self.__init__.__doc__)
         
     def __repr__(self):
@@ -31,8 +31,9 @@ class Item:
         
 class Consumable(Item):
     def __init__(self, **kwargs):
-        if "amount" in kwargs:
-            self.amount = kwargs.pop("amount")
+        if not hasattr(self, "amount"):
+            self.amount = kwargs.pop("amount", 0)
+            
         super().__init__(kwargs)
         
     def use(self, target):
@@ -136,6 +137,18 @@ class NullArmor(Weapon):
         return []
         
 class ShopItem:
+    """A shop item is an item that can be sold or bought in a shop. 
+    
+    Parameters
+    -----------
+    item : Union[Consumable, QuestItem, Equipment]
+        The item to sell, this is the class itself, not an instance of the object
+    price : int
+        The price of the item
+    amount : int
+        The number of items that are available for sale, if a player sells an item 
+        it will increment the amount
+    """
     def __init__(self, **kwargs):
         self.item = kwargs.pop("item")
         self.price = kwargs.pop("price")
@@ -144,35 +157,51 @@ class ShopItem:
     def __repr__(self):
         return f"<{self.item.name} amount={self.amount} price={self.price}>"
         
-    def buy(self, player):
+    def buy(self, entity : "Entity"):
+        """Buy an instance of that item
+        
+        Parameters
+        -----------
+        entity : Entity
+            The entity purchasing the item
+        """
         if not self.amount > 0:
             return post_output("No items left")
             
-        if player.money < self.price:
+        if entity.money < self.price:
             return post_output("Not enough money")
             
         self.amount -= 1
-        player.remove_money(self.price)
-        player.add_to_inventory(self.item())
+        entity.remove_money(self.price)
+        entity.add_to_inventory(self.item())
         
         post_output(f"Bought {self.item.name} and payed {self.price}")
         
-    def sell(self, player, resell):
-        to_remove = player.inventory.get_item(name=self.item.name)
+    def sell(self, entity : "Entity", resell : float):
+        """Sell an instance of that item
+        
+        Parameters
+        -----------
+        entity : Entity
+            The entity selling the item
+        resell : float
+            The resale value, this is usually passed down from the shop instance
+        """
+        to_remove = entity.inventory.get_item(name=self.item.name)
         if to_remove is None:
             return post_output("Couldn't find the item")
             
         if isinstance(to_remove, Consumable):
-            player.inventory.remove_item(to_remove)
+            entity.inventory.remove_item(to_remove)
             amount = to_remove.amount // self.item.amount
             self.amount += amount
             money = (self.price * resell) * amount
-            player.add_money(money)
+            entity.add_money(money)
         else:
-            player.inventory.remove_item(to_remove)
+            entity.inventory.remove_item(to_remove)
             self.amount += 1
             money = self.price * resell
-            player.add_money(money)
+            entity.add_money(money)
         
         post_output(f"Sold {self.item.name} and gained {money}")
 

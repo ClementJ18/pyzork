@@ -25,22 +25,33 @@ class Modifier:
         An optional string to give a short (or long) description about the buff and its effects. If
         this is not provided the library will fall back to combining the docstring of the `buff`
         and `effect` method.
+        
+    Attributes
+    -----------
+    name : str
+        Name of the ability
+    description : Optional[str]
+        Optional description of the ability
+    duration : int
+        How long the ability lasts
+    stat_type : Optional[StatEnum]
+        Optional enum that dictates which stat is affected 
        
     """
     def __init__(self, **kwargs):
-        if not getattr(self, "stat_type", False):
+        if not hasattr(self, "stat_type"):
             self.stat_type = kwargs.pop("stat_type", StatEnum.null)
         
-        if not getattr(self, "duration", False):
+        if not hasattr(self, "duration"):
             self.duration = kwargs.pop("duration")
 
-        if not getattr(self, "name", False):
+        if not hasattr(self, "name"):
             if "name" in kwargs:
                 self.name = kwargs.pop("name")
             else:
                 self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
         
-        if not getattr(self, "description", False):
+        if not hasattr(self, "description"):
             self.description = kwargs.pop("description", f"{self.buff.__doc__} {self.effect.__doc__}")
         
     def __hash__(self):

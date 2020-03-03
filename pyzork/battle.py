@@ -16,7 +16,7 @@ class Battle:
         self.dead.append()
         
     def priorities(self):
-        return [self.player_turn, *[lambda: self.enemy_turn(enemy) for enemy in self.enemies]]
+        return [self.player_turn, *[lambda: self.enemy_turn(enemy) for enemy in self.alive]]
         
     def battle_loop(self):
         while self.player.is_alive() and self.alive:
@@ -33,15 +33,18 @@ class Battle:
         self.turn += 1
 
         self.player.end_turn()
+        self.alive = [x for x in self.alive if x.is_alive()]
         for enemy in self.alive:
             enemy.end_turn()
 
     def player_turn(self):
-        post_output(f"- Attack an enemy with your {self.weapon}")
+        post_output(f"- Attack an enemy with your {self.player.weapon}")
         post_output("- Cast an ability")
         post_output("- View your stats")
         post_output("- View your inventory")
-        self.battle_parser()
+        
+        while self.battle_parser():
+            pass
 
     def enemy_turn(self, enemy):
         enemy.battle_logic(self)
@@ -50,11 +53,17 @@ class Battle:
         choice = get_user_input().lower()
         if target := attack_parser(choice, self):
             self.player.do_attack(target)
+            return False
         elif reply := use_ability_parser(choice, self):
             self.player.use_ability(reply[1], reply[0])
+            return False
         elif reply := use_item_parser(choice, self):
             self.player.use_item_on(reply[1], reply[0])
+            return False
         elif reply := view_parser(choice, self.player):
-            getattr(self.player, f"print_{view}")()
+            getattr(self.player, f"print_{reply}")()
+            return True
+            
+        return False
             
     

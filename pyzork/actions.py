@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 
 STOPWORDS = set(stopwords.words("english"))
 ACCEPTABLE_MOVEMENTS = ["go", "walk", "run", "enter", "exit", "move", "leave"]
-ACCEPTABLE_INTERACTS = ["talk", "interact", "check", "look"]
+ACCEPTABLE_INTERACTS = ["talk", "interact", "check", "look", "approach"]
 ACCEPTABLE_ATTACKS = ["attack", "strike", "target"]
 ACCEPTABLE_EQUIP = ["equip", "put"]
 ACCEPTABLE_USE = ["use", "drink", "eat", "throw"]
@@ -203,7 +203,7 @@ def attack_parser(choice : str, battle : "Battle") -> "Enemy":
     choice = filter_stopword(choice)
     
     if any(x for x in choice if x in [*ACCEPTABLE_ATTACKS, battle.player.weapon.name]):
-        return target_parser(choice, battle.enemies)
+        return target_parser(choice, battle.alive)
         
 def yes_or_no_parser(choice):
     """A simple parser to check for a yes or no answer, based on basic boolean checks, this is used
@@ -213,7 +213,7 @@ def yes_or_no_parser(choice):
     
     #. Check if any of the word match any of the YES or NO words, if they do return True or False respectively, if not return None
     """
-    choice = filter_stopword(choice)
+    choice = clean(choice).split()
     
     if any(x for x in choice if x in YES):
         return True
@@ -266,8 +266,8 @@ def use_item_parser(choice : str, ctx : "Union[World, Battle]") -> "Tuple[Union[
             if new_item > best_item[1]:
                 best_item = (item, new_item)
                 
-        if hasattr(ctx, "enemies"):
-            target = target_parser(choice, ctx.enemies)
+        if hasattr(ctx, "alive"):
+            target = target_parser(choice, ctx.alive)
         else:
             target = target_parser(choice, [])
             
@@ -297,8 +297,8 @@ def use_ability_parser(choice, ctx : "Union[World, Battle]") -> "Tuple[Union[Ene
             if new_ability > best_ability[1]:
                 best_ability = (ability, new_ability)
                 
-        if hasattr(ctx, "enemies"):
-            target = target_parser(choice, ctx.enemies)
+        if hasattr(ctx, "alive"):
+            target = target_parser(choice, ctx.alive)
         else:
             target = target_parser(choice, [])
             

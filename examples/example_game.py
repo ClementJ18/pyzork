@@ -6,13 +6,14 @@ from pyzork.utils import post_output
 
 from .example_world import *
 from .example_quest import *
+from .example_equipment import Sword
 
 if __name__ == '__main__':
     tavern.two_way_connect(Direction.south, market)
     market.two_way_connect(Direction.south, docks)
     docks.two_way_connect(Direction.east, island)
+    docks.two_way_connect(Direction.west, beach)
     island.two_way_connect(Direction.north, temple)
-    # hidden.one_way_connect(Direction.west, temple)
     market.two_way_connect(Direction.west, alley)
     market.two_way_connect(Direction.east, shop)
     
@@ -37,6 +38,8 @@ if __name__ == '__main__':
     )
     world = World([tavern, market, island, temple, docks, hidden, shop], player, start=market)
     QM.start_quest("KillBigGoblin")
+    
+    player.add_to_inventory(Sword())
     
     post_output("="*15)
     post_output("WELCOME TO TEMPLATE ZORK")

@@ -26,7 +26,7 @@ class Island(Location):
         else:
             post_output("\n\nYou arrive on a beach")
             
-    def exit(self, to_location):
+    def exit(self, player, to_location):
         post_output(self.name)
         if isinstance(to_location, Docks):
             post_output("\n\nYou take the boat back to the docks")
@@ -70,3 +70,4 @@ docks = Docks()
 hidden = HiddenTempleInside()
 alley = BackAlley()
 shop = MarketShop()
+beach = Beach()

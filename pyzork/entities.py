@@ -259,6 +259,11 @@ class Player(Entity):
         
     def set_world(self, world):
         self.world = world
+        
+    def print_inventory(self):
+        self.inventory.print()
+        self.print_abilities()
+        post_output(QM.active_quests)
 
 class Enemy(Entity):
     def __init__(self, **kwargs):

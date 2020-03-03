@@ -1,6 +1,7 @@
 from .actions import yes_or_no_parser
 
 def get_user_input():
+    """Method called by the library to gather user input, by default this simply calls input()"""
     return input(">>>>> ")
 
 def post_output(string):
