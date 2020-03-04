@@ -114,3 +114,4 @@ dmypy.json
 .pyre/
 p.sublime-workspace
 to_do.txt
+test_map.py

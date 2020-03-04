@@ -25,7 +25,7 @@ ALIASES_SHOP = {
     "buy": ["buy", "purchase"]
 }
 
-PLAYER = ["me", "myself", "i", ]
+PLAYER = ["me", "myself", "i", "player"]
 YES = ["yes", "y", "true"]
 NO = ["no", "n", "false"]
 
@@ -152,7 +152,7 @@ def shop_parser(choice : str, shop : "Shop") -> "Tuple[str, Item]":
                 
     return None, None
     
-def target_parser(choice : str, targets : "List[Enemy]") -> "Enemy":
+def target_parser(choice : str, targets : "List[Enemy]", player : "Player" = None) -> "Enemy":
     """This checks if the user input contains enough keywords that can be considered to target an enemy. This
     parser assumes that the input has already been cleaned up and that another parser has already validated the
     primary action. The parser works as follows:
@@ -167,9 +167,12 @@ def target_parser(choice : str, targets : "List[Enemy]") -> "Enemy":
     ======================
     * Check if the user input includes index-based context for the target they wish to attack. e.g 3rd golbin
     * Check if the user input includes contextual clues such as "lowest health", "weakest", ect...
-    * Allow the player as a valid attack target
+    * Allow the player as a valid attack target (Done, to be tested)
     
     """
+    if any(x for x in choice if x in PLAYER) and player is not None:
+        return player
+    
     if len(targets) == 1:
         return targets[0]
     
@@ -203,7 +206,7 @@ def attack_parser(choice : str, battle : "Battle") -> "Enemy":
     choice = filter_stopword(choice)
     
     if any(x for x in choice if x in [*ACCEPTABLE_ATTACKS, battle.player.weapon.name]):
-        return target_parser(choice, battle.alive)
+        return target_parser(choice, battle.alive, battle.player)
         
 def yes_or_no_parser(choice):
     """A simple parser to check for a yes or no answer, based on basic boolean checks, this is used
@@ -267,9 +270,9 @@ def use_item_parser(choice : str, ctx : "Union[World, Battle]") -> "Tuple[Union[
                 best_item = (item, new_item)
                 
         if hasattr(ctx, "alive"):
-            target = target_parser(choice, ctx.alive)
+            target = target_parser(choice, ctx.alive, ctx.player)
         else:
-            target = target_parser(choice, [])
+            target = target_parser(choice, [], ctx.player)
             
         if best_item[0] is not None and target is not None:
             return target, best_item[0]
@@ -298,9 +301,9 @@ def use_ability_parser(choice, ctx : "Union[World, Battle]") -> "Tuple[Union[Ene
                 best_ability = (ability, new_ability)
                 
         if hasattr(ctx, "alive"):
-            target = target_parser(choice, ctx.alive)
+            target = target_parser(choice, ctx.alive, ctx.player)
         else:
-            target = target_parser(choice, [])
+            target = target_parser(choice, [], ctx.player)
             
         if best_ability[0] is not None and target is not None:
             return target, best_ability[0]

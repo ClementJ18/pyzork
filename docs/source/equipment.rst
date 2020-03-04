@@ -5,3 +5,4 @@ Items
 
 .. autoclass:: pyzork.equipment.ShopItem
     :members: buy, sell
+

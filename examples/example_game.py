@@ -8,35 +8,37 @@ from .example_world import *
 from .example_quest import *
 from .example_equipment import Sword
 
+tavern.two_way_connect(Direction.south, market)
+market.two_way_connect(Direction.south, docks)
+docks.two_way_connect(Direction.east, island)
+docks.two_way_connect(Direction.west, beach)
+island.two_way_connect(Direction.north, temple)
+market.two_way_connect(Direction.west, alley)
+market.two_way_connect(Direction.east, shop)
+hidden.one_way_connect(Direction.east, temple)
+
+def basic_reward(levels):
+    levels.entity.base_damage *= 0.1
+    levels.entity.base_defense *= 0.1
+    levels.entity.health += levels.entity.base_max_health * 0.1
+    levels.entity.base_max_health *= 0.1
+
+player = Player(
+    max_health=100,
+    damage=3,
+    defense=2,
+    max_energy=15,
+    experience=ExperienceLevels(
+        requirement=100, 
+        modifier=1.2, 
+        max_level=10, 
+        reward=basic_reward
+    ),
+    money=100
+)
+world = World(locations=[tavern, market, island, temple, docks, hidden, shop, beach, alley], player=player, start=market)
+
 if __name__ == '__main__':
-    tavern.two_way_connect(Direction.south, market)
-    market.two_way_connect(Direction.south, docks)
-    docks.two_way_connect(Direction.east, island)
-    docks.two_way_connect(Direction.west, beach)
-    island.two_way_connect(Direction.north, temple)
-    market.two_way_connect(Direction.west, alley)
-    market.two_way_connect(Direction.east, shop)
-    
-    def basic_reward(levels):
-        levels.entity.base_damage *= 0.1
-        levels.entity.base_defense *= 0.1
-        levels.entity.health += levels.entity.base_max_health * 0.1
-        levels.entity.base_max_health *= 0.1
-    
-    player = Player(
-        max_health=100,
-        damage=3,
-        defense=2,
-        max_energy=15,
-        experience=ExperienceLevels(
-            requirement=100, 
-            modifier=1.2, 
-            max_level=10, 
-            reward=basic_reward
-        ),
-        money=100
-    )
-    world = World([tavern, market, island, temple, docks, hidden, shop], player, start=market)
     QM.start_quest("KillBigGoblin")
     
     player.add_to_inventory(Sword())

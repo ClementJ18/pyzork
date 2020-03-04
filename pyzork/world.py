@@ -29,16 +29,14 @@ class Location:
     name : str
         The name of the location
     description : Optional[str]
-        The description of the location, which gets printed when the user enters it if the :method:enter
-        is not overriden.
+        The description of the location, which gets printed when the user enters it if the `enter`
+        method is not overriden.
     npcs : List[Entity]
         List of npcs that can be interacted with
     enemies : List[Enemy]
         List of enemies the user will battle when entering the first time
     visited : int
         How many times the user has visited this place
-    
-    
     """
     def __init__(self, **kwargs):
         if not hasattr(self, "name"):
@@ -162,6 +160,7 @@ class Location:
         
     def print_interaction(self, world : "World", direction : "Direction"):
         """Method called to print a flavor text related to reaching this location from another location.
+        Prints the direction and name of the location by default 
         
         Parameters
         -----------
@@ -237,6 +236,18 @@ class Shop(Location):
     and selling items. You can only buy and sell items which are registed in the shop, you cannot sell an item
     which is not registered in the shop, as this allows for dynamic pricing accross shops.
     
+    Parameters
+    -----------
+    items : List[ShopItem]
+        List of items for sale
+    resell : Optional[float]
+        The value of an item when being sold to the shop, percentage of the initial value, 1 by default.
+        If this is set for zero then resale is disabled for this shop.
+    name : str
+        Name of the shop
+    description : Optional[str]
+        Optional description of the shop
+    
     Attributes
     -----------
     name : str
@@ -264,7 +275,7 @@ class Shop(Location):
             
         super().__init__(**kwargs)
         
-    def _enter(self, player, from_location):
+    def _enter(self, player : "Player", from_location : "Location") -> False:
         if not self.visited:
             QM.progress_quests("on_discover", self)
             
@@ -273,17 +284,29 @@ class Shop(Location):
         self.shop_loop(player)
         return False
     
-    def print_interaction(self, world, direction):
+    def print_interaction(self, world : "World", direction : "Direction"):
+        """Method called to print a flavor text related to reaching this shop from another location.
+        
+        Parameters
+        -----------
+        world : World
+            The world the location is in
+        direction : Direction
+            The direction the location is in compared to the `world.current_location`
+        """
         post_output(f"- Go {direction.name} to shop")
         
-    def print_items(self, player):
+    def print_items(self, player : "Player"):
+        """Print all the items for sale in this shop on the money of the player."""
         post_output(f"You have {player.money}")
         for item in self.items:
-            post_output(f"- {item.item.name}: {item.price} coins - {item.item.description}")
+            post_output(f"- {item.item.name} ({item.amount}): {item.price} coins - {item.item.description}")
         
-    def shop_loop(self, player):
+    def shop_loop(self, player : "Player"):
+        """The heart of the shop system, this allows the player to buy, sell, exit the shop, view his
+        stats/inventory and use/equip items."""
+        self.print_items(player)
         while True:
-            self.print_items(player)
             choice = get_user_input()
             intent, item = shop_parser(choice, self)
             if intent == "exit":
@@ -293,9 +316,17 @@ class Shop(Location):
                 item = self.items[int(choice[1])]
                 item.buy(player)
             elif intent == "sell":
+                if self.resell == 0:
+                    return post_output("You cannot sell items in this shop")
                 item = self.items[int(choice[1])]
                 item.sell(player, self.resell)
-    
+            elif view := view_parser(choice, player):
+                hasattr(player, f"print_{view}")()
+            elif item := equip_item_parser(choice, player):
+                player.inventory.equip_item(item)
+            elif item := use_item_parser(choice, player):
+                player.inventory.use_item(item)
+
     @classmethod
     def from_dict(cls, **kwargs):
         """Allows you to create a shop from kwargs, takes the same parameters as the class."""
@@ -310,16 +341,45 @@ class Shop(Location):
         return new_class
 
 class World:
-    def __init__(self, locations, player, **kwargs):
-        self.current_location = kwargs.get("start", locations[0])
-        self.locations = locations
-        self.player = player
-        self.end_game = kwargs.get("end_game", self.end_game)
-        self.error_handler = kwargs.get("error_handler", self.error_handler)
+    """The world is the class that englobes everything, this is where your adventure lives and happens.
+    You don't need to subclass this class, only call it and pass it to the `game_loop`
+    
+    Parameters
+    -----------
+    locations : List[Location]
+        A list of all the location in this world
+    player : Player
+        The player of this world
+    start : Optional[Location]
+        The place where the player starts, by default it is the first Location in locations
+    end_game : Optional[Callable[[EndGame], None]]
+        Optional method for handling what happens when the game is finished, could be
+        either because the player has won, died or many other possible reasons.
+    error_handler : Optional[Callable[[Exception], None]]
+        Optional method to handle other errors in case any arise.
+        
+    Attributes
+    -----------
+    current_location : Location
+        The location the Player is currently in
+    player : Player
+        The player of this world
+    locations : List[Location]
+        A list of location instances representing all possible locations in the world
+    """
+    def __init__(self, **kwargs):
+        self.locations = kwargs.pop("locations")
+        self.current_location = kwargs.pop("start", self.locations[0])
+        self.player = kwargs.pop("player")
+        self.end_game = kwargs.pop("end_game", self.end_game)
+        self.error_handler = kwargs.pop("error_handler", self.error_handler)
         
         self.player.set_world(self)
         
     def world_loop(self):
+        """Handler for traveling around the world. This method calls end turn so modifiers and effects
+        will expire while the user travels in the world. Unless you're doing some advanced stuff with the
+        library such as handling the game loop on your own you shouldn't need to call this."""
         self.current_location._enter(self.player, Location())
         while True:
             QM.proccess_rewards(self.player, self)
@@ -330,17 +390,24 @@ class World:
             self.end_turn()
             
     def print_menu(self):
+        """Prints the context menu that is available everywhere, this is only visual."""
         post_output("- View inventory")
         post_output("- View stats")
             
     def end_turn(self):
+        """Decrement the duration of all player modifiers by 1"""
         self.player.end_turn()
         
-    def travel(self, new_location : Union[Direction, Location]):
-        old_location = self.current_location
-        if isinstance(new_location, Direction):
-            new_location = self.directional_move(new_location)
+    def travel(self, new_location : Location):
+        """Travel in a to a location regadless of if it is a "legal" move, this instantly transports
+        the player to the target location and initatie battle if any enemies are present.
         
+        Parameters
+        -----------
+        new_location : Location
+            The location to travel to, this does not have to be connected to the current location.
+        """
+        old_location = self.current_location
         self.current_location = new_location
         can_exit = old_location._exit(self.player, new_location)
         can_enter = new_location._enter(self.player, old_location)
@@ -351,29 +418,73 @@ class World:
         if new_location.enemies:
             self.initiate_battle(new_location.enemies)
         
-    def initiate_battle(self, enemies):
+    def initiate_battle(self, enemies : "List[Enemy]"):
+        """Start a battle and the battle loop between the player of this world and a list of enemies. If
+        you want to inject your own battle class. This method must start the battle, this is usually done
+        through the Battle.battle_loop method
+        
+        Parameters
+        -----------
+        enemies : List[Enemy]
+            List of enemies to fight
+        """
         battle = Battle(self.player, enemies, self.current_location)
         battle.battle_loop()
             
-    def can_move(self, location : Union[Direction, Location]):
+    def can_move(self, location : "Union[Direction, Location]") -> bool:
+        """Check if the player can move from their current location in that direction/location
+        
+        Parameters
+        -----------
+        location : Union[Direction, Location]
+            The direction/location 
+            
+        Returns
+        --------
+        bool
+            True if the player can move there
+        """
         if isinstance(location, Direction):
             location = self.directional_move(location)
             
         return self.current_location.can_move_to(location)
         
-    def legal_travel(self, location : Union[Direction, Location]):
+    def legal_travel(self, location : Location):
+        """Attempt a travel move, compared to simply World.travel this checks if the player can
+        move to this location from their current location and move there if they can.
+        
+        Parameters
+        -----------
+        location : Location
+            The location to attept moving too    
+        """
         if self.can_move(location):
             self.travel(location)
         else:
             post_output("You cannot move there")
         
-    def directional_move(self, direction : Direction):
+    def directional_move(self, direction : Direction) -> "Optional[Location]":
+        """Convert a direction into a location, if it exists, else return None
+        
+        Parameters
+        -----------
+        direction : Direction
+            The direction you want to move in
+            
+        Returns
+        --------
+        Optional[Location]
+            The location that is in that direction
+        """
         return self.current_location.directional_move(direction)
             
     def travel_parser(self):
+        """Gets the user input and check if it matches against a set of parsers using python's
+        new walrus operator."""
         choice = clean(get_user_input().lower())
         if direction := direction_parser(choice, self.current_location):
-            self.legal_travel(direction)
+            location = self.directional_move(direction)
+            self.legal_travel(location)
         elif npc := interact_parser(choice, self.current_location):
             npc.interact(self)
         elif view := view_parser(choice, self.player):
@@ -383,9 +494,26 @@ class World:
         elif item := use_item_parser(choice, self.player):
             self.player.inventory.use_item(item)
             
-    def end_game(self, e):
+    def end_game(self, e : "EndGame"):
+        """Method to be overwritten either through subclassing or by passing it as a parameters
+        when instancing the world. Is called when an Endgame exception is raised. Signifying the player
+        has either died or won.
+        
+        Parameters
+        -----------
+        e : EndGame
+            The endgame error that caused this
+        """
         post_output(e)
         
-    def error_handler(self, e):
+    def error_handler(self, e : Exception):
+        """Error handler for all other errors, can be used to either restart the loop or kill the game.
+        Can be overriden by either subclassing or by passing it as a parameter when instancing the world.
+        
+        Parameters
+        ------------
+        e : Exception
+            the error that was caught
+        """
         raise e
   
