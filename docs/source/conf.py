@@ -46,8 +46,8 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.autosummary',
-    'sphinx_autodoc_typehints',
+    # 'sphinx.ext.autosummary',
+    # 'sphinx_autodoc_typehints',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -183,10 +183,12 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
-napoelon_google_doctstring = False
+# napoelon_google_doctstring = False
+napoleon_numpy_docstring = True
+autodoc_typehints = "none"
 
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {'https://docs.python.org/3.8': None}
 napoleon_custom_sections = ["Possible Improvements"]

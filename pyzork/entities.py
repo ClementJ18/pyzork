@@ -25,6 +25,7 @@ class Entity:
         
         self.experience = kwargs.get("experience", ExperienceLevels(requirements=[math.inf], max_level=1))
         self.experience.set_entity(self)
+        self.base_experience_gain = kwargs.get("experience_gain", 1)
         
         self.money = kwargs.get("money", 0)
         
@@ -110,6 +111,10 @@ class Entity:
     def max_energy(self):
         """This method compiles all the buffs, equipment, attributes to generate the max health stat of a unit."""
         return max(0, self.base_max_energy + self._big_calc(StatEnum.max_energy))
+        
+    @property
+    def experience_gain(self):
+        return max(0, self.base_experience_gain + self._big_calc(StatEnum.experience))
 
     @property
     def health(self):
@@ -211,7 +216,7 @@ class Entity:
         self.abilities[hash(ability)] = ability
         
     def gain_experience(self, value):
-        self.experience += value
+        self.experience += (value * self.experience_gain)
         
     def use_item_on_me(self, item):
         self.use_item_on(item, self)

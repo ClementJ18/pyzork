@@ -110,12 +110,14 @@ class Location:
         self.exits[direction] = connected_location
         
     def _enter(self, player : "Player", from_location : "Location"):
+        can_enter = self.enter(player, from_location)
+        if can_enter is False:
+            return False
+        
         if not self.visited:
             QM.progress_quests("on_discover", self)
             
-        can_enter = self.enter(player, from_location)
-        self.visited += 0
-        return can_enter
+        self.visited += 1
 
     def enter(self, player : "Player", from_location : "Location") -> "Optional[bool]":
         """Method to be overwritten by the user to create a custom behavior when the player enters
@@ -276,11 +278,13 @@ class Shop(Location):
         super().__init__(**kwargs)
         
     def _enter(self, player : "Player", from_location : "Location") -> False:
+        can_enter = self.enter(player, from_location)
+        if can_enter is False:
+            return False
+        
         if not self.visited:
             QM.progress_quests("on_discover", self)
-            
-        self.enter(player, from_location)
-        self.visited += 0
+        
         self.shop_loop(player)
         return False
     
@@ -320,7 +324,7 @@ class Shop(Location):
                     return post_output("You cannot sell items in this shop")
                 item = self.items[int(choice[1])]
                 item.sell(player, self.resell)
-            elif view := view_parser(choice, player):
+            elif view := view_parser(choice):
                 hasattr(player, f"print_{view}")()
             elif item := equip_item_parser(choice, player):
                 player.inventory.equip_item(item)
@@ -382,7 +386,7 @@ class World:
         library such as handling the game loop on your own you shouldn't need to call this."""
         self.current_location._enter(self.player, Location())
         while True:
-            QM.proccess_rewards(self.player, self)
+            QM.process_rewards(self.player, self)
             self.current_location.print_exits(self)
             self.current_location.print_npcs(self)
             self.print_menu()
@@ -487,8 +491,8 @@ class World:
             self.legal_travel(location)
         elif npc := interact_parser(choice, self.current_location):
             npc.interact(self)
-        elif view := view_parser(choice, self.player):
-            hasattr(self.player, f"print_{view}")()
+        elif view := view_parser(choice):
+            getattr(self.player, f"print_{view}")()
         elif item := equip_item_parser(choice, self.player):
             self.player.inventory.equip_item(item)
         elif item := use_item_parser(choice, self.player):

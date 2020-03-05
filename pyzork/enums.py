@@ -8,6 +8,7 @@ class StatEnum(IntEnum):
     health      = auto()
     max_energy  = auto()
     energy      = auto()
+    experience  = auto()
 
 class EndgameReason(IntEnum):
     zero_health      = auto()

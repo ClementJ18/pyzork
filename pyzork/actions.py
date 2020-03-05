@@ -31,13 +31,13 @@ NO = ["no", "n", "false"]
 
 POSITIONS = [["left"], ["center", "middle"], ["right"]]
     
-def clean(raw):
+def clean(raw : str):
     return raw.lower().strip()
     
-def filter_stopword(text):
+def filter_stopword(text : str):
     return [x for x in clean(text).split() if x not in STOPWORDS]
 
-def direction_parser(choice, current_location : "Location") -> Direction:
+def direction_parser(choice : str, current_location : "Location") -> Direction:
     """A bit more robust parser for picking a direction you want to go in. This parser works in the
     following way:
     
@@ -51,8 +51,20 @@ def direction_parser(choice, current_location : "Location") -> Direction:
         
     #. Compare every location and pick the one where the most words of the user input match the name
         
+    Parameters
+    -----------
+    choice : str
+        User input
+    current_location : Location
+        The location the user is currently at and against which to check the exits direction and names
+        
+    Returns
+    --------
+    Direction
+        The direction the parser has determined the user is trying to go in
+    
     Possible Improvements
-    ======================
+    ----------------------
     * Find a larger list of ACCEPTABLE_MOVEMENTS words
     * Take into consideration each exit's `print_interaction`  
     """
@@ -90,8 +102,20 @@ def interact_parser(choice : str, location : "Location") -> "Entity":
     
     #. Compare every npc and pick the one where the most words of the user input match the name
         
+    Parameters
+    -----------
+    choice : str
+        The user input
+    location : str
+        The location in which the player is trying to interact
+    
+    Returns
+    --------  
+    Entity
+        The entity the parser has determined as most the most likely entity the player is trying to interact with
+    
     Possible Improvements
-    ======================
+    -----------------------
     * Find a larger list of ACCEPTABLE_INTERACTS words
     * Take into consideration each npc's `print_interaction`  
     """
@@ -109,13 +133,24 @@ def interact_parser(choice : str, location : "Location") -> "Entity":
         return best_interaction[0]
         
 
-def view_parser(choice : str, player : "Player") -> str:
+def view_parser(choice : str) -> str:
     """A simple parser for picking a player property to view. This parser works in the
     following way:
     
     #. Clean up user input and remove Stopwords.
     
     #. For each possible alias in ALIASES_VIEW check if the user input contains any, if it does then return that alias 
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    
+    Returns
+    --------
+    str
+        The thing the player wishes to view    
+    
     """
     choice = filter_stopword(choice)
     for word, aliases in ALIASES_VIEW.items():
@@ -133,6 +168,18 @@ def shop_parser(choice : str, shop : "Shop") -> "Tuple[str, Item]":
     #. For each possible alias in ALIASES_SHOP check if the user input contains, if it does then continue
     
     #. Compare every item and pick the one where the most words of the user input match the name
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    shop : Shop
+        The shop the user is in and is trying to sell/buy from
+    
+    Returns
+    --------  
+    Tuple[str, Item]
+        A tuple of the action the user is trying to do and the item they are trying to do it with
     
     """
     if leave := direction_parser(choice, shop):
@@ -152,7 +199,7 @@ def shop_parser(choice : str, shop : "Shop") -> "Tuple[str, Item]":
                 
     return None, None
     
-def target_parser(choice : str, targets : "List[Enemy]", player : "Player" = None) -> "Enemy":
+def target_parser(choice : str, targets : "List[Enemy]", player : "Optional[Player]" = None) -> "Union[Enemy, Player]":
     """This checks if the user input contains enough keywords that can be considered to target an enemy. This
     parser assumes that the input has already been cleaned up and that another parser has already validated the
     primary action. The parser works as follows:
@@ -163,8 +210,22 @@ def target_parser(choice : str, targets : "List[Enemy]", player : "Player" = Non
     
     #. If there are multiple possible targets check for for position context from POSITIONS
     
+    Parameters
+    -----------
+    choice : str
+        The user input
+    targets : List[Enemy]
+        The list of potential targets, can be empty
+    player : Optional[Player]
+        The player casting the ability, used if the ability is castable on self
+    
+    Returns
+    --------    
+    Union[Enemy, Player]
+        The target
+    
     Possible Improvements
-    ======================
+    -----------------------
     * Check if the user input includes index-based context for the target they wish to attack. e.g 3rd golbin
     * Check if the user input includes contextual clues such as "lowest health", "weakest", ect...
     * Allow the player as a valid attack target (Done, to be tested)
@@ -193,7 +254,7 @@ def target_parser(choice : str, targets : "List[Enemy]", player : "Player" = Non
             if any(x for x in choice if x in position):
                 return enemies[index]
     
-def attack_parser(choice : str, battle : "Battle") -> "Enemy":
+def attack_parser(choice : str, battle : "Battle") -> "Union[Enemy, Player]":
     """A robust system to handle the user attacking an enemy during battle. This performs a simple
     check to see if the user desire to perform a simple attack and who they desire to attack. The
     parser proceeds in a very short process:
@@ -202,19 +263,40 @@ def attack_parser(choice : str, battle : "Battle") -> "Enemy":
     
     #. If a match a found then the parser seeks to find a target by passing the user input and context to :method:target_parser
     
+    Parameters
+    -----------
+    choice : str
+        The user input
+    battle : Battle
+        The battle context for the attack
+    
+    Returns
+    --------    
+    Union[Player, Enemy]
+        The parsed target   
     """
     choice = filter_stopword(choice)
     
     if any(x for x in choice if x in [*ACCEPTABLE_ATTACKS, battle.player.weapon.name]):
         return target_parser(choice, battle.alive, battle.player)
         
-def yes_or_no_parser(choice):
+def yes_or_no_parser(choice : str) -> bool:
     """A simple parser to check for a yes or no answer, based on basic boolean checks, this is used
     within the yes_or_no utils function. The parser works as follow:
         
     #. Clean up user input and remove Stopwords.
     
     #. Check if any of the word match any of the YES or NO words, if they do return True or False respectively, if not return None
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    
+    Returns
+    --------
+    Optional[bool]
+        True -> yes, False -> no, None -> neither
     """
     choice = clean(choice).split()
     
@@ -234,6 +316,18 @@ def equip_item_parser(choice : str, player : "Player") -> "Equipment":
     #. Check if any of the words in the user input match an acceptable word for equipping
     
     #. Compare every item and pick the one where the most words of the user input match the name
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    player : str
+        The player trying to equip something
+    
+    Returns
+    --------    
+    Equipment
+        The piece of equipment the parser had determined as the most likely the player is trying to equip
     """
     choice = filter_stopword(choice)
     
@@ -259,6 +353,16 @@ def use_item_parser(choice : str, ctx : "Union[World, Battle]") -> "Tuple[Union[
     #. Hand the context over to :method:target_parser to look for a target
     
     #. If both an item and a target have been parsed then return them
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    
+    Returns
+    --------    
+    Tuple[Union[Enemy, Player], Consumable]
+        The target and item the parser has deemed to be the most likely intent by the user
     """
     choice = filter_stopword(choice)
     
@@ -290,6 +394,16 @@ def use_ability_parser(choice, ctx : "Union[World, Battle]") -> "Tuple[Union[Ene
     #. Hand the context over to :method:target_parser to look for a target
     
     #. If both an ability and a target have been parsed then return them
+    
+    Parameters
+    -----------
+    choice : str
+        The user input
+    
+    Returns
+    --------    
+    Tuple[Union[Enemy, Player], Ability]
+        The target and ability the user has determined as the most likely target
     """
     choice = filter_stopword(choice)
     

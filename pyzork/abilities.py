@@ -63,9 +63,9 @@ class Ability:
         self.effect(user, target)
 
     def costing(self, player : Entity, target : Entity) -> bool:
-        """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your cost system to work
-        wether it rage or mana or whatever other custom cost system you may create your class with. This method must return true if
-        the user has enough resource and false if it doesn't."""
+        """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your 
+        cost system to work wether it rage or mana or whatever other custom cost system you may create your 
+        class with. This method must return true if the user has enough resource and false if it doesn't."""
         if callable(self.cost):
             int_cost = self.cost(player, target)
         else:

@@ -176,7 +176,7 @@ class QuestManager:
         """
         return self.finished_quests[quest_id] 
         
-    def proccess_rewards(self, player : "Player", world : "World"):
+    def process_rewards(self, player : "Player", world : "World"):
         """This processes all the current rewards that have not yet been claimed. This is called by default in
         the world loop, you can call this manually to force requests to be processed if the player is out
         of the world loop for a particularly long time.

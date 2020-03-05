@@ -38,7 +38,9 @@ pyzork is a python library to make creating text adventures easier. The usual st
    abilities
    levels
    base
+   battle
    world
    parsers
    equipment
    enums
+   errors

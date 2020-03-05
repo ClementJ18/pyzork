@@ -32,3 +32,5 @@ def visualise_world(world : "World", filepath=None):
         plt.savefig(filepath)
     else:
         plt.show()
+        
+    plt.clf()
