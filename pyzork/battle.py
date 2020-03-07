@@ -45,39 +45,22 @@ class Battle:
         
     def priorities(self):
         """Overwritable method to determine in what order all the entities involved in this
-        battle go. This function must return a list of callables that don't take any arguments.
-        Once that list is exauhsted this will be considered a full turn. There are no limits on how
-        many times an entity can go in the same turn. By default the player goes first and then every
-        enemy goes after.
+        battle go. This function must return a list of entities which have a `battle_logic` method
+        implmenented. 
         
         Returns
         ---------
-        List[Callable[]]
-            The list of turn functions to be called.
+        List[Union[Player, Enemy]]
+            The list of turn entities.
         """
-        return [self.player_turn, *[self.enemy_turn_factory(enemy) for enemy in self.alive]]
-        
-    def enemy_turn_factory(self, enemy : "Enemy"):
-        """Factory method for use in `priorities`, returns a callable that is valid callable for `enemy` to
-        make an action.
-        
-        Parameters
-        -----------
-        enemy : Enemy
-            The enemy to make the callable for
-            
-        Returns
-        --------
-        Callable[]
-        """
-        return lambda: self.enemy_turn(enemy)    
+        return [self.player, *[self.alive]]  
     
     def battle_loop(self):
         """Heart of the battle system. Call this to start the battle"""
         while self.player.is_alive() and self.alive:
             post_output(f"You are attacked by {self.alive}")
-            for turn in self.priorities():
-                turn()
+            for entity in self.priorities():
+                entity.battle_logic(self)
 
             self.end_turn()
         
@@ -108,16 +91,6 @@ class Battle:
         
         while self.battle_parser():
             pass
-
-    def enemy_turn(self, enemy : "Enemy"):
-        """Call the enemy's battle_logic function.
-        
-        Parameters
-        -----------
-        enemy : Enemy
-            The enemy who's taking their turn
-        """
-        enemy.battle_logic(self)
         
     def battle_parser(self) -> bool:
         """Take input of the user and parse it against a set of possible actions

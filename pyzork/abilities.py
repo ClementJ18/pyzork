@@ -1,5 +1,4 @@
 from .utils import post_output
-from .entities import Entity
 
 class Ability:
     """Super class for all abilitis. Most abilities have two uses, they either have a direct effect or add
@@ -54,7 +53,7 @@ class Ability:
     def __str__(self):
         return self.name
 
-    def cast(self, user : Entity, target : Entity):
+    def cast(self, user : "Entity", target : "Entity"):
         """Method that verifies if all conditions have been met."""
         if not self.costing(user, target):
             return
@@ -62,7 +61,7 @@ class Ability:
         post_output(f"{user.name} casts {self.name} on {target.name}")
         self.effect(user, target)
 
-    def costing(self, player : Entity, target : Entity) -> bool:
+    def costing(self, player : "Entity", target : "Entity") -> bool:
         """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your 
         cost system to work wether it rage or mana or whatever other custom cost system you may create your 
         class with. This method must return true if the user has enough resource and false if it doesn't."""
@@ -77,7 +76,7 @@ class Ability:
 
         return False
 
-    def effect(self, user : Entity, target : Entity):
+    def effect(self, user : "Entity", target : "Entity"):
         """The method that defines what happens to the target when the ability is cast on it. This can range from
         directly affecting things like health or energy but it can also do more complex things like add a modifier.
         
@@ -93,7 +92,7 @@ class Ability:
         """
         raise NotImplementedError
         
-    def cost(self, user : Entity, target : Entity) -> int:
+    def cost(self, user : "Entity", target : "Entity") -> int:
         """Method to implement if you want to give your ability a dynamic costing.
         
         Parameters

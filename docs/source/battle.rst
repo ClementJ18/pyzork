@@ -22,10 +22,15 @@ By default, in every battle the player goes first and then every enemy goes afte
     def better_priorities(battle):
         priorities = []
         for enemy in battle.alive:
-            priorities.append(battle.player_turn)
-            priorities.append(battle.enemy_turn_factory(enemy))
+            priorities.append(battle.player)
+            priorities.append(enemy)
             
         return priorities
         
-    battle = Battle(enemies=[Goblin(), Goblin(), Goblin()], player=Player(), priorities=better_priorities)
+    battle = Battle(
+        enemies=[Goblin(), Goblin(), Goblin()], 
+        player=Player(), 
+        priorities=better_priorities
+    )
+    
     battle.battle_loop()

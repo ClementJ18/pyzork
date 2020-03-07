@@ -1,4 +1,4 @@
-from pyzork.entities import Enemy, Entity
+from pyzork.entities import NPC
 from pyzork.utils import yes_or_no, post_output
 from pyzork.base import QM
 from pyzork.errors import EndGame
@@ -6,7 +6,7 @@ from pyzork.enums import EndgameReason
 
 from .example_equipment import Sword, Key
 
-class Goblin(Enemy):
+class Goblin(NPC):
     """Golbin"""
     def __init__(self):
         super().__init__(
@@ -16,7 +16,7 @@ class Goblin(Enemy):
             weapon=Sword()
         )
         
-BigGoblin = Enemy.from_dict(
+BigGoblin = NPC.from_dict(
     max_health=30,
     damage=4,
     defense=5,
@@ -25,7 +25,7 @@ BigGoblin = Enemy.from_dict(
     description="The BBG"
 )        
         
-class OldMan(Enemy):
+class OldMan(NPC):
     """OldMan"""
     def __init__(self):
         super().__init__(
@@ -48,7 +48,7 @@ class OldMan(Enemy):
             world.initiate_battle([self])
             raise EndGame("You win!", victory=True, reason=EndgameReason.victory)
             
-class Table(Entity):
+class Table(NPC):
     def print_interaction(self, world):
         post_output("- Check the drawers of a weird looking table in the corner")
         

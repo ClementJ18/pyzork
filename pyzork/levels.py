@@ -39,6 +39,8 @@ class ExperienceLevels:
     lXX : Optional[Callable[[ExperienceLevels], None]]
         This is an abstract keyword argument, there is no literal lXX argument, rather you can replace XX with
         the level of the reward you wish to change. This argument takes a standard reward callable.
+    experience_gain : Optional[float]
+        Multiplicative stat to define experience gain, 1 by default
         
     Attributes
     -----------
@@ -52,6 +54,8 @@ class ExperienceLevels:
         How much experience the entity still needs to reach the next level
     level : int
         The entity's current level (starts at 0)
+    experience_gain : float
+        The current multiplier for gained experienced
     
     """
     def __init__(self, **kwargs):
@@ -68,6 +72,7 @@ class ExperienceLevels:
         self.level = kwargs.pop("level", 0)
         self._experience = kwargs.pop("experience", 0)
         self.entity = None
+        self.base_experience_gain = kwargs.get("experience_gain", 1)
         
         self.standard_reward = kwargs.pop("reward", self.standard_reward)    
         self.rewards = kwargs.pop("rewards", [self.standard_reward for x in range(self.max_level)])
@@ -86,6 +91,10 @@ class ExperienceLevels:
                 
     def __repr__(self):
         return f"<ExperienceLevels exp={self.experience}/{self.requirement} level={self.level}>"
+        
+    @property
+    def experience_gain(self):
+        return max(0, self.base_experience_gain + self.entity._big_calc(StatEnum.experience))
             
     def generate_levels(self, requirement, modifier):
         self.requirements = [requirement]

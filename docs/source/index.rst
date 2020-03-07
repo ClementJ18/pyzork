@@ -34,6 +34,7 @@ pyzork is a python library to make creating text adventures easier. The usual st
    :caption: Contents:
    
    started
+   entities
    modifiers
    abilities
    levels
