@@ -1,11 +1,19 @@
 from .actions import yes_or_no_parser
 
+import sys
+
 def get_user_input():
     """Method called by the library to gather user input, by default this simply calls input()"""
-    return input(">>>>> ")
+    return sys.modules["pyzork"].user_input()
+    
+def update_input(func):
+    sys.modules["pyzork"].user_input = func
 
 def post_output(string):
-    print(string)
+    sys.modules["pyzork"].print_function(string)
+    
+def update_output(func):
+    sys.modules["pyzork"].print_function = func
     
 def yes_or_no():
     while True:

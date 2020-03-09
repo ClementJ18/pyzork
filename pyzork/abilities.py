@@ -60,18 +60,41 @@ class Ability:
         
         post_output(f"{user.name} casts {self.name} on {target.name}")
         self.effect(user, target)
-
-    def costing(self, player : "Entity", target : "Entity") -> bool:
-        """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your 
-        cost system to work wether it rage or mana or whatever other custom cost system you may create your 
-        class with. This method must return true if the user has enough resource and false if it doesn't."""
+        
+    def calculate_cost(self, user : "Entity", target : "Entity"):
+        """Private method to calculate the cost
+        
+        Parameters
+        -----------
+        user : Entity
+            The Entity that used the ability.
+        target : Entity
+            This is the Entity the ability is aimed at, if the ability is self-cast (user uses ability on
+            himself) then it will be the same entity as the `user`.
+        """
         if callable(self.cost):
-            int_cost = self.cost(player, target)
+            int_cost = self.cost(user, target)
         else:
             int_cost = self.cost
             
-        if player.can_cast(int_cost):
-            player.energy -= int_cost
+        return int(int_cost)
+
+    def costing(self, user : "Entity", target : "Entity") -> bool:
+        """Abstract method that does the logic part of the cost. This allow for flexibility on how you want your 
+        cost system to work wether it rage or mana or whatever other custom cost system you may create your 
+        class with. This method must return true if the user has enough resource and false if it doesn't.
+        
+        Parameters
+        -----------
+        user : Entity
+            The Entity that used the ability.
+        target : Entity
+            This is the Entity the ability is aimed at, if the ability is self-cast (user uses ability on
+            himself) then it will be the same entity as the `user`.
+        """
+        int_cost = self.calculate_cost(user, target)
+        if user.can_cast(int_cost):
+            user.energy -= int_cost
             return True
 
         return False

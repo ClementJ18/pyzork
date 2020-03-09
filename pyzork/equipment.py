@@ -290,8 +290,8 @@ class Inventory:
         self.quest = kwargs.get("quest", [])
         self.equipment = kwargs.get("equipment", set())
         
-        self.weapon =  kwargs.get("weapon", NullWeapon())
-        self.armor = kwargs.get("armor", NullArmor())
+        self.weapon =  kwargs.get("weapon", NullWeapon)
+        self.armor = kwargs.get("armor", NullArmor)
         
     def __repr__(self):
         return f"<Inventory consumables={len(self.consumables)} quest={len(self.quest)} equipment={len(self.equipment)}>"

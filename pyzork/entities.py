@@ -221,7 +221,7 @@ class Entity:
         bool
             True if they can cast 
         """
-        return value <= self.energy
+        return self.energy >= value
         
     #==================================
     #============ Displays ============
