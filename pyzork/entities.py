@@ -114,7 +114,7 @@ class Entity:
         """Calculate all the modifiers for a stat"""
         total = 0
         #modifiers
-        for modifier in self.modifiers:
+        for modifier in self.modifiers.values():
             if modifier.stat_type == stat:
                 total += modifier.calc(self)
                 
@@ -344,7 +344,7 @@ class Entity:
         modifier : Modifier
             The modifier to add
         """
-        if hash(modifier) in self.modifier:
+        if hash(modifier) in self.modifiers:
             self.modifiers[hash(modifier)] = modifier if modifier.duration > self.modifiers[hash(modifier)] else self.modifiers[hash(modifier)]
         else:
             self.modifiers[hash(modifier)] = modifier

@@ -114,13 +114,11 @@ class Modifier:
     def end_turn(self, entity : Entity):
         """Method called at the end of the turn for each buff to show time passed and left until the buff expires. 
         Permanent buffs are set to -1"""
+        if not self.is_expired():
+            self.effect(entity)
+
         if self.duration > 0:
             self.duration -= 1
-
-        if self.is_expired():
-            return
-            
-        self.effect(entity)
         
     @classmethod
     def add_effect(cls, **kwargs):
@@ -129,6 +127,7 @@ class Modifier:
         def decorator(func):
             if not cls is Modifier:
                 cls.effect = func
+                cls.description = f"{cls.description} {func.__doc__}"
                 return func
             else:
                 new_class = type(func.__name__, (cls,), {
@@ -151,6 +150,7 @@ class Modifier:
             if not cls is Modifier:
                 cls.buff = func
                 cls.stat_type = kwargs.pop("stat_type")
+                cls.description = f"{func.__doc__} {cls.description}"
                 return func
             else:
                 new_class = type(func.__name__, (cls,), {

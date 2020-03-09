@@ -1,9 +1,7 @@
 import unittest
 import pyzork
 
-import sys
-
-class TestAbilityDecorator(unittest.TestCase):
+class TestAbility(unittest.TestCase):
     def setUp(self):
         self.player = pyzork.Player(
             max_energy = 6,
@@ -15,101 +13,83 @@ class TestAbilityDecorator(unittest.TestCase):
     def tearDown(self):
         pyzork.utils.update_output(lambda text: print(text))
         
-    def test_fixed_cost(self):
-        cost = 6
-        damage = 4
+    def check_spell(self):
+        self.assertEqual(self.spell.calculate_cost(self.player, self.player), self.cost)
         
-        @pyzork.Ability.add(cost=cost, name="War Roar")    
+        energy = self.player.energy - self.cost
+        health = self.player.health - self.damage
+        self.spell.cast(self.player, self.player)
+        
+        self.assertEqual(self.player.energy, energy)
+        self.assertEqual(self.player.health, health)
+        
+        self.spell.cast(self.player, self.player)
+        
+        self.assertEqual(self.player.energy, energy)
+        self.assertEqual(self.player.health, health)
+        
+    def test_fixed_cost(self):
+        self.cost = 6
+        self.damage = 4
+        
+        @pyzork.Ability.add(cost=self.cost, name="War Roar")    
         def WarRoarSpell(ability, user, target):
             """A terrible war cry that envigorates you"""
-            target.take_pure_damage(damage)
+            target.take_pure_damage(self.damage)
             
-        a = WarRoarSpell()
+        self.spell = WarRoarSpell()
         
-        self.assertEqual(a.name, "War Roar")
-        self.assertEqual(a.description, "A terrible war cry that envigorates you")
-        self.assertEqual(a.calculate_cost(self.player, self.player), cost)
-        
-        energy = self.player.energy
-        health = self.player.health
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
-        
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
-        
+        self.assertEqual(self.spell.name, "War Roar")
+        self.assertEqual(self.spell.description, "A terrible war cry that envigorates you")
+        self.check_spell()
+    
     def test_callable_cost(self):    
         def callable_cost(ability, user, target):
             return user.max_energy * 0.75
             
-        damage = 4
-        cost = int(callable_cost(None, self.player, None))
+        self.damage = 4
+        self.cost = int(callable_cost(None, self.player, None))
             
         @pyzork.Ability.add(cost=callable_cost, description="Very loud yelling")    
         def WarRoarSpell(ability, user, target):
-            target.take_pure_damage(damage)
+            target.take_pure_damage(self.damage)
             
+        self.spell = WarRoarSpell()
+        
+        self.assertEqual(self.spell.name, "WarRoarSpell")
+        self.assertEqual(self.spell.description, "Very loud yelling")
+        
+        self.check_spell()
+        
+    def test_sublcass(self):
+        self.cost = 6
+        self.damage = 2
+        
+        class WarRoarSpell(pyzork.Ability):
+            """War Roar"""
+            def cost(ability, user, target):
+                return self.cost
+                
+            def effect(ability, user, target):
+                """Yes"""
+                target.take_pure_damage(self.damage)
+                
+        self.spell = WarRoarSpell()
+        
+        self.assertEqual(self.spell.name, "War Roar")
+        self.assertEqual(self.spell.description, "Yes")
+        
+        self.check_spell()
+        
+    def test_blank_description(self):
+        cost = 6
+        damage = 4
+        
+        @pyzork.Ability.add(cost=cost)    
+        def WarRoarSpell(ability, user, target):
+            target.take_pure_damage(damage)
+        
         a = WarRoarSpell()
         
         self.assertEqual(a.name, "WarRoarSpell")
-        self.assertEqual(a.description, "Very loud yelling")
-        self.assertEqual(a.calculate_cost(self.player, self.player), cost)
-        
-        energy = self.player.energy
-        health = self.player.health
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
-        
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
-        
-class TestAbilitySubclass(unittest.TestCase):
-    def setUp(self):
-        self.player = pyzork.Player(
-            max_energy = 6,
-            max_health = 5    
-        )
-        
-        pyzork.utils.update_output(lambda text: None)
-
-    def tearDown(self):
-        pyzork.utils.update_output(lambda text: print(text))
-        
-    def test_sublcass(self):
-        cost = 6
-        damage = 2
-        
-        class WarRoarSpell(Ability):
-            """War Roar"""
-            def cost(self, user, target):
-                return cost
-                
-            def effect(self, user, target):
-                """Yes"""
-                target.take_pure_damage(damage)
-                
-        a = WarRoarSpell()
-        
-        self.assertEqual(a.name, "War Roar")
-        self.assertEqual(a.description, "Yes")
-        self.assertEqual(a.calculate_cost(self.player, self.player), cost)
-        
-        energy = self.player.energy
-        health = self.player.health
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
-        
-        a.cast(self.player, self.player)
-        
-        self.assertEqual(self.player.energy, energy - cost)
-        self.assertEqual(self.player.health, health - damage)
+        self.assertEqual(a.description, None)
