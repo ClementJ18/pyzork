@@ -279,6 +279,9 @@ class Entity:
         value : int
             The amount of damage to take
         """
+        if value < 1:
+            return
+        
         self.take_pure_damage(max(1, value - self.defense))
         
     def take_pure_damage(self, value):

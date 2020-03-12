@@ -3,7 +3,7 @@ from .base import QM
 from .utils import post_output, get
 
 class Item:
-    """An item is a physical object the player can interact with and carry aroun with them everywhere they
+    """An item is a physical object the entity can interact with and carry aroun with them everywhere they
     various subclasses of item have various uses. Equipments are meant to provide a buff when equipped, consumables
     provide an effect, kinda like a handheld ability. Quest items don't usually provide an direct benefit but rather
     are a prequisite for unlocking certain areas and progressing the story.
@@ -21,17 +21,7 @@ class Item:
         Name of the item
     description : str
         Description of the item
-    """
-    def __init__(self, **kwargs):
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description", self.__init__.__doc__)
-        
+    """ 
     def __repr__(self):
         return f"<{self.name}>"
         
@@ -49,9 +39,9 @@ class Item:
 
         
 class Consumable(Item):
-    """Consumable are items which the player can use at pretty much anytime to gain an effect, kinda
+    """Consumable are items which the entity can use at pretty much anytime to gain an effect, kinda
     like an ability with limited uses which costs no energy. Each consumable can be used a certain number
-    of times before it disappears, if the player buys more of the consumable then the charges will be
+    of times before it disappears, if the entity buys more of the consumable then the charges will be
     added together. When selling a consumable the charges will be split up based on how many charges the
     buyer accepts, for example if the shop takes consumables with 2 charges and you have one with 5 then
     it will make two sales and discrd the remainer.
@@ -78,7 +68,14 @@ class Consumable(Item):
         if not hasattr(self, "charges"):
             self.charges = kwargs.pop("charges")
             
-        super().__init__(**kwargs)
+        if not hasattr(self, "name"):
+            if "name" in kwargs:
+                self.name = kwargs.get("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        if not hasattr(self, "description"):
+            self.description = kwargs.get("description", self.effect.__doc__)
         
     def use(self, target):
         if self.charges > 0:
@@ -134,11 +131,26 @@ class QuestItem(Item):
     description : str
         Description of the item
     """
-    pass
+    def __init__(self, **kwargs):
+        if not hasattr(self, "name"):
+            if "name" in kwargs:
+                self.name = kwargs.get("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        if not hasattr(self, "description"):
+            self.description = kwargs.get("description", self.__init__.__doc__)
+            
+    @classmethod
+    def from_dict(cls, **kwargs):
+        """Create a QuestItem from a set of kwargs, takes the same parameters as the class
+        and returns a subclass of it by the same name."""
+        new_class = type(kwargs.get("name"), (cls,), kwargs)
+        return new_class
 
 class Equipment(Item):
     """Equipment can't be used on their own and don't do anything special while they sit in your inventory. They're
-    instead meant to be equipped on the player, in which case they can provide a buff and effect
+    instead meant to be equipped on the entity, in which case they can provide a buff and effect
     
     Parameters
     -----------
@@ -154,10 +166,20 @@ class Equipment(Item):
     description : str
         Description of the item
     """
-    def calc(self, player):
-        return self.buff(player)
+    def __init__(self, **kwargs):
+        if not hasattr(self, "name"):
+            if "name" in kwargs:
+                self.name = kwargs.get("name")
+            else:
+                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
+
+        if not hasattr(self, "description"):
+            self.description = kwargs.get("description", f"{self.buff.__doc__} {self.effect.__doc__}")
     
-    def buff(self, player):
+    def calc(self, entity):
+        return self.buff(entity)
+    
+    def buff(self, entity):
         """Abstract method that must be implemented by every piece of equipment, this is the method used when
         calculating damage that dictates the various modifiers and buffs gotten"""
         return []
@@ -171,8 +193,9 @@ class Equipment(Item):
         """Decorator function to allow the user to define an effect by decorating a function. Takes the
         same parameters as the class. """        
         def decorator(func):
-            if not cls is Equipment:
+            if not cls in [Weapon, Armor]:
                 cls.effect = func
+                cls.description = f"{cls.description} {func.__doc__}"
                 return func
             else:
                 new_class = type(func.__name__, (cls,), {
@@ -191,8 +214,9 @@ class Equipment(Item):
         the same parameters as the class. Since this specifically adds a buff, the `stat_type` parameter
         is required"""
         def decorator(func):
-            if not cls is Equipment:
+            if not cls in [Weapon, Armor]:
                 cls.buff = func
+                cls.description = f"{func.__doc__} {cls.description}"
                 return func
             else:
                 new_class = type(func.__name__, (cls,), {
@@ -224,8 +248,21 @@ class ShopItem:
     price : int
         The price of the item
     amount : int
-        The number of items that are available for sale, if a player sells an item 
+        The number of items that are available for sale, if a entity sells an item 
         it will increment the amount
+        
+    Attributes
+    -----------
+    item : Union[Consumable, QuestItem, Equipment]
+        The item being sold or bought
+    price : int
+        The price at which it is being sold
+    amount : int
+        How many more times the item can be sold
+    name : int
+        The name of the item being sold
+    description
+        The description of the item being sold
     """
     def __init__(self, **kwargs):
         self.item = kwargs.pop("item")
@@ -239,6 +276,11 @@ class ShopItem:
     @property
     def name(self):
         return self.fake_inst.name
+        
+    @property
+    def description(self):
+        return self.fake_inst.description
+    
 
     def buy(self, entity : "Entity"):
         """Buy an instance of that item
@@ -256,7 +298,7 @@ class ShopItem:
             
         self.charges -= 1
         entity.remove_money(self.price)
-        entity.add_to_inventory(self.item())
+        entity.inventory.add_item(self.item())
         
         post_output(f"Bought {self.fake_inst.name} and payed {self.price}")
         
@@ -289,11 +331,21 @@ class ShopItem:
         post_output(f"Sold {self.fake_inst.name} and gained {money}")
 
 class Inventory:
-    """Inventories store all items: Equipment, Consumables and QuestItem. """
+    """Inventories store all items: Equipment, Consumables and QuestItem. 
+    
+    Parameters
+    ------------
+    items : List[Union[Consumable, Equipment, QuestItem]]
+        A list of items this inventory starts with
+    weapon : Weapon
+        The weapon this inventory comes equipped with by default
+    armor : Armor
+        The armor this inventory comes equipped with by default
+    """
     def __init__(self, **kwargs):
-        self.consumables = kwargs.get("consumables", {})
-        self.quest = kwargs.get("quest", [])
-        self.equipment = kwargs.get("equipment", set())
+        self.consumables = {}
+        self.quest = []
+        self.equipment = set()
         
         for item in kwargs.get("items", []):
             self.add_item(item)
@@ -347,6 +399,9 @@ class Inventory:
             The entity to use it on
         """
         used = item.use(target)
+        if item.charges < 1:
+            del self.consumables[type(item)]
+        
         if not used:
             post_output("You cannot use this item")
             
@@ -423,7 +478,7 @@ class Inventory:
         """Get an consumable instance based on a parameter. The parameter
         is any kwarg to you pass, if you want the parameter to be the name
         of the item then you can do something like `get_consumable(name='Health Potion')`"""
-        return get(self.consumables, **kwargs)
+        return get(self.consumables.values(), **kwargs)
         
     def get_item(self, **kwargs):
         """Get an equipment, consumable or quest instance based on a parameter. The parameter
