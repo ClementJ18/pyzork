@@ -17,4 +17,4 @@ would look like::
     def InfiniteDebuff(modifier, target):
         return -3
 
-This would permanently reduce the defense of the target by 3.
+This would permanently reduce the defense of the target by 3. This can be interesting to simulate wounds or other long term events.

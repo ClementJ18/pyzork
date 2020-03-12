@@ -22,10 +22,11 @@ class Battle:
         Optional callable which determines in what order all the entities in the battle
         take turn.
     """
-    def __init__(self, player, enemies, location = None, **kwargs):
-        self.player = player
+    def __init__(self, **kwargs):
+        self.player = kwargs.pop("player")
+        enemies = kwargs.pop("enemies")
         self.alive = [x for x in enemies if x.is_alive()]
-        self.location = location
+        self.location = kwargs.get("location")
         self.priorities = kwargs.get("priorities", self.priorities)
 
         self.turn = 0

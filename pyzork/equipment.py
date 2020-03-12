@@ -78,7 +78,7 @@ class Consumable(Item):
         if not hasattr(self, "charges"):
             self.charges = kwargs.pop("charges")
             
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
         
     def use(self, target):
         if self.charges > 0:
@@ -231,10 +231,15 @@ class ShopItem:
         self.item = kwargs.pop("item")
         self.price = kwargs.pop("price")
         self.charges = kwargs.pop("amount", 0)
+        self.fake_inst = self.item()
         
     def __repr__(self):
-        return f"<{self.item.name} amount={self.charges} price={self.price}>"
+        return f"<{self.fake_inst.name} amount={self.charges} price={self.price}>"
         
+    @property
+    def name(self):
+        return self.fake_inst.name
+
     def buy(self, entity : "Entity"):
         """Buy an instance of that item
         
@@ -253,7 +258,7 @@ class ShopItem:
         entity.remove_money(self.price)
         entity.add_to_inventory(self.item())
         
-        post_output(f"Bought {self.item.name} and payed {self.price}")
+        post_output(f"Bought {self.fake_inst.name} and payed {self.price}")
         
     def sell(self, entity : "Entity", resell : float):
         """Sell an instance of that item
@@ -265,13 +270,13 @@ class ShopItem:
         resell : float
             The resale value, this is usually passed down from the shop instance
         """
-        to_remove = entity.inventory.get_item(name=self.item.name)
+        to_remove = entity.inventory.get_item(name=self.fake_inst.name)
         if to_remove is None:
             return post_output("Couldn't find the item")
             
         if isinstance(to_remove, Consumable):
             entity.inventory.remove_item(to_remove)
-            amount = to_remove.amount // self.item.amount
+            amount = to_remove.amount // self.fake_inst.amount
             self.charges += amount
             money = (self.price * resell) * amount
             entity.add_money(money)
@@ -281,7 +286,7 @@ class ShopItem:
             money = self.price * resell
             entity.add_money(money)
         
-        post_output(f"Sold {self.item.name} and gained {money}")
+        post_output(f"Sold {self.fake_inst.name} and gained {money}")
 
 class Inventory:
     """Inventories store all items: Equipment, Consumables and QuestItem. """
@@ -289,6 +294,9 @@ class Inventory:
         self.consumables = kwargs.get("consumables", {})
         self.quest = kwargs.get("quest", [])
         self.equipment = kwargs.get("equipment", set())
+        
+        for item in kwargs.get("items", []):
+            self.add_item(item)
         
         self.weapon =  kwargs.get("weapon", NullWeapon)
         self.armor = kwargs.get("armor", NullArmor)
@@ -313,18 +321,18 @@ class Inventory:
         """
         if isinstance(item, Equipment):
             self.equipment.add(item)
-            post_output(f"Equipment {item.name} added")
+            # post_output(f"Equipment {item.name} added")
         
         if isinstance(item, Consumable):
             if type(item) in self.consumables:
                 self.consumables[type(item)].amount += item.amount
             else:
                 self.consumables[type(item)] = item
-            post_output(f"Consumable {item.name} added")    
+            # post_output(f"Consumable {item.name} added")    
                 
         if isinstance(item, QuestItem):
             self.quest.append(item)
-            post_output(f"Quest item {item.name} added")
+            # post_output(f"Quest item {item.name} added")
         
         QM.progress_quests("on_pickup", item)
     

@@ -33,6 +33,8 @@ class Entity:
         The entity's inventory
     experience : ExperienceLevels
         This entity's experience and levels
+    abilities : List[Ability]
+        A list of abilities the entity has at the start
     
     money : int
         This is entity's current money
@@ -99,6 +101,9 @@ class Entity:
         self.modifiers = {}
         self.abilities = {}
         self.interacted = False
+        
+        for ability in kwargs.get("abilities", []):
+            self.add_ability(ability)
         
     def __repr__(self):
         return f'<{self.name} health={self.health}/{self.max_health} energy={self.energy}/{self.max_energy}>'

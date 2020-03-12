@@ -10,14 +10,15 @@ from nltk.corpus import stopwords
 STOPWORDS = set(stopwords.words("english"))
 ACCEPTABLE_MOVEMENTS = ["go", "walk", "run", "enter", "exit", "move", "leave"]
 ACCEPTABLE_INTERACTS = ["talk", "interact", "check", "look", "approach"]
-ACCEPTABLE_ATTACKS = ["attack", "strike", "target"]
-ACCEPTABLE_EQUIP = ["equip", "put"]
-ACCEPTABLE_USE = ["use", "drink", "eat", "throw"]
+ACCEPTABLE_ATTACKS = ["attack", "strike", "target", "hit"]
+ACCEPTABLE_EQUIP = ["equip", "put", "take"]
+ACCEPTABLE_USE = ["use", "throw"]
+ACCEPTABLE_SELF_USE = ["drink", "eat",]
 ACCEPTABLE_CAST = ["use", "cast"]
 
 ALIASES_VIEW = {
-    "inventory": ["inv", "inventory", "items"],
-    "stats": ["stats", "health", "energy", "attack", "damage", "hitpoints"]
+    "inventory": ["inv", "inventory", "items", "quest", "abilities", "consumables", "quests"],
+    "stats": ["stats", "health", "energy", "attack", "damage", "armor", "weapon", "defense"]
 }
 
 ALIASES_SHOP = {
@@ -26,8 +27,8 @@ ALIASES_SHOP = {
 }
 
 PLAYER = ["me", "myself", "i", "player"]
-YES = ["yes", "y", "true"]
-NO = ["no", "n", "false"]
+YES = ["yes", "y", "true", "yeah"]
+NO = ["no", "n", "false", "nah"]
 
 POSITIONS = [["left"], ["center", "middle"], ["right"]]
     
@@ -35,7 +36,7 @@ def clean(raw : str):
     return raw.lower().strip()
     
 def filter_stopword(text : str):
-    return [x for x in clean(text).split() if x not in STOPWORDS]
+    return [x for x in clean(text).split() if x not in STOPWORDS or x in PLAYER]
 
 def direction_parser(choice : str, current_location : "Location") -> Direction:
     """A bit more robust parser for picking a direction you want to go in. This parser works in the
@@ -123,9 +124,10 @@ def interact_parser(choice : str, location : "Location") -> "Entity":
     if any(x for x in choice if x in ACCEPTABLE_INTERACTS):
         if len(location.npcs) == 1:
             return location.npcs[0]
-            
+        
+        npcs = sorted(location.npcs, key=lambda x: len(x.name.split()))
         best_interaction = (None, 0)
-        for npc in location.npcs:
+        for npc in npcs:
             new_interaction = len([x for x in choice if x in npc.name.lower()])
             if new_interaction > best_interaction[1]:
                 best_interaction = (npc, new_interaction)
@@ -182,15 +184,16 @@ def shop_parser(choice : str, shop : "Shop") -> "Tuple[str, Item]":
         A tuple of the action the user is trying to do and the item they are trying to do it with
     
     """
-    if leave := direction_parser(choice, shop):
+    if direction_parser(choice, shop) is not None:
         return "exit", None
     
     choice = filter_stopword(choice)
     for word, aliases in ALIASES_SHOP.items():
         if any(x for x in choice if x in aliases):
             best_item = (None, 0)
-            for item in shop.items:
-                new_item = len([x for x in choice if x in item.item.name.lower()])
+            items = sorted(shop.items, key=lambda x: len(x.name.split()))
+            for item in items:
+                new_item = len([x for x in choice if x in item.name.lower()])
                 if new_item > best_item[1]:
                     best_item = (item, new_item)
             
@@ -239,20 +242,24 @@ def target_parser(choice : str, targets : "List[Enemy]", player : "Optional[Play
     
     best_enemy = 0
     enemies = []
+    targets = sorted(targets, key=lambda x: len(x.name.split()))
     for enemy in targets:
         new_enemy = len([x for x in choice if x in enemy.name.lower()])
         if new_enemy > best_enemy:
             best_enemy = new_enemy
-            enemies = []
-        elif new_enemy == best_enemy:
+            enemies = [enemy]
+        elif new_enemy == best_enemy and best_enemy > 0:
             enemies.append(enemy)
-            
+                
     if len(enemies) == 1:
         return enemies[0]
-    elif len(enemies) == 3:
+    
+    if len(enemies) == 3:
         for index, position in enumerate(POSITIONS):
             if any(x for x in choice if x in position):
                 return enemies[index]
+    if enemies:
+        return enemies[0]
     
 def attack_parser(choice : str, battle : "Battle") -> "Union[Enemy, Player]":
     """A robust system to handle the user attacking an enemy during battle. This performs a simple
@@ -277,7 +284,7 @@ def attack_parser(choice : str, battle : "Battle") -> "Union[Enemy, Player]":
     """
     choice = filter_stopword(choice)
     
-    if any(x for x in choice if x in [*ACCEPTABLE_ATTACKS, battle.player.weapon.name]):
+    if any(x for x in choice if x in [*ACCEPTABLE_ATTACKS, *battle.player.inventory.weapon.name.split()]):
         return target_parser(choice, battle.alive, battle.player)
         
 def yes_or_no_parser(choice : str) -> bool:
@@ -302,7 +309,8 @@ def yes_or_no_parser(choice : str) -> bool:
     
     if any(x for x in choice if x in YES):
         return True
-    elif any(x for x in choice if x in NO):
+    
+    if any(x for x in choice if x in NO):
         return False
         
     return None
@@ -333,7 +341,8 @@ def equip_item_parser(choice : str, player : "Player") -> "Equipment":
     
     if any(x for x in choice if x in ACCEPTABLE_EQUIP):
         best_equip = (None, 0)
-        for item in player.inventory.equipement:
+        equipment = sorted(player.inventory.equipment, key=lambda x: len(x.name.split()))
+        for item in equipment:
             new_equip = len([x for x in choice if x in item.name.lower()])
             if new_equip > best_equip[1]:
                 best_equip =  (item, new_equip)
@@ -366,10 +375,11 @@ def use_item_parser(choice : str, ctx : "Union[World, Battle]") -> "Tuple[Union[
     """
     choice = filter_stopword(choice)
     
-    if any(x for x in choice if x in ACCEPTABLE_USE):
+    if any(x for x in choice if x in [*ACCEPTABLE_USE, *ACCEPTABLE_SELF_USE]):
         best_item = (None, 0)
-        for item in ctx.player.inventory.consumables:
-            new_time = len([x for x in choice if x in item.name.lower()])
+        consumables = sorted(ctx.player.inventory.consumables.values(), key=lambda x: len(x.name.split()))
+        for item in consumables:
+            new_item = len([x for x in choice if x in item.name.lower()])
             if new_item > best_item[1]:
                 best_item = (item, new_item)
                 
@@ -377,6 +387,9 @@ def use_item_parser(choice : str, ctx : "Union[World, Battle]") -> "Tuple[Union[
             target = target_parser(choice, ctx.alive, ctx.player)
         else:
             target = target_parser(choice, [], ctx.player)
+            
+        if target is None and any(x for x in choice if x in ACCEPTABLE_SELF_USE):
+            target = ctx.player
             
         if best_item[0] is not None and target is not None:
             return target, best_item[0]
@@ -409,7 +422,8 @@ def use_ability_parser(choice, ctx : "Union[World, Battle]") -> "Tuple[Union[Ene
     
     if any(x for x in choice if x in ACCEPTABLE_CAST):
         best_ability = (None, 0)
-        for ability in ctx.player.abilities:
+        abilities = sorted(ctx.player.abilities.values(), key=lambda x: len(x.name.split()))
+        for ability in abilities:
             new_ability = len([x for x in choice if x in ability.name.lower()])
             if new_ability > best_ability[1]:
                 best_ability = (ability, new_ability)
