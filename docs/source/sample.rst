@@ -1,0 +1,4 @@
+.. currentmodule:: pyzork
+
+Sample Adventures
+==================
