@@ -12,4 +12,13 @@ Entities are anything that exist within your world that is either the player or 
 
 Examples
 ---------
+There are many ways of making entities, for most cases you'll only need the from_dict method but you can always subclass the Player or NPC classes for further edits
+
+Basic
+######
+::
+    import pyzork
+    
+    Goblin = pyzork.Goblin.from_dict(name="Goblin", max_health=20, attack=3, description="A lowly goblin")
+
 
