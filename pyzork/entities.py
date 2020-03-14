@@ -74,29 +74,28 @@ class Entity:
     description : str
         Flavour text about the entity      
     """
+    def _getattr(self, parameter, kwargs, default=None):
+        return getattr(self, parameter, kwargs.get(parameter, default))
+    
     def __init__(self, **kwargs):
-        self.base_max_health = kwargs.get("max_health", 0)
-        self._health = kwargs.get("health", self.base_max_health)
+        self.base_max_health = self._getattr("max_health", kwargs, 0)
+        self._health = self._getattr("health", kwargs, self.base_max_health)
 
-        self.base_damage = kwargs.get("damage", 0)
-        self.base_defense = kwargs.get("defense", 0)
+        self.base_damage = self._getattr("damage", kwargs, 0)
+        self.base_defense = self._getattr("defense", kwargs, 0)
 
-        self.base_max_energy = kwargs.get("max_energy", 0)
-        self._energy = kwargs.get("energy", self.base_max_energy)
+        self.base_max_energy = self._getattr("max_energy", kwargs, 0)
+        self._energy = self._getattr("energy", kwargs, self.base_max_energy)
 
-        self.inventory = kwargs.get("inventory", Inventory())
+        self.inventory = self._getattr("inventory", kwargs, Inventory())
         
-        self.experience = kwargs.get("experience", ExperienceLevels(requirements=[math.inf], max_level=1))
+        self.experience = self._getattr("experience", kwargs, ExperienceLevels(requirements=[math.inf], max_level=1))
         self.experience.set_entity(self)
         
-        self.money = kwargs.get("money", 0)
+        self.money = self._getattr("money", kwargs, 0)
         
-        if "name" in kwargs:
-            self.name = kwargs.get("name")
-        else:
-            self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        self.description = kwargs.get("description", self.__init__.__doc__)
+        self.name = self._getattr("name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = self._getattr("description", kwargs, self.__init__.__doc__)
 
         self.modifiers = {}
         self.abilities = {}
@@ -234,7 +233,7 @@ class Entity:
         
     def print_abilities(self):
         """Print all the abilities of an entity"""
-        post_output(self.abilities)
+        post_output(f"Abilities: {self.abilities}")
         
     def print_inventory(self):
         """Print all the inventory of entity"""
@@ -567,7 +566,7 @@ class Player(Entity):
         """Print the inventory, abilities and quests of the player."""
         self.inventory.print()
         self.print_abilities()
-        post_output(QM.active_quests)
+        post_output(f"Quests: {QM.active_quests}")
         
     def battle_logic(self, battle):
         battle.player_turn()
@@ -652,7 +651,7 @@ class NPC(Entity):
         new_class = type(kwargs.get("name"), (cls,), kwargs)
         return new_class
         
-    def experience(self, player):
+    def experience_granted(self, player):
         """Overwritable method which determines how experience is granted to the player when the
         entity is deafeted, by default this simply returns the entity's `experience_points`
         
@@ -706,3 +705,4 @@ class NPC(Entity):
             The world where this entity lives
         """
         pass
+  

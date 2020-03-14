@@ -21,6 +21,17 @@ class Battle:
     priorities : Optional[Callable[[Battle], Callable[]]:
         Optional callable which determines in what order all the entities in the battle
         take turn.
+        
+    Attributes
+    -----------
+    player : Player
+        The player in the battle
+    alive : List[NPC]
+        The list of enemies still alive
+    dead : List[NPC]
+        The list of NPCS that have died
+    turn : int
+        The number of turns that have passed.
     """
     def __init__(self, **kwargs):
         self.player = kwargs.pop("player")
@@ -30,7 +41,7 @@ class Battle:
         self.priorities = kwargs.get("priorities", self.priorities)
 
         self.turn = 0
-        self.deads = [x for x in enemies if not x.is_alive()]
+        self.dead = [x for x in enemies if not x.is_alive()]
         
     def remove_dead(self, index : int):
         """Remove a dead enemy from the list of living enemies and grant experience to the player
@@ -41,8 +52,8 @@ class Battle:
             Index of the enemy to remove
         """
         dead = self.alive.pop(index)
-        self.player.gain_experience(dead.experience(player))
-        self.deads.append(dead)
+        self.player.gain_experience(dead.experience_granted(self.player))
+        self.dead.append(dead)
         
     def priorities(self):
         """Overwritable method to determine in what order all the entities involved in this
@@ -54,7 +65,7 @@ class Battle:
         List[Union[Player, Enemy]]
             The list of turn entities.
         """
-        return [self.player, *[self.alive]]  
+        return [self.player, *self.alive]  
     
     def battle_loop(self):
         """Heart of the battle system. Call this to start the battle"""
@@ -85,7 +96,7 @@ class Battle:
 
     def player_turn(self):
         """Print possible options and let the user pick one through `battle_parser`"""
-        post_output(f"- Attack an enemy with your {self.player.weapon}")
+        post_output(f"- Attack an enemy with your {self.player.inventory.weapon}")
         post_output("- Cast an ability")
         post_output("- View your stats")
         post_output("- View your inventory")

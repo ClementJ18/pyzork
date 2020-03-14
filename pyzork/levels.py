@@ -1,5 +1,6 @@
 from .utils import post_output
 from .base import QM
+from .enums import StatEnum
 
 import math
 

@@ -373,18 +373,18 @@ class World:
     """
     def __init__(self, **kwargs):
         self.locations = kwargs.pop("locations")
-        self.current_location = kwargs.pop("start", self.locations[0])
+        self.current_location = Location()
         self.player = kwargs.pop("player")
         self.end_game = kwargs.pop("end_game", self.end_game)
         self.error_handler = kwargs.pop("error_handler", self.error_handler)
         
         self.player.set_world(self)
+        self.travel(kwargs.pop("start", self.locations[0]))
         
     def world_loop(self):
         """Handler for traveling around the world. This method calls end turn so modifiers and effects
         will expire while the user travels in the world. Unless you're doing some advanced stuff with the
         library such as handling the game loop on your own you shouldn't need to call this."""
-        self.current_location._enter(self.player, Location())
         while True:
             QM.process_rewards(self.player, self)
             self.current_location.print_exits(self)
@@ -432,7 +432,7 @@ class World:
         enemies : List[Enemy]
             List of enemies to fight
         """
-        battle = Battle(self.player, enemies, self.current_location)
+        battle = Battle(player=self.player, enemies=enemies, location=self.current_location)
         battle.battle_loop()
             
     def can_move(self, location : "Union[Direction, Location]") -> bool:

@@ -14,6 +14,7 @@ elif args.setup:
     
     from pyzork.utils import game_loop
     
+    main.intro()
     game_loop(game.WORLD)
     
 

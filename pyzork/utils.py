@@ -1,4 +1,5 @@
 from .actions import yes_or_no_parser
+from .errors import ZorkError, EndGame
 
 import sys
 
@@ -14,6 +15,16 @@ def post_output(string):
     
 def update_output(func):
     sys.modules["pyzork"].print_function = func
+    
+def game_loop(world):
+    while True:
+        try:
+            world.world_loop()
+        except Exception as e:
+            if isinstance(e, EndGame):
+                world.end_game(e)
+            else:
+                world.error_handler(e)
     
 def yes_or_no():
     while True:
