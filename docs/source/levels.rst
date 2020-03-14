@@ -41,10 +41,13 @@ You can apply a similar process for rewards, a reward can be the same for every 
     from pyzork.levels import ExperienceLevels
     
     def basic_reward(levels):
-        levels.entity.base_damage *= 0.1
-        levels.entity.base_defense *= 0.1
-        levels.entity.health += levels.entity.base_max_health * 0.1
-        levels.entity.base_max_health *= 0.1
+        levels.entity.base_damage *= 1.1
+        levels.entity.base_defense *= 1.1
+        
+        bonus_health = levels.entity.base_max_health * 0.1
+        levels.entity.base_max_health *= 1.1
+        levels.entity.health += bonus_health
+        
         
     basic = ExperienceLevels(
         requirement=100, 
@@ -58,16 +61,20 @@ Similarly, we can hardcode every reward. Note that while you don't have to provi
     from pyzork.levels import ExperienceLevels
     
     def basic_reward_1(levels):
-        levels.entity.base_damage *= 0.1
-        levels.entity.base_defense *= 0.1
-        levels.entity.health += levels.entity.base_max_health * 0.1
-        levels.entity.base_max_health *= 0.1
+        levels.entity.base_damage *= 1.1
+        levels.entity.base_defense *= 1.1
+        
+        bonus_health = levels.entity.base_max_health * 0.1
+        levels.entity.base_max_health *= 1.1
+        levels.entity.health += bonus_health
         
     def basic_reward_2(levels):
-        levels.entity.base_damage *= 0.2
-        levels.entity.base_defense *= 0.2
-        levels.entity.health += levels.entity.base_max_health * 0.2
-        levels.entity.base_max_health *= 0.2
+        levels.entity.base_damage *= 1.2
+        levels.entity.base_defense *= 1.2
+        
+        bonus_health = levels.entity.base_max_health * 0.2
+        levels.entity.base_max_health *= 1.2
+        levels.entity.health += bonus_health
         
     basic = ExperienceLevels(
         requirement=100, 
@@ -81,16 +88,20 @@ Finally, as with requirements, you have complete control and can mix and match r
     from pyzork.levels import ExperienceLevels
     
     def basic_reward(levels):
-        levels.entity.base_damage *= 0.1
-        levels.entity.base_defense *= 0.1
-        levels.entity.health += levels.entity.base_max_health * 0.1
-        levels.entity.base_max_health *= 0.1
+        levels.entity.base_damage *= 1.1
+        levels.entity.base_defense *= 1.1
+        
+        bonus_health = levels.entity.base_max_health * 0.1
+        levels.entity.base_max_health *= 1.1
+        levels.entity.health += bonus_health
         
     def l5_reward(levels):
-        levels.entity.base_damage *= 0.2
-        levels.entity.base_defense *= 0.2
-        levels.entity.health += levels.entity.base_max_health * 0.2
-        levels.entity.base_max_health *= 0.2
+        levels.entity.base_damage *= 1.2
+        levels.entity.base_defense *= 1.2
+        
+        bonus_health = levels.entity.base_max_health * 0.2
+        levels.entity.base_max_health *= 1.2
+        levels.entity.health += bonus_health
         
     basic = ExperienceLevels(
         requirement=100, 

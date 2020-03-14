@@ -42,4 +42,13 @@ Now your player has a location to start in, but not much to do in it, but that's
     
     tavern = Tavern(enemies=Goblin())
 
-Now when the player starts the game they'll be met by a goblin they'll need to battle before they get move on to the next step.
+Now when the player starts the game they'll be met by a goblin they'll need to battle before they get move on to the next step. For the final bit of this tutorial section let's just add a second location the player can go to once they're done fighting the Goblin::
+    
+    MarketPlace = pyzork.Location.from_dict(name="Marketplace", description="A nice markerplace")
+    market = MarketPlace()
+    
+    tavern.two_way_connect(pyzork.Direction.south, market)
+    
+    LOCATIONS = [tavern, market]
+
+Now, once the goblin is dead the player can move south to the Market.

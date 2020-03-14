@@ -1,10 +1,10 @@
 import unittest
 import pyzork
 
-Goblin = pyzork.NPC.from_dict(name="Goblin", max_health=10, damage=2)
-BigGoblin = pyzork.NPC.from_dict(name="BigGoblin", max_health=15, damage=3)
+Goblin = pyzork.NPC.from_dict(name="Goblin", max_health=10, attack=2)
+BigGoblin = pyzork.NPC.from_dict(name="BigGoblin", max_health=15, attack=3)
 
-player = pyzork.Player(max_health=50, damage=5, defense=1)
+player = pyzork.Player(max_health=50, attack=5, defense=1)
 BattleField = pyzork.Location.from_dict(name="BattleField", enemies=[Goblin, BigGoblin])
 
 class TestBattle(unittest.TestCase):

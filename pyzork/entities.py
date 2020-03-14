@@ -19,7 +19,7 @@ class Entity:
     health : int
         The entity's current health. Same as `max_health` by default
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands, 0 by default
     defense : int
         How much an entity reduces damage with no extra armor, 0 by default.
@@ -51,7 +51,7 @@ class Entity:
     health : int
         The entity's current health.
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands.
     defense : int
         How much an entity reduces damage with no extra armor.
@@ -81,7 +81,7 @@ class Entity:
         self.base_max_health = self._getattr("max_health", kwargs, 0)
         self._health = self._getattr("health", kwargs, self.base_max_health)
 
-        self.base_damage = self._getattr("damage", kwargs, 0)
+        self.base_attack = self._getattr("attack", kwargs, 0)
         self.base_defense = self._getattr("defense", kwargs, 0)
 
         self.base_max_energy = self._getattr("max_energy", kwargs, 0)
@@ -133,7 +133,7 @@ class Entity:
     @property
     def attack(self):
         """This method compiles all the buffs, equipment, attributes to generate the attack stat of a unit."""
-        return max(0, self.base_damage + self._big_calc(StatEnum.attack))
+        return max(0, self.base_attack + self._big_calc(StatEnum.attack))
         
     @property
     def defense(self):
@@ -467,7 +467,7 @@ class Player(Entity):
     health : int
         The entity's current health. Same as `max_health` by default
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands, 0 by default
     defense : int
         How much an entity reduces damage with no extra armor, 0 by default.
@@ -497,7 +497,7 @@ class Player(Entity):
     health : int
         The entity's current health.
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands.
     defense : int
         How much an entity reduces damage with no extra armor.
@@ -581,7 +581,7 @@ class NPC(Entity):
     health : int
         The entity's current health. Same as `max_health` by default
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands, 0 by default
     defense : int
         How much an entity reduces damage with no extra armor, 0 by default.
@@ -614,7 +614,7 @@ class NPC(Entity):
     health : int
         The entity's current health.
         
-    damage : int
+    attack : int
         How much damage a entity deals with empty hands.
     defense : int
         How much an entity reduces damage with no extra armor.

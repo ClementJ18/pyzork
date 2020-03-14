@@ -135,7 +135,7 @@ class ExperienceLevels:
         
     def level_up(self):
         self.level += 1
-        self.rewards[self.level - 1]()
+        self.rewards[self.level - 1](self)
         
     def standard_reward(self):
         post_output(f"You leveled up! You are now level {self.level}")
