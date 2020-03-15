@@ -191,7 +191,14 @@ class QuestManager:
         while self.pending_rewards:
             quest = self.pending_rewards.pop(0)
             quest.reward(player, world)
-                            
+            
+    def clear(self):
+        """Remove all registered, active and finished quests. Also removes all pending rewards"""
+        self.quests = {}
+        self.active_quests = {}
+        self.finished_quests = {}
+        self.pending_rewards = []
+
 QM = QuestManager()
         
 class Quest:
