@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
   requirements = f.read().splitlines()
 
 version = ''
-with open('discord/__init__.py') as f:
+with open('pyzork/__init__.py') as f:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 extras_require = {
@@ -24,7 +24,7 @@ extras_require = {
 
 setup(
     name = "pyzork",
-    version = "0.1",
+    version = version,
     description = "An extensible python library for creating text adventures",
     author = "Clement Julia",
     author_email = "clement.julia13@gmail.com",
