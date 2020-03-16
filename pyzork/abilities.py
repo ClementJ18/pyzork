@@ -1,4 +1,4 @@
-from .utils import post_output
+from .utils import post_output, _getattr
 
 class Ability:
     """Super class for all abilitis. Most abilities have two uses, they either have a direct effect or add
@@ -26,17 +26,9 @@ class Ability:
         Optional description of the ability    
     """
     def __init__(self, **kwargs):
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description", self.effect.__doc__)
-        
-        if "cost" in kwargs:
-            self.cost = kwargs.get("cost", 0)
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, self.effect.__doc__)
+        self.cost = _getattr(self, "cost", kwargs, 0)
         
     def __hash__(self):
         return hash(self.__class__.__name__)

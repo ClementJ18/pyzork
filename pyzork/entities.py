@@ -2,7 +2,7 @@ from .enums import StatEnum, EndgameReason
 from .errors import EndGame
 from .equipment import NullWeapon, NullArmor, Inventory
 from .levels import ExperienceLevels
-from .utils import post_output
+from .utils import post_output, _getattr
 from .base import QM
 
 import math
@@ -73,29 +73,26 @@ class Entity:
         The entity's name
     description : str
         Flavour text about the entity      
-    """
-    def _getattr(self, parameter, kwargs, default=None):
-        return getattr(self, parameter, kwargs.get(parameter, default))
-    
+    """    
     def __init__(self, **kwargs):
-        self.base_max_health = self._getattr("max_health", kwargs, 0)
-        self._health = self._getattr("health", kwargs, self.base_max_health)
+        self.base_max_health = _getattr(self, "max_health", kwargs, 0)
+        self._health = _getattr(self, "health", kwargs, self.base_max_health)
 
-        self.base_attack = self._getattr("attack", kwargs, 0)
-        self.base_defense = self._getattr("defense", kwargs, 0)
+        self.base_attack = _getattr(self, "attack", kwargs, 0)
+        self.base_defense = _getattr(self, "defense", kwargs, 0)
 
-        self.base_max_energy = self._getattr("max_energy", kwargs, 0)
-        self._energy = self._getattr("energy", kwargs, self.base_max_energy)
+        self.base_max_energy = _getattr(self, "max_energy", kwargs, 0)
+        self._energy = _getattr(self, "energy", kwargs, self.base_max_energy)
 
-        self.inventory = self._getattr("inventory", kwargs, Inventory())
+        self.inventory = _getattr(self, "inventory", kwargs, Inventory())
         
-        self.experience = self._getattr("experience", kwargs, ExperienceLevels(requirements=[math.inf], max_level=1))
+        self.experience = _getattr(self, "experience", kwargs, ExperienceLevels(requirements=[math.inf], max_level=1))
         self.experience.set_entity(self)
         
-        self.money = self._getattr("money", kwargs, 0)
+        self.money = _getattr(self, "money", kwargs, 0)
         
-        self.name = self._getattr("name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
-        self.description = self._getattr("description", kwargs, self.__init__.__doc__)
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, self.__init__.__doc__)
 
         self.modifiers = {}
         self.abilities = {}
@@ -109,6 +106,14 @@ class Entity:
         
     def __str__(self):
         return self.name
+        
+    def __call__(self):
+        #this is for when entities get initialized by locations, in case the entity is already initialized it just does
+        #nothing
+        pass
+        
+    def _getattr(self, parameter, kwargs, default=None):
+        return getattr(self, parameter, kwargs.get(parameter, default))
 
     #==================================
     #============ Stats ===============

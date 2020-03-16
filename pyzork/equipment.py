@@ -1,6 +1,6 @@
 from .enums import *
 from .base import QM
-from .utils import post_output, get
+from .utils import post_output, get, _getattr
 
 class Item:
     """An item is a physical object the entity can interact with and carry aroun with them everywhere they
@@ -64,18 +64,10 @@ class Consumable(Item):
     charges : int
         The amount of times this item can be used
     """
-    def __init__(self, **kwargs):
-        if not hasattr(self, "charges"):
-            self.charges = kwargs.pop("charges")
-            
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description", self.effect.__doc__)
+    def __init__(self, **kwargs):          
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.charges = _getattr(self, "charges", kwargs)
+        self.description = _getattr(self, "description", kwargs, self.effect.__doc__)            
         
     def use(self, target):
         if self.charges > 0:
@@ -132,20 +124,14 @@ class QuestItem(Item):
         Description of the item
     """
     def __init__(self, **kwargs):
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description", self.__init__.__doc__)
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, self.__init__.__doc__)
             
     @classmethod
     def from_dict(cls, **kwargs):
         """Create a QuestItem from a set of kwargs, takes the same parameters as the class
         and returns a subclass of it by the same name."""
-        new_class = type(kwargs.get("name"), (cls,), kwargs)
+        new_class = type(kwargs.pop("name"), (cls,), kwargs)
         return new_class
 
 class Equipment(Item):
@@ -167,14 +153,8 @@ class Equipment(Item):
         Description of the item
     """
     def __init__(self, **kwargs):
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description", f"{self.buff.__doc__} {self.effect.__doc__}")
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, f"{self.buff.__doc__} {self.effect.__doc__}")
     
     def calc(self, entity):
         return self.buff(entity)

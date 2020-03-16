@@ -1,5 +1,5 @@
 from .enums import Direction
-from .utils import get_user_input, post_output
+from .utils import get_user_input, post_output, _getattr
 from .base import QM
 from .battle import Battle
 from .actions import *
@@ -39,24 +39,14 @@ class Location:
         How many times the user has visited this place
     """
     def __init__(self, **kwargs):
-        if not hasattr(self, "name"):
-            if "name" in kwargs:
-                self.name = kwargs.get("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-        
-        if "description" in kwargs:
-            self.description = kwargs.get("description", self.__init__.__doc__)
-        
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, self.__init__.__doc__)
         self.exits = self._generate_exits()
         self.visited = 0
         
-        if not hasattr(self, "npcs"):
-            self.npcs = kwargs.pop("npcs", [])
-            
-        if not hasattr(self, "enemies"):
-            self.enemies = kwargs.get("enemies", [])
-            
+        self.npcs = _getattr(self, "npcs", kwargs, [])
+        self.enemies = _getattr(self, "enemies", kwargs, [])
+                   
         self.npcs = [npc() for npc in self.npcs]
         self.enemies = [enemy() for enemy in self.enemies]
         
@@ -263,17 +253,10 @@ class Shop(Location):
         The multipler applied on the original price to get the resale value of an item.
     """
     def __init__(self, **kwargs):
-        if not hasattr(self, "items"):
-            self.items = kwargs.get("items", [])
-        
-        if not hasattr(self, "resell"):
-            self.resell = kwargs.get("resell", 1)
-            
-        if not hasattr(self, "name"):
-            self.name = kwargs.get("name")
-            
-        if not hasattr(self, "description"):
-            self.description = kwargs.get("description")
+        self.items = _getattr(self, "items", kwargs, [])
+        self.resell = _getattr(self, "resell", kwargs, 0)
+        self.name = _getattr(self, "name", kwargs)
+        self.description = _getattr(self, "description", kwargs, None)
             
         super().__init__(**kwargs)
         
@@ -334,7 +317,7 @@ class Shop(Location):
     @classmethod
     def from_dict(cls, **kwargs):
         """Allows you to create a shop from kwargs, takes the same parameters as the class."""
-        name = kwargs.get("name", "AShop")
+        name = kwargs.pop("name")
         new_class = type(name, (cls,), {
                 "name": name,
                 "description": kwargs.get("description"),

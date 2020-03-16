@@ -7,6 +7,12 @@ def get_user_input():
     """Method called by the library to gather user input, by default this simply calls input()"""
     return sys.modules["pyzork"].user_input()
     
+def _getattr(self, parameter, kwargs, default="None"):
+    if default == "None":
+        return getattr(self, parameter, kwargs.pop(parameter, default))
+    else:
+        return getattr(self, parameter, kwargs.get(parameter, default))
+    
 def update_input(func):
     sys.modules["pyzork"].user_input = func
 
@@ -17,14 +23,12 @@ def update_output(func):
     sys.modules["pyzork"].print_function = func
     
 def game_loop(world):
-    while True:
-        try:
-            world.world_loop()
-        except Exception as e:
-            if isinstance(e, EndGame):
-                world.end_game(e)
-            else:
-                world.error_handler(e)
+    try:
+        world.world_loop()
+    except EndGame as e:
+        world.end_game(e)
+    except Exception as e:
+        world.error_handler(e)
     
 def yes_or_no():
     while True:

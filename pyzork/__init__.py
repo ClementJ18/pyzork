@@ -13,3 +13,5 @@ def print_function(text):
 
 def user_input():
     return input(">>>>> ")
+    
+__version__ = '0.1'

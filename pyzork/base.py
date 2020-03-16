@@ -1,4 +1,4 @@
-from .utils import post_output
+from .utils import post_output, _getattr
 from .errors import *
 
 class QuestManager:
@@ -224,23 +224,18 @@ class Quest:
         
     """
     def __init__(self, **kwargs):
-        if not getattr(self, "name", False):
-            if "name" in kwargs:
-                self.name = kwargs.pop("name")
-            else:
-                self.name = self.__doc__ if self.__doc__ else self.__class__.__name__
-        
-        if not getattr(self, "description", False):
-            self.description = kwargs.pop("description", self.reward.__doc__)
-            
-        if not getattr(self, "id", False):
-            self.id = kwargs.pop("id")
+        self.name = _getattr(self, "name", kwargs, self.__doc__ if self.__doc__ else self.__class__.__name__)
+        self.description = _getattr(self, "description", kwargs, self.reward.__doc__)
+        self.id = _getattr(self, "id", kwargs)
             
         self.paused = False
         self.setup(**kwargs)
         
     def __repr__(self):
         return f"<{self.name}>"
+        
+    def __str__(self):
+        return self.name
         
     def setup(self, **kwargs):
         """Function called when the quest is started, kinda like __init__. You have access to the kwargs
@@ -359,12 +354,4 @@ class Quest:
     @classmethod
     def get_class_name(cls):
         return cls.__name__
-    
-def game_loop(world):
-    try:
-        world.world_loop()
-    except EndGame as e:
-        world.end_game(e)
-    except Exception as e:
-        world.error_handler(e)
     

@@ -3,10 +3,12 @@ from pyzork.world import World
 from pyzork.base import game_loop, QM
 from pyzork.levels import ExperienceLevels
 from pyzork.utils import post_output
+from pyzork.equipment import Inventory
 
 from .example_world import *
 from .example_quest import *
 from .example_equipment import Sword
+from .example_levels import 
 
 tavern.two_way_connect(Direction.south, market)
 market.two_way_connect(Direction.south, docks)
@@ -32,9 +34,13 @@ player = Player(
         requirement=100, 
         modifier=1.2, 
         max_level=10, 
-        reward=basic_reward
+        reward=basic_reward,
+        r3=lambda levels: levels.player.add_ability(HealSpell()),
+        r5=lambda levels: levels.player.add_ability(WarRoarSpell()),
+        r7=lambda levels: levels.player.add_ability(FireballSpell()),
     ),
-    money=100
+    money=100,
+    inventory=Inventory(items=[Sword()])
 )
 world = World(locations=[tavern, market, island, temple, docks, hidden, shop, beach, alley], player=player, start=market)
 
