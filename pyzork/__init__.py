@@ -7,6 +7,8 @@ from .enums import StatEnum, Direction
 from .equipment import QuestItem, Consumable, Weapon, Armor, ShopItem, Inventory
 from .levels import ExperienceLevels
 from .world import World, Location, Shop
+from . import visualise
+from . import utils
 
 def print_function(text):
     print(text)
