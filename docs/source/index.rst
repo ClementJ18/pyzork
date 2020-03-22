@@ -29,6 +29,8 @@ Welcome to pyzork's documentation!
 
 pyzork is a python library to make creating text adventures easier. The usual steps to creating anything using this library is to subclass the parent of the thing you want to create. For example, if you want to create a Goblin for your player to fight you'll need to subclass :class:`pyzork.entities.NPC`. If you want to create a Tavern for your players to visit you'll need to subclass :class:`pyzork.world.Location` and so on. Each class and method has documentation including examples so it's just a matter of finding it. 
 
+To get started with building your adventure go here: :doc:`here <started>`
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

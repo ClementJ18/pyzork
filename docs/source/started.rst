@@ -1,4 +1,4 @@
-..currentmodule::pyzork
+..currentmodule:: pyzork
 
 Getting Started
 ================
