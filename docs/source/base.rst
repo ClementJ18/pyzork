@@ -4,7 +4,7 @@ Quests
 =======
 
 .. autoclass:: pyzork.base.QuestManager
-    :members: get_finished, start_quest, print_quests, add, pause_quest, unpause_quest, progress_quests, get_finished, process_rewards, clear
+    :members: get_finished, start_quest, print_quests, add, pause_quest, unpause_quest, progress_quests, get_finished, process_rewards, clear, finish_quest
     
 
 .. autoclass:: pyzork.base.Quest

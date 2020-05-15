@@ -57,6 +57,9 @@ class ExperienceLevels:
         The entity's current level (starts at 0)
     experience_gain : float
         The current multiplier for gained experienced
+    total : int
+        The total amount of experience that has been gained, the sum of all the past requirements and the
+        current amount of experience the entity has.
     
     """
     def __init__(self, **kwargs):
@@ -114,6 +117,10 @@ class ExperienceLevels:
         return self.requirements[self.level]
         
     @property
+    def total(self):
+        return sum(self.requirements[:self.level]) + self.experience
+        
+    @property
     def remaining(self):
         return self.requirement - self.experience
             
@@ -137,7 +144,7 @@ class ExperienceLevels:
         self.level += 1
         self.rewards[self.level - 1](self)
         
-    def standard_reward(self):
+    def standard_reward(self, levels):
         post_output(f"You leveled up! You are now level {self.level}")
         
     def __add__(self, value):

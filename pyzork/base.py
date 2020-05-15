@@ -156,10 +156,25 @@ class QuestManager:
                 continue
                 
             if done:
-                self.stop_quest(quest_id)
-                self.finished_quests[quest_id] += 1
-                self.pending_rewards.append(quest)
-                post_output(f"finished {quest.name} ({quest.id})")
+                self.finish_quest(quest_id)
+                
+    def finish_quest(self, quest_id : str):
+        """Forcefully complete a quest,sending the reward to be processed, incrementing
+        the amount of times a quest has been completed and removing it from the list
+        of active quests
+        
+        Parameters
+        ----------
+        quest_id : str
+            The quest to finish
+        
+        """
+        quest = self.active_quests[quest_id]
+    
+        self.stop_quest(quest_id)
+        self.finished_quests[quest_id] += 1
+        self.pending_rewards.append(quest)
+        post_output(f"finished {quest.name} ({quest.id})")
                 
     def get_finished(self, quest_id : str) -> int:
         """Returns the number of time a quest was finished.

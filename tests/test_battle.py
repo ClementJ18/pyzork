@@ -4,9 +4,6 @@ import pyzork
 Goblin = pyzork.NPC.from_dict(name="Goblin", max_health=10, attack=2)
 BigGoblin = pyzork.NPC.from_dict(name="BigGoblin", max_health=15, attack=3)
 
-player = pyzork.Player(max_health=50, attack=5, defense=1)
-BattleField = pyzork.Location.from_dict(name="BattleField", enemies=[Goblin, BigGoblin])
-
 class TestBattle(unittest.TestCase):
     def setUp(self):
         pass
@@ -14,7 +11,10 @@ class TestBattle(unittest.TestCase):
     def tearDown(self):
         pass
         
-    def test_full(self):                
+    def test_full(self): 
+        player = pyzork.Player(max_health=50, attack=5, defense=1)
+        BattleField = pyzork.Location.from_dict(name="BattleField", enemies=[Goblin, BigGoblin])
+        
         bf = BattleField()
         battle = pyzork.Battle(player=player, enemies=bf.enemies, location=bf)
         
@@ -48,9 +48,14 @@ class TestBattle(unittest.TestCase):
             for enemy in battle.alive:
                 turns.append(battle.player)
                 turns.append(enemy)
+                
+            return turns
+            
+        player = pyzork.Player(max_health=50, attack=5, defense=1)
+        BattleField = pyzork.Location.from_dict(name="BattleField", enemies=[Goblin, BigGoblin])
         
         bf = BattleField()
         battle = pyzork.Battle(player=player, enemies=bf.enemies, location=bf, priorities=custom_priorities)
         
-        self.assertEqual(len(battle.priorities()), 4)
+        self.assertEqual(len(battle.priorities(battle)), 4)
  

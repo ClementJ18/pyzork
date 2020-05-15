@@ -66,10 +66,25 @@ class Battle:
             The list of turn entities.
         """
         return [self.player, *self.alive]  
-    
+        
+    def win_condition(self) -> bool:
+        """You can override this function to change the win condition of the battle
+        by default winning the battle requires that the player still be alive and that
+        all enemies have been wiped out.
+        
+        Returns
+        --------
+        bool
+            True if the battle has been won, false if it's still going. If you need
+            to interupt the battle without it resulting in a victory you will need to 
+            raise an error and catch it in the handlers
+                
+        """
+        return not (self.player.is_alive() and self.alive)
+
     def battle_loop(self):
         """Heart of the battle system. Call this to start the battle"""
-        while self.player.is_alive() and self.alive:
+        while not self.win_condition():
             post_output(f"You are attacked by {self.alive}")
             for entity in self.priorities():
                 entity.battle_logic(self)
