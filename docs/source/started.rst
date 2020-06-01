@@ -8,7 +8,7 @@ First step to using this library is installing it, for it you can simply use pip
 
 If you want to use the visualise part of the module you will need to install using this command instead:: 
 
-    pip install -U git+git://github.com/ClementJ18/pyzork.git[visualise] 
+    pip install -U git+git://github.com/ClementJ18/pyzork.git#egg=pyzork[visualise] 
 
 Once you have the library installed you can get started coding in any directory, here's some boilerplate code to get you started, just copy paste this into a new file:: 
 
